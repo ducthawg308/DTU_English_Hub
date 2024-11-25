@@ -12,12 +12,11 @@ class AdminUsersController extends Controller
 {
     //
     function list(){
-        $users = User::all();
+        $users = User::all();   
         return view('admin.users.list', compact('users'));
     }
 
     function add(){
-        
         return view('admin.users.add');
     }
     

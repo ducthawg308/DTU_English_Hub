@@ -1,0 +1,43 @@
+.pagination-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination{
+    display: inline-flex;
+    column-gap: 30px;
+    margin-top: 30px;
+    background-color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+
+    &__chenvron{
+
+        &-link{
+            
+        }
+    }
+
+    &__num{
+
+        &-link{
+            padding: 10px 12px;
+
+            &:hover{
+                color: #23adad;
+            }
+
+            &--active {
+                background-color: #23adad;
+                border-radius: 6px;
+                color: white;
+                 
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+    }
+
+}
