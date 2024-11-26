@@ -41,12 +41,13 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
 
     Route::get('admin/exam/list', [App\Http\Controllers\AdminExamController::class, 'list']);
     Route::get('admin/exam/add', [App\Http\Controllers\AdminExamController::class, 'add']);
-    Route::get('admin/exam/delete/{id}', [App\Http\Controllers\AdminExamController::class, 'delete'])->name('delete_exercise');
-    Route::get('admin/exam/edit/{id}', [App\Http\Controllers\AdminExamController::class, 'edit'])->name('edit.exercise');
+    Route::get('admin/exam/delete/{id}', [App\Http\Controllers\AdminExamController::class, 'delete'])->name('delete_exam');
+    Route::get('admin/exam/edit/{id}', [App\Http\Controllers\AdminExamController::class, 'edit'])->name('edit.exam');
     Route::post('admin/exam/store', [App\Http\Controllers\AdminExamController::class, 'store']);
-    Route::post('admin/exam/update/{id}', [App\Http\Controllers\AdminExamController::class, 'update'])->name('update.exercise');
+    Route::post('admin/exam/update/{id}', [App\Http\Controllers\AdminExamController::class, 'update'])->name('update.exam');
 });
 
 Route::get('home/topic', [App\Http\Controllers\TopicController::class, 'list'])->name('list.topic');
 Route::get('home/topic/{id}', [App\Http\Controllers\TopicController::class, 'show'])->name('topic.show');
 Route::get('home/topic/{topicId}/{id}', [App\Http\Controllers\TopicController::class, 'listening'])->name('topic.listening');
+Route::post('home/topic/{id}/check', [App\Http\Controllers\TopicController::class, 'check'])->name('check.answer');
