@@ -49,4 +49,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function purchasedExercises()
+    {
+        // Một User có thể có nhiều PurchasedExercise
+        return $this->hasMany(PurchasedExercise::class);
+    }
+
+    public function topicVocabulary()
+    {
+        // Một User có thể có nhiều TopicVocabulary
+        return $this->hasMany(TopicVocabulary::class);
+    }
 }

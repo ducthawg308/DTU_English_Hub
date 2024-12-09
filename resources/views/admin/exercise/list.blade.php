@@ -8,7 +8,9 @@
         </ol>
         <div class="card mb-4">
             <div class="card-body">
-                <a href="{{url('admin/exercise/add')}}" class="btn btn-success">Thêm bài nghe <i class="fa-solid fa-plus"></i></a>
+                <a href="{{url('admin/exercise/add-topic')}}" class="btn btn-success">Thêm topic<i class="fa-solid fa-plus"></i></a>
+                <a href="{{url('admin/exercise/add-exercise')}}" class="btn btn-success">Thêm exerccise<i class="fa-solid fa-plus"></i></a>
+                <a href="{{url('admin/exercise/add')}}" class="btn btn-success">Thêm audio<i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
         @if(session('status'))
