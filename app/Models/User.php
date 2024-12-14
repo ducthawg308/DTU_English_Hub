@@ -45,20 +45,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function role()
-    {
+    public function role(){
         return $this->belongsTo(Role::class);
     }
 
-    public function purchasedExercises()
-    {
+    public function purchasedExercises(){
         // Một User có thể có nhiều PurchasedExercise
         return $this->hasMany(PurchasedExercise::class);
     }
 
-    public function topicVocabulary()
-    {
+    public function topicVocabulary(){
         // Một User có thể có nhiều TopicVocabulary
         return $this->hasMany(TopicVocabulary::class);
+    }
+
+    public function wordnote(){
+        // Một User có thể có nhiều Wordnote
+        return $this->hasMany(Wordnote::class);
     }
 }

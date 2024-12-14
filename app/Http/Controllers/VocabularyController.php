@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TopicVocabulary;
+use App\Models\Wordnote;
 use App\Models\TypeVocabulary;
 use App\Models\Vocabulary;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,12 @@ class VocabularyController extends Controller
         return view('vocabulary.topic',compact('topics'));
     }
 
+    function topiccustom(){
+        $userId = Auth::id();
+        $topics = TopicVocabulary::where('user_id', $userId)->get();
+        return view('vocabulary.topic',compact('topics'));
+    }
+
     function custom(){
         $userId = Auth::id();
         $vocabularys = Vocabulary::where('user_id', $userId)->with(['typeVocabulary', 'topicVocabulary'])->get();
@@ -26,6 +33,11 @@ class VocabularyController extends Controller
     }
 
     function default($id){
+        $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
+        return view('vocabulary.default',compact('vocabularys'));
+    }
+
+    function learncustom($id){
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
         return view('vocabulary.default',compact('vocabularys'));
     }
@@ -65,17 +77,6 @@ class VocabularyController extends Controller
         return redirect('home/vocabulary/custom')->with('status','Thêm từ vựng thành công!');
     }   
 
-    function topiccustom(){
-        $userId = Auth::id();
-        $topics = TopicVocabulary::where('user_id', $userId)->get();
-        return view('vocabulary.custom.topiccustom',compact('topics'));
-    }
-
-    function learncustom($id){
-        $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
-        return view('vocabulary.custom.learn',compact('vocabularys'));
-    }
-
     function delete($id){
         $vocabulary = Vocabulary::find($id);
         if ($vocabulary) {
@@ -88,6 +89,7 @@ class VocabularyController extends Controller
     }
 
     function review($id){
-        return view('vocabulary.review',compact('id')); 
+        $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
+        return view('vocabulary.review',compact('vocabularys')); 
     }
 }

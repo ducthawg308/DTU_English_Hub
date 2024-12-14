@@ -31,4 +31,8 @@ class Vocabulary extends Model
         return $this->belongsTo(TypeVocabulary::class, 'type_id', 'id');
     }
 
+    public function wordnote(){
+        // Một Vocab có thể có nhiều Wordnote
+        return $this->hasMany(Wordnote::class);
+    }
 }

@@ -112,6 +112,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Quản lý bài nghe
                             </a>
+                            <a class="nav-link" href="{{url('admin/vocabulary/list')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Quản lý từ vựng
+                            </a>
                             <a class="nav-link" href="{{url('admin/exam/list')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Quản lý bài kiểm tra

@@ -24,7 +24,7 @@ class ExercisesController extends Controller
         return view('exercises.topic-detail', compact('topic', 'isPurchased'));
     }
 
-    function listening($topicId, $id){
+    function    listening($topicId, $id){
         $audios = Audios::where('listening_id', $id)->get();
         return view('exercises.listening', compact('audios'));
     }

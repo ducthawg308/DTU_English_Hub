@@ -41,6 +41,10 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
     Route::get('admin/exam/edit/{id}', [App\Http\Controllers\AdminExamController::class, 'edit'])->name('edit.exam');
     Route::post('admin/exam/store', [App\Http\Controllers\AdminExamController::class, 'store']);
     Route::post('admin/exam/update/{id}', [App\Http\Controllers\AdminExamController::class, 'update'])->name('update.exam');
+
+    Route::get('admin/vocabulary/list', [App\Http\Controllers\AdminVocabularyController::class, 'list']);
+    Route::get('admin/vocabulary/add', [App\Http\Controllers\AdminVocabularyController::class, 'add']);
+    Route::get('admin/vocabulary/edit/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'edit']);
 });
 
 Route::middleware(['auth','verified'])->group(function(){
