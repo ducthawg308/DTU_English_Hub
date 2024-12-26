@@ -29,14 +29,14 @@ class AdminExerciseController extends Controller
         return redirect('admin/exercise/list')->with('error', 'Bài nghe không tồn tại!');
     }
 
-    function delete_audio($id){
+    public function delete_audio($id){
         $audio = Audios::find($id);
 
         if ($audio) {
-            $filePath = 'public/audio/' . $audio->audio;
-
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
+            $filePath = public_path('storage\\audio\\' . $audio->audio);
+            
+            if (file_exists($filePath)) {
+                unlink($filePath);
             }
 
             $audio->delete();
@@ -46,6 +46,8 @@ class AdminExerciseController extends Controller
 
         return redirect('admin/exercise/list')->with('error', 'Bài nghe không tồn tại!');
     }
+
+
 
     function add_topic(){
         $levels = Level::all();
@@ -62,24 +64,31 @@ class AdminExerciseController extends Controller
         return view('admin/exercise/add', compact('topics'));
     }
 
-    function store(Request $request){
+    public function store(Request $request){
         $request->validate([
             'audio' => 'required|mimes:mp3,wav|max:10240',
         ]);
-    
-        // Lưu file vào storage/app/public/audio
+
         if ($request->hasFile('audio')) {
-            $filePath = $request->file('audio')->store('public/audio'); // Lưu file
-            $fileName = basename($filePath); // Chỉ lấy tên file
-    
-            // Lưu tên file vào cơ sở dữ liệu
+            $file = $request->file('audio');
+
+            $destinationPath = public_path('storage/audio');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->move($destinationPath, $fileName);
+
             Audios::create([
                 'listening_id' => $request->input('exercise'),
                 'audio' => $fileName,
                 'answer_correct' => $request->input('answer_correct'),
             ]);
         }
-    
+
         return redirect('admin/exercise/list')->with('status', 'Thêm bài nghe thành công!');
     }
 
