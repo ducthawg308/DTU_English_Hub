@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 17, 2024 lúc 09:57 AM
+-- Thời gian đã tạo: Th1 10, 2025 lúc 03:35 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -44,9 +44,7 @@ INSERT INTO `audios` (`id`, `listening_id`, `audio`, `answer_correct`) VALUES
 (4, 22, 'nVzBHavPr6tHTdtNy6Hma6MvjIajP7cWgakUrHNM.mp3', 'The snow finally stopped.'),
 (5, 22, 'Pv7GdCxjamCunTuaUp8vOEiFzUHB1cJujfiE4o7r.mp3', 'My sister and I are excited.'),
 (6, 22, 'oh8rSWx85KPYnlyIU03LIuUVYHBMnMJi3VpeEgJ1.mp3', 'My mom doesn\'t like the snow.'),
-(7, 22, 'qjERVvTOmB9d0RjGJQiCj7AvYkMcFhjHjcL35CCF.mp3', 'My mom has to shovel the driveway.'),
-(8, 22, 'v780UUFwfkcRNv9C1V9h0wCKVmMAcfZDZNYBJ7cn.mp3', 'My sister and I get to play.'),
-(9, 22, 'VVTSyCCzNm5TgumTYIXzQT8klLqEwx95zIRIFZdL.mp3', 'I put on my hat and mittens.');
+(7, 22, 'qjERVvTOmB9d0RjGJQiCj7AvYkMcFhjHjcL35CCF.mp3', 'My mom has to shovel the driveway.');
 
 -- --------------------------------------------------------
 
@@ -157,6 +155,13 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('ducthangofficial@gmail.com', '$2y$10$bE8.osJBBQd8cBgqe56O3eB/F1YHeYhf8J30tyJ5fmJk8QCVlQ7jC', '2025-01-09 17:26:06');
 
 -- --------------------------------------------------------
 
@@ -366,9 +371,7 @@ INSERT INTO `vocabularys` (`id`, `user_id`, `word`, `pronounce`, `meaning`, `exa
 (17, 18, 'Online school ', '/ˈɒnˌlaɪn skuːl/', 'Trường học trực tuyến', 'He prefers attending an online school for its flexibility.', 6, 6, NULL, NULL),
 (18, 18, 'Doctorate', '/ˈdɑktərɪt/', 'Bằng tiến sĩ', 'She holds a doctorate in chemistry. ', 6, 1, NULL, NULL),
 (19, 18, 'Major', '/ˈmeɪdʒər/', 'Chuyên ngành', 'His major is electrical engineering.', 6, 7, NULL, NULL),
-(20, 18, 'Credit hours', '/ˈkrɛdɪt aʊərz/', 'Tín chỉ', 'This course is worth three credit hours.', 6, 4, NULL, NULL),
-(23, 28, 'ádas', 'đấ', 'sdas', 'đâsd', 20, 7, NULL, NULL),
-(24, 28, 'sadas', 'sdasda', 'sdasd', 'asdas', 20, 3, NULL, NULL);
+(20, 18, 'Credit hours', '/ˈkrɛdɪt aʊərz/', 'Tín chỉ', 'This course is worth three credit hours.', 6, 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -500,7 +503,7 @@ ALTER TABLE `wordnotes`
 -- AUTO_INCREMENT cho bảng `audios`
 --
 ALTER TABLE `audios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
