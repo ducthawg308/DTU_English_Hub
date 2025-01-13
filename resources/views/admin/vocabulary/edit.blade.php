@@ -38,6 +38,12 @@
                         <select class="form-select" name="topic" id="floatingSelect">
                             <option value="2" {{ $user->role_id == 2 ? 'selected' : '' }}>Người dùng</option>
                             <option value="1" {{ $user->role_id == 1 ? 'selected' : '' }}>Admin</option>
+                            @foreach ($topics as $topic)
+                                <option value="{{ $topic->id }}" 
+                                    @if($topic->id == $exercise->topic_id) selected @endif>
+                                    {{ $topic->name }}
+                                </option>
+                            @endforeach
                         </select>
                         <label for="floatingSelect">Topic</label>
                     </div>
