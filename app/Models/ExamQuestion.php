@@ -1,22 +1,23 @@
 <?php
 
+
 namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+
+class ExamQuestion extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
 
+
+    protected $fillable = ['exam_id', 'question', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_answer'];
     public $timestamps = false;
 
-    public function topic(){
-        return $this->hasMany(Topic::class);
-    }
 
     public function exam(){
-        return $this->hasMany(Exam::class);
+        return $this->belongsTo(Exam::class);
     }
 }

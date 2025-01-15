@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Exam;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 
 class AdminExamController extends Controller

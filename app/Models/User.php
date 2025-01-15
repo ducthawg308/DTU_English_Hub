@@ -63,4 +63,8 @@ class User extends Authenticatable implements MustVerifyEmail
         // Một User có thể có nhiều Wordnote
         return $this->hasMany(Wordnote::class);
     }
+
+    public function resultExam(){
+        return $this->hasMany(ResultExam::class);
+    }
 }
