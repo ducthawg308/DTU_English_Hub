@@ -13,7 +13,7 @@ class ResultExam extends Model
     use HasFactory;
 
 
-    protected $fillable = ['user_id', 'exam_id', 'score', 'total_correct', 'total_questions'];
+    protected $fillable = ['user_id', 'exam_id', 'score', 'total_correct'];
     public $timestamps = false;
 
 

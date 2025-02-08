@@ -25,8 +25,6 @@
 </head>
 <body>
     <div id="app">
-        
-
         <header class="p-3 mb-3 border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -60,7 +58,7 @@
                         <li><a href="#" class="nav-link px-2 link-secondary">Trang chủ</a></li>
                         <li><a href="{{ route('list.topic') }}" class="nav-link px-2 link-dark">Luyện nghe</a></li>
                         <li><a href="{{ route('home.vocabulary') }}" class="nav-link px-2 link-dark">Từ vựng</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Thi thử</a></li>
+                        <li><a href="{{ route('home.exam') }}" class="nav-link px-2 link-dark">Thi thử</a></li>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

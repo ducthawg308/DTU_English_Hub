@@ -12,12 +12,8 @@ class Exam extends Model
 {
     use HasFactory;
 
-
-    protected $fillable = ['name', 'level_id'];
+    protected $fillable = ['name', 'time', 'total_questions', 'level_id'];
     public $timestamps = false;
-
-
-
 
     //  Exam có nhiều ExamQuestion
     public function examQuestions()

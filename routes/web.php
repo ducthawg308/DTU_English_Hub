@@ -58,6 +58,8 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/learn/{id}', [App\Http\Controllers\VocabularyController::class, 'learncustom'])->name('learn.custom');
     Route::get('home/vocabulary/custom', [App\Http\Controllers\VocabularyController::class, 'custom'])->name('custom.vocabulary');
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
+
+    Route::get('home/exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
 });
 
 Route::get('home/topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');

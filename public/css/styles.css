@@ -11273,3 +11273,42 @@ body {
   transform: rotateY(180deg);
   background-color: #e9ecef;
 }
+
+body{
+  background-color: #f2f2f2;
+  margin-top:20px;
+}
+
+#store-list img {
+  width: 100%;
+  height: 170px;
+  border: 5px solid #ecf0f1;
+  margin-bottom: 7px;
+}
+
+#store-list h4.title-store a:hover {
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+  color: #f1c40f;
+}
+
+#store-list h4.title-store a {
+  color: #f39c12;
+}
+
+
+.btn.btn-default {
+  border-color: #bdc3c7;
+  background-color: #bdc3c7;
+  border: 1px solid #bdc3c7;
+}
+
+
+.btn.btn-warning {
+  border-color: #f1c40f;
+  background-color: #f1c40f;
+  border: 1px solid #f1c40f;
+}
