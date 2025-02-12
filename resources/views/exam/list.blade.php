@@ -19,7 +19,7 @@
                                     <p>Tổng số câu hỏi: {{ $exam->total_questions }}</p>
                                     <p>
                                         <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Level: {{ $exam->level->name}}</a>
-                                        <a href="#" class="btn btn-warning pull-right" data-original-title="" title="">Thi thử</a>
+                                        <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Thi thử</a>
                                     </p>
                                 </div>
                             </div>

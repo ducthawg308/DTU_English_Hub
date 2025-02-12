@@ -20,4 +20,9 @@ class ExamQuestion extends Model
     public function exam(){
         return $this->belongsTo(Exam::class);
     }
+
+    public function answers()
+    {
+        return $this->hasMany(ExamAnswers::class);
+    }
 }

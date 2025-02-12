@@ -60,6 +60,9 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
 
     Route::get('home/exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
+    Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
+    Route::post('exam/{id}/submit', [App\Http\Controllers\ExamController::class, 'submitTest'])->name('exam.submit');
+    Route::get('exam/result/{id}', [App\Http\Controllers\ExamController::class, 'showResult'])->name('exam.result');
 });
 
 Route::get('home/topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
