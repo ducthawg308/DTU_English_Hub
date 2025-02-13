@@ -1,36 +1,36 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
     <div class="container">
         <div class="card shadow-lg border-0 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Thêm từ vựng</h3></div>
             <div class="card-body">
-                <form method="POST" action="{{ url('home/vocabulary/custom/addtopic/storevocab') }}">
+                <form method="POST" action="{{ url('admin/vocabulary/addtopic/storevocab') }}">
                 @csrf
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputVocab" name="word" type="text" placeholder="Vocab" />
                         <label for="inputVocab">Từ vựng</label>
-                        @error('name')
+                        @error('word')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputPronounce" name="pronounce" type="text" placeholder="Pronounce" />
                         <label for="inputPronounce">Phiên âm</label>
-                        @error('name')
+                        @error('pronounce')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputMeaningName" name="meaning" type="text" placeholder="Meaning" />
                         <label for="inputMeaning">Nghĩa</label>
-                        @error('name')
+                        @error('meaning')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputExample" name="example" type="text" placeholder="Example" />
                         <label for="inputExample">Câu ví dụ</label>
-                        @error('name')
+                        @error('example')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>

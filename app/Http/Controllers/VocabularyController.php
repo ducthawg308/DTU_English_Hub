@@ -15,9 +15,9 @@ class VocabularyController extends Controller
         return view('vocabulary.home');
     }
     
-    function topic(){
-        $topics = TopicVocabulary::where('user_id', 18)->get();
-        return view('vocabulary.topic',compact('topics'));
+    function topic() {
+        $topics = TopicVocabulary::whereNull('user_id')->get();
+        return view('vocabulary.topic', compact('topics'));
     }
 
     function topiccustom(){
@@ -28,9 +28,12 @@ class VocabularyController extends Controller
 
     function custom(){
         $userId = Auth::id();
-        $vocabularys = Vocabulary::where('user_id', $userId)->with(['typeVocabulary', 'topicVocabulary'])->get();
+
+        $vocabularys = Vocabulary::whereHas('topicVocabulary', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->with(['typeVocabulary', 'topicVocabulary'])->get();
         return view('vocabulary.custom',compact('vocabularys'));
-    }
+    }       
 
     function default($id){
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
@@ -64,9 +67,7 @@ class VocabularyController extends Controller
     }
 
     function storevocab(Request $request){
-        $userId = Auth::id();
         Vocabulary::create([
-            'user_id' => $userId,
             'word' => $request->input('word'),
             'pronounce' => $request->input('pronounce'),
             'meaning' => $request->input('meaning'),

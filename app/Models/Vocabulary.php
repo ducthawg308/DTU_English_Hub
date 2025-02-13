@@ -11,7 +11,6 @@ class Vocabulary extends Model
     protected $table = 'vocabularys';
     public $timestamps = false;
     protected $fillable = [
-        'user_id', 
         'word', 
         'pronounce', 
         'meaning',

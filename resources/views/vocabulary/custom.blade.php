@@ -68,7 +68,7 @@
                                 <td>{{$vocabulary->example}}</td>
                                 <td>{{$vocabulary->topicVocabulary->name}}</td>
                                 <td>{{$vocabulary->typeVocabulary->name}}</td>
-                                <td><a href="" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                <td><a href="{{route('edit.vocab',$vocab->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                 <td>
                                     <a href="{{ route('delete.custom', $vocabulary->id) }}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa từ vựng này?')"><i class="fa-solid fa-trash"></i></a>
                                 </td>
