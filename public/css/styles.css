@@ -246,7 +246,7 @@ sup {
 
 a {
   color: var(--bs-link-color);
-  text-decoration: underline;
+  text-decoration: none !important;
 }
 a:hover {
   color: var(--bs-link-hover-color);
@@ -12543,7 +12543,7 @@ section,
 }
 
 .features .nav-link.active h4 {
-  color: var(--contrast-color);
+  color: var(--accent-color);
 }
 
 @media (max-width: 768px) {

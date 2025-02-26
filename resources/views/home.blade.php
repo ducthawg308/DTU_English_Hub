@@ -223,25 +223,25 @@
             <li class="nav-item col-3">
             <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
                 <i class="bi bi-binoculars"></i>
-                <h4 class="d-none d-lg-block">Modi sit est dela pireda nest</h4>
+                <h4 class="d-none d-lg-block">Luyện nghe hiệu quả</h4>
             </a>
             </li>
             <li class="nav-item col-3">
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
                 <i class="bi bi-box-seam"></i>
-                <h4 class="d-none d-lg-block">Unde praesenti mara setra le</h4>
+                <h4 class="d-none d-lg-block">Xây dựng từ vựng</h4>
             </a>
             </li>
             <li class="nav-item col-3">
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
                 <i class="bi bi-brightness-high"></i>
-                <h4 class="d-none d-lg-block">Pariatur explica nitro dela</h4>
+                <h4 class="d-none d-lg-block">Làm bài kiểm tra</h4>
             </a>
             </li>
             <li class="nav-item col-3">
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-4">
                 <i class="bi bi-command"></i>
-                <h4 class="d-none d-lg-block">Nostrum qui dile node</h4>
+                <h4 class="d-none d-lg-block">Cộng đồng học tập</h4>
             </a>
             </li>
         </ul><!-- End Tab Nav -->
@@ -270,7 +270,7 @@
                 </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="img/working-1.jpg" alt="" class="img-fluid">
+                <img src="img/nghe.jpg" alt="" class="img-fluid rounded-4">
                 </div>
             </div>
             </div><!-- End Tab Content Item -->
@@ -296,7 +296,7 @@
                 </ul>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="img/working-2.jpg" alt="" class="img-fluid">
+                <img src="img/vocab.jpg" alt="" class="img-fluid rounded-4">
                 </div>
             </div>
             </div><!-- End Tab Content Item -->
@@ -321,7 +321,7 @@
                 </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="img/working-3.jpg" alt="" class="img-fluid">
+                <img src="img/exam.jpg" alt="" class="img-fluid rounded-4">
                 </div>
             </div>
             </div><!-- End Tab Content Item -->
@@ -346,7 +346,7 @@
                 </ul>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="img/working-4.jpg" alt="" class="img-fluid">
+                <img src="img/community.jpg" alt="" class="img-fluid rounded-4">
                 </div>
             </div>
             </div><!-- End Tab Content Item -->
@@ -358,7 +358,7 @@
     </section><!-- /Features Section -->
 
     <!-- Services 2 Section -->
-    <section id="services-2" class="services-2 section light-background">
+    {{-- <section id="services-2" class="services-2 section light-background">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
@@ -434,7 +434,7 @@
 
         </div>
 
-    </section><!-- /Services 2 Section -->
+    </section><!-- /Services 2 Section --> --}}
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section dark-background">
@@ -464,14 +464,14 @@
             <div class="swiper-slide">
                 <div class="testimonial-item">
                 <img src="img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                <h3>Saul Goodman</h3>
-                <h4>Ceo &amp; Founder</h4>
+                <h3>Đức Thắng</h3>
+                <h4>DTU Student</h4>
                 <div class="stars">
                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
                     <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                    <span>Trang web này thực sự tuyệt vời! Các bài nghe và từ vựng rất dễ hiểu và hữu ích cho kỳ thi của tôi. Rất phù hợp cho những ai muốn nâng cao tiếng Anh!</span>
                     <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 </div>
@@ -550,7 +550,7 @@
     </section><!-- /Testimonials Section -->
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
+    {{-- <section id="portfolio" class="portfolio section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
@@ -722,7 +722,7 @@
 
         </div>
 
-    </section><!-- /Portfolio Section -->
+    </section><!-- /Portfolio Section --> --}}
 
     <!-- Team Section -->
     <section id="team" class="team section light-background">
@@ -730,7 +730,7 @@
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
         <h2>Team</h2>
-        <p>CHECK OUR TEAM</p>
+        <p>SUPPORT TEAM</p>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -741,8 +741,8 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-1.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
+                <h4>Nguyễn Văn A</h4>
+                <span>Customer Support</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -757,8 +757,8 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-2.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
+                <h4>Nguyễn Thị B</h4>
+                <span>Admin/Moderator</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -773,8 +773,8 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-3.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
+                <h4>Nguyễn Văn C</h4>
+                <span>Academic Team</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>

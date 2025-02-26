@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container text-center">
+    <div class="container text-center my-5">
         <h2 class="mb-4">Donate cho DailyDictation</h2>
 
         <form method="POST" action="{{ route('donate.generate') }}" class="mb-4">

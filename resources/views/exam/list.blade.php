@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container my-5">
         <div class="row bootstrap snippets bootdeys" id="store-list">
             @foreach ($exams as $exam)
                 <div class="col-md-6 col-xs-12">
