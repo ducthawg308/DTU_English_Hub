@@ -60,6 +60,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/topic', [App\Http\Controllers\VocabularyController::class, 'topiccustom'])->name('topic.custom');
     Route::get('home/vocabulary/custom/learn/{id}', [App\Http\Controllers\VocabularyController::class, 'learncustom'])->name('learn.custom');
     Route::get('home/vocabulary/custom', [App\Http\Controllers\VocabularyController::class, 'custom'])->name('custom.vocabulary');
+    Route::get('home/vocabulary/custom/edit/{id}', [App\Http\Controllers\VocabularyController::class, 'edit'])->name('edit.vocabUser');
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
 
     Route::get('home/exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
@@ -80,3 +81,6 @@ Route::get('home/vocabulary', [App\Http\Controllers\VocabularyController::class,
 Route::get('home/vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
 Route::get('home/vocabulary/default/{id}', [App\Http\Controllers\VocabularyController::class, 'default'])->name('default.vocabulary');
 Route::get('home/vocabulary/review/{id}', [App\Http\Controllers\VocabularyController::class, 'review'])->name('review.vocabulary');
+
+Route::get('home/donate', [App\Http\Controllers\DonateController::class, 'show'])->name('home.donate');
+Route::post('home/donate', [App\Http\Controllers\DonateController::class, 'generate'])->name('donate.generate');

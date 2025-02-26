@@ -5,9 +5,9 @@
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ asset('img/listen.jpg') }}" alt="..." /></div>
             <div class="col-lg-5">
-                <h1 class="font-weight-light">Business Name or Tagline</h1>
-                <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
-                <a class="btn btn-primary" href="#!">Call to Action!</a>
+                <h1 class="font-weight-light">Chủ đề luyện nghe tiếng Anh</h1>
+                <p> Chọn chủ đề bạn yêu thích và bắt đầu rèn luyện kỹ năng nghe với các bài tập chính tả. Nội dung từ cơ bản đến nâng cao, giúp bạn nâng cấp khả năng nghe một cách hiệu quả!</p>
+                <a class="btn btn-primary" href="#!">Bắt đầu ngay!</a>
             </div>
         </div>
         <!-- Call to Action-->

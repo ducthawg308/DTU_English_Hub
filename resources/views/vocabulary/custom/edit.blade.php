@@ -4,7 +4,7 @@
         <div class="card shadow-lg border-0 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Sửa từ vựng</h3></div>
             <div class="card-body">
-                <form method="POST" action="{{route('update.vocab',$vocab->id)}}">
+                <form method="POST" action="{{route('update.vocabUser',$vocab->id)}}">
                 @csrf
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputVocab" name="word" type="text" value="{{$vocab->word}}" placeholder="Vocab" />

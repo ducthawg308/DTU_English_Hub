@@ -68,6 +68,7 @@
                         <li><a href="{{ route('list.topic') }}" class="nav-link px-2 link-dark">Luyện nghe</a></li>
                         <li><a href="{{ route('home.vocabulary') }}" class="nav-link px-2 link-dark">Từ vựng</a></li>
                         <li><a href="{{ route('home.exam') }}" class="nav-link px-2 link-dark">Thi thử</a></li>
+                        <li><a href="{{ route('home.donate') }}" class="nav-link px-2 link-dark">Donate</a></li>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

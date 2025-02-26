@@ -78,6 +78,10 @@ class VocabularyController extends Controller
         return redirect('home/vocabulary/custom')->with('status','Thêm từ vựng thành công!');
     }   
 
+    function edit(){
+        return view('vocabulary.custom.edit');
+    }
+
     function delete($id){
         $vocabulary = Vocabulary::find($id);
         if ($vocabulary) {
