@@ -86,7 +86,8 @@
                         <li><a href="{{ route('list.topic') }}" class="nav-link px-2 link-dark">Luyện nghe</a></li>
                         <li><a href="{{ route('home.vocabulary') }}" class="nav-link px-2 link-dark">Từ vựng</a></li>
                         <li><a href="{{ route('home.exam') }}" class="nav-link px-2 link-dark">Thi thử</a></li>
-                        <li><a href="{{ route('home.donate') }}" class="nav-link px-2 link-dark">Donate</a></li>
+                        <li><a href="{{ route('home.community') }}" class="nav-link px-2 link-dark">Cộng đồng</a></li>
+                        <li><a href="{{ route('home.donate') }}" class="nav-link px-2 link-dark">Ủng hộ</a></li>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -128,49 +129,39 @@
             @yield('content')
         </main>
 
-        {{-- <footer id="footer" class="footer dark-background">
+        <footer id="footer" class="footer dark-background">
             <div class="container footer-top">
                 <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <a href="index.html" class="logo d-flex align-items-center">
-                    <span class="sitename">Dewi</span>
+                    <span class="sitename">Daily Dictation</span>
                     </a>
                     <div class="footer-contact pt-3">
-                    <p>A108 Adam Street</p>
-                    <p>New York, NY 535022</p>
-                    <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                    <p><strong>Email:</strong> <span>info@example.com</span></p>
-                    </div>
-                    <div class="social-links d-flex mt-4">
-                    <a href=""><i class="bi bi-twitter-x"></i></a>
-                    <a href=""><i class="bi bi-facebook"></i></a>
-                    <a href=""><i class="bi bi-instagram"></i></a>
-                    <a href=""><i class="bi bi-linkedin"></i></a>
+                    <p>03 Quang Trung</p>
+                    <p>Da Nang</p>
+                    <p><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                    <p><strong>Email:</strong> <span>duytan@edu.vn</span></p>
                     </div>
                 </div>
-        
+
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Useful Links</h4>
                     <ul>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
                     </ul>
                 </div>
-        
+
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Our Services</h4>
                     <ul>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
                     </ul>
                 </div>
-        
+
                 <div class="col-lg-4 col-md-12 footer-newsletter">
                     <h4>Our Newsletter</h4>
                     <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
@@ -181,35 +172,21 @@
                     <div class="sent-message">Your subscription request has been sent. Thank you!</div>
                     </form>
                 </div>
-        
+
                 </div>
             </div>
-        
-            <div class="container copyright text-center mt-4">
-                <p>© <span>Copyright</span> <strong class="px-1 sitename">Dewi</strong> <span>All Rights Reserved</span></p>
-                <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href=“https://themewagon.com>ThemeWagon
-                </div>
+
+            <div class="container copyright text-center">
+                <p>© <span>Copyright</span> <strong class="px-1 sitename">NCKH 2025</strong> <span>Duy Tan University</span></p>
             </div>
-        
-        </footer> --}}
+
+        </footer>
     </div>
 </body>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{asset('js/scripts.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{asset('js/datatables-simple-demo.js')}}"></script>
-    {{-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/php-email-form/validate.js"></script>
-    <script src="vendor/aos/aos.js"></script>
-    <script src="vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script> --}}
 </html>

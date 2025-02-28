@@ -82,5 +82,12 @@ Route::get('home/vocabulary/topic', [App\Http\Controllers\VocabularyController::
 Route::get('home/vocabulary/default/{id}', [App\Http\Controllers\VocabularyController::class, 'default'])->name('default.vocabulary');
 Route::get('home/vocabulary/review/{id}', [App\Http\Controllers\VocabularyController::class, 'review'])->name('review.vocabulary');
 
+// Donate
 Route::get('home/donate', [App\Http\Controllers\DonateController::class, 'show'])->name('home.donate');
 Route::post('home/donate', [App\Http\Controllers\DonateController::class, 'generate'])->name('donate.generate');
+
+//Community
+Route::get('home/community', [App\Http\Controllers\CommunityController::class, 'show'])->name('home.community');
+
+// AI
+Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);

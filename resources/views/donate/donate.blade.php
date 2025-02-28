@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container text-center my-5">
         <h2 class="mb-4">Donate cho DailyDictation</h2>
