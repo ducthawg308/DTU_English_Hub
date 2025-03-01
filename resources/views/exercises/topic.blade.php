@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container px-4 px-lg-5">
+    <div class="container">
         <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ asset('img/listen.jpg') }}" alt="..." /></div>
@@ -11,7 +11,7 @@
             </div>
         </div>
         <!-- Call to Action-->
-        <div class="card text-white bg-secondary my-5 py-4 text-center">
+        <div class="card text-white bg-secondary my-5 py-3 text-center">
             <div class="card-body"><h2 class="text-white">All topic</h2></div>
         </div>
         @if(session('status'))
@@ -34,7 +34,7 @@
                             </p>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="btn btn-primary btn-sm" href="{{ route('topic.show', $topic->id) }}">Chi tiết</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('topic.show', $topic->id) }}">Xem chi tiết</a>
                             @if(!in_array($topic->id, $purchasedTopics))
                                 <form method="POST" action="{{ url('/vnpay_payment') }}">
                                     @csrf

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="card shadow-lg border-0 rounded-lg mt-1">
+        <div class="card shadow-lg border-1 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Thêm audio</h3></div>
             <div class="card-body">
                 <form class="mb-5" method="POST" action="{{ url('admin/exercise/store-exercise') }}" enctype="multipart/form-data">

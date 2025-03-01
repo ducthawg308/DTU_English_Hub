@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="card shadow-lg border-0 rounded-lg mt-1">
+        <div class="card shadow-lg border-1 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Sửa bài nghe</h3></div>
             <div class="card-body">
                 <form method="POST" action="{{route('update.exercise',$exercise->id)}}" enctype="multipart/form-data">
@@ -28,7 +28,7 @@
                     </div>
 
                     @foreach ($audios as $index => $audio)
-                        <div class="border border-2 border-primary mb-4 rounded">
+                        <div class="border border-1 border-primary mb-4 rounded">
                             <div class="form-floating mb-3">
                                 <input type="file" name="audio[{{ $index }}]" id="audio_{{ $index }}" accept="audio/*" class="form-control">
                                 <label for="audio_{{ $index }}" class="form-label">Chọn bài nghe thay thế:</label>

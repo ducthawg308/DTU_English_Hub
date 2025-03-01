@@ -8,7 +8,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <a href="#"><img src="https://www.bootdey.com/image/300x300/FF4500/000000" class="img-responsive"></a>
+                                    <a href="#"><img src="https://i0.wp.com/lawsblog.london.ac.uk/wp-content/uploads/2017/10/exam-paper.jpg?fit=3648%2C2736&ssl=1" class="img-responsive"></a>
                                 </div>
                                 <div class="col-sm-7">
                                     <h4 class="title-store">
@@ -19,7 +19,7 @@
                                     <p>Tổng số câu hỏi: {{ $exam->total_questions }}</p>
                                     <p>
                                         <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Level: {{ $exam->level->name}}</a>
-                                        <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Thi thử</a>
+                                        <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Làm bài</a>
                                     </p>
                                 </div>
                             </div>

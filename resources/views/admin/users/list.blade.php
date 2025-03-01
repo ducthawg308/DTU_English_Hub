@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản lý người dùng</h1>
+        <h1 class="mt-2">Quản lý người dùng</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">DailyDictation</a></li>
             <li class="breadcrumb-item active">Quản lý người dùng</li>

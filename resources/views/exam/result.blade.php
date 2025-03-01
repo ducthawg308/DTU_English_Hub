@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h2 class="text-center mb-4 text-primary">Kết quả bài kiểm tra</h2>
+        <h2 class="text-center text-primary mb-4 fw-bold display-5 pt-4">Kết quả bài kiểm tra</h2>
         <div class="text-center">
             <p class="fs-4 fw-bold">Số câu trả lời đúng: <span class="text-success">{{ $result->total_correct }}</span></p>
             <p class="fs-4 fw-bold">Điểm số: <span class="text-danger">{{ $result->score }}</span></p>

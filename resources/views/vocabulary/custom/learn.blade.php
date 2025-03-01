@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container my-5">
+    <div class="container my-5">
         <div class="row">
             @foreach ($vocabularys as $vocabulary)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">

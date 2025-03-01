@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Topic;
 use App\Models\PurchasedExercise;
 use App\Models\Audios;
+use App\Models\ListeningExercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,16 +25,20 @@ class ExercisesController extends Controller
         return view('exercises.topic-detail', compact('topic', 'isPurchased'));
     }
 
-    function    listening($topicId, $id){
+    public function listening($topicId, $id) {
+        $topic = Topic::findOrFail($topicId);
+        $exercise = ListeningExercise::findOrFail($id);
         $audios = Audios::where('listening_id', $id)->get();
-        return view('exercises.listening', compact('audios'));
+    
+        return view('exercises.listening', compact('topic', 'exercise', 'audios'));
     }
+    
 
-    public function check(Request $request, $id){
+    public function check(Request $request, $id) {
         $audio = Audios::findOrFail($id);
         
-        $answer_user = $request->input('answer');
-        $answer_text = $audio->answer_correct; 
+        $answer_user = trim($request->input('answer'));
+        $answer_text = trim($audio->answer_correct);
     
         $correctWords = explode(' ', $answer_text);
         $userWords = explode(' ', $answer_user);
@@ -47,11 +52,8 @@ class ExercisesController extends Controller
             }
         }
     
-        $audios = \App\Models\Audios::where('listening_id', $audio->listening_id)->get();
-    
-        $results = [];
-        $results[$id] = implode(' ', $result);
-    
-        return view('exercises.listening', compact('audios', 'results', 'id'));
+        return response()->json([
+            'result' => implode(' ', $result)
+        ]);
     }
 }

@@ -102,6 +102,7 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  padding-top: 90px;
 }
 
 html, body {
@@ -10882,6 +10883,7 @@ body {
 
 #layoutSidenav {
   display: flex;
+  margin-top: -90px;
 }
 #layoutSidenav #layoutSidenav_nav {
   flex-basis: 225px;
@@ -11558,7 +11560,7 @@ h6 {
 # Global Header
 --------------------------------------------------------------*/
 .header {
-  --background-color: rgba(0, 0, 0, 0);
+  --background-color: #000;
   --default-color: #ffffff;
   --heading-color: #ffffff;
   color: var(--default-color);
@@ -11589,7 +11591,7 @@ h6 {
   color: var(--contrast-color);
   font-size: 13px;
   padding: 7px 25px;
-  margin: 0 0 0 30px;
+  margin: 0 0 0 18px;
   border-radius: 4px;
   transition: 0.3s;
   text-transform: uppercase;

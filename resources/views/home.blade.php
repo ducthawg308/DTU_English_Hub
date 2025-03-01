@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <main class="main">
-    <!-- Hero Section -->
+
     <section id="hero" class="hero section dark-background">
 
         <img src="img/learn.jpg" alt="" data-aos="fade-in">
@@ -15,9 +15,8 @@
         </div>
         </div>
 
-    </section><!-- /Hero Section -->
+    </section>
 
-    <!-- About Section -->
     <section id="about" class="about section">
 
         <div class="container">
@@ -44,7 +43,7 @@
 
                 <div class="position-relative mt-4">
                 <img src="img/vocab_home.jpg" class="img-fluid rounded-4" alt="">
-                <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+                <a href="https://www.youtube.com/watch?v=mgty3Bgu-YY&t=1043s" class="glightbox pulsating-play-btn"></a>
                 </div>
             </div>
             </div>
@@ -52,9 +51,8 @@
 
         </div>
 
-    </section><!-- /About Section -->
+    </section>
 
-    <!-- Stats Section -->
     <section id="stats" class="stats section light-background">
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -105,15 +103,14 @@
 
         </div>
 
-    </section><!-- /Stats Section -->
+    </section>
 
-    <!-- Services Section -->
     <section id="services" class="services section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
         <h2>Services</h2>
-        <p>Featured Srvices<br></p>
+        <p>TÍNH NĂNG<br></p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -123,16 +120,16 @@
             <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
             <div class="service-item">
                 <div class="img">
-                <img src="img/services-1.jpg" class="img-fluid" alt="">
+                <img src="img/listen_service.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="details position-relative">
                 <div class="icon">
-                    <i class="bi bi-activity"></i>
+                    <i class="bi bi-ear"></i>
                 </div>
                 <a href="service-details.html" class="stretched-link">
-                    <h3>Nesciunt Mete</h3>
+                    <h3>Luyện nghe</h3>
                 </a>
-                <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis.</p>
+                <p>Cải thiện kỹ năng nghe tiếng Anh của bạn với các bài tập âm thanh và video hấp dẫn phù hợp với các cấp độ khác nhau.</p>
                 </div>
             </div>
             </div><!-- End Service Item -->
@@ -140,16 +137,16 @@
             <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
             <div class="service-item">
                 <div class="img">
-                <img src="img/services-2.jpg" class="img-fluid" alt="">
+                <img src="img/vocab_service.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="details position-relative">
                 <div class="icon">
-                    <i class="bi bi-broadcast"></i>
+                    <i class="bi bi-card-text"></i>
                 </div>
                 <a href="service-details.html" class="stretched-link">
-                    <h3>Eosle Commodi</h3>
+                    <h3>Xây dựng từ vựng</h3>
                 </a>
-                <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+                <p>Mở rộng vốn từ vựng của bạn bằng thẻ ghi chú tương tác, danh sách từ và ví dụ thực tế.</p>
                 </div>
             </div>
             </div><!-- End Service Item -->
@@ -157,16 +154,16 @@
             <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
             <div class="service-item">
                 <div class="img">
-                <img src="img/services-3.jpg" class="img-fluid" alt="">
+                <img src="img/exam_service.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="details position-relative">
                 <div class="icon">
-                    <i class="bi bi-easel"></i>
+                    <i class="bi bi-journal-check"></i>
                 </div>
                 <a href="service-details.html" class="stretched-link">
-                    <h3>Ledo Markt</h3>
+                    <h3>Bài kiểm tra & trắc nghiệm</h3>
                 </a>
-                <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+                <p>Thử thách bản thân bằng các bài kiểm tra tùy chỉnh để theo dõi tiến độ và khả năng duy trì của bạn.</p>
                 </div>
             </div>
             </div><!-- End Service Item -->
@@ -175,9 +172,8 @@
 
         </div>
 
-    </section><!-- /Services Section -->
+    </section>
 
-    <!-- Clients Section -->
     <section id="clients" class="clients section light-background">
 
         <div class="container" data-aos="fade-up">
@@ -212,9 +208,8 @@
 
         </div>
 
-    </section><!-- /Clients Section -->
+    </section>
 
-    <!-- Features Section -->
     <section id="features" class="features section">
 
         <div class="container">
@@ -222,7 +217,7 @@
         <ul class="nav nav-tabs row  d-flex" data-aos="fade-up" data-aos-delay="100">
             <li class="nav-item col-3">
             <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
-                <i class="bi bi-binoculars"></i>
+                <i class="bi bi-headphones"></i>
                 <h4 class="d-none d-lg-block">Luyện nghe hiệu quả</h4>
             </a>
             </li>
@@ -234,13 +229,13 @@
             </li>
             <li class="nav-item col-3">
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
-                <i class="bi bi-brightness-high"></i>
+                <i class="bi bi-journal-text"></i>
                 <h4 class="d-none d-lg-block">Làm bài kiểm tra</h4>
             </a>
             </li>
             <li class="nav-item col-3">
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-4">
-                <i class="bi bi-command"></i>
+                <i class="bi bi-people"></i>
                 <h4 class="d-none d-lg-block">Cộng đồng học tập</h4>
             </a>
             </li>
@@ -251,22 +246,17 @@
             <div class="tab-pane fade active show" id="features-tab-1">
             <div class="row">
                 <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+                <h3>Luyện Nghe Hiệu Quả</h3>
                 <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Rèn luyện kỹ năng nghe tiếng Anh với phương pháp khoa học, giúp bạn cải thiện khả năng hiểu và phản xạ ngôn ngữ một cách tự nhiên.
                 </p>
                 <ul>
-                    <li><i class="bi bi-check2-all"></i>
-                    <spab>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</spab>
-                    </li>
-                    <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit</span>.</li>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                    <li><i class="bi bi-check2-all"></i><span>Bài tập nghe đa dạng – Nghe theo cấp độ, chủ đề và tình huống thực tế.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Phương pháp Dictation – Nghe và viết lại để nâng cao khả năng nhận diện âm thanh.</span>.</li>
+                    <li><i class="bi bi-check2-all"></i> <span>Luyện tập với phụ đề – Hỗ trợ transcript để so sánh và kiểm tra kết quả ngay lập tức.</span></li>
                 </ul>
                 <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum
+                    Chỉ cần dành vài phút mỗi ngày, bạn sẽ thấy sự tiến bộ rõ rệt trong việc nghe hiểu tiếng Anh, giúp bạn tự tin hơn khi giao tiếp thực tế! 
                 </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
@@ -278,22 +268,18 @@
             <div class="tab-pane fade" id="features-tab-2">
             <div class="row">
                 <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                <h3>Neque exercitationem debitis soluta quos debitis quo mollitia officia est</h3>
+                <h3>Xây Dựng Từ Vựng Hiệu Quả</h3>
                 <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum
-                </p>
-                <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Mở rộng vốn từ vựng tiếng Anh với phương pháp học thông minh, giúp bạn ghi nhớ lâu hơn và áp dụng dễ dàng vào thực tế.
                 </p>
                 <ul>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Provident mollitia neque rerum asperiores dolores quos qui a. Ipsum neque dolor voluptate nisi sed.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Học từ vựng theo chủ đề – Dễ dàng tiếp cận với các từ ngữ phổ biến theo từng lĩnh vực.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Flashcard & bài tập tương tác – Ôn tập hiệu quả với hình ảnh, âm thanh và câu ví dụ sinh động.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Tạo danh sách từ vựng cá nhân – Lưu lại từ cần học và theo dõi tiến độ của bạn.</span></li>
                 </ul>
+                <p>
+                    Chỉ với vài phút mỗi ngày, bạn sẽ dần xây dựng được vốn từ vựng phong phú, giúp việc đọc, viết và giao tiếp tiếng Anh trở nên dễ dàng hơn! 
+                </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
                 <img src="img/vocab.jpg" alt="" class="img-fluid rounded-4">
@@ -304,20 +290,17 @@
             <div class="tab-pane fade" id="features-tab-3">
             <div class="row">
                 <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                <h3>Voluptatibus commodi ut accusamus ea repudiandae ut autem dolor ut assumenda</h3>
+                <h3>Làm Bài Kiểm Tra Hiệu Quả</h3>
                 <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum
+                    Kiểm tra và đánh giá trình độ tiếng Anh của bạn với hệ thống bài test đa dạng, giúp bạn xác định điểm mạnh và cải thiện điểm yếu.
                 </p>
                 <ul>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Provident mollitia neque rerum asperiores dolores quos qui a. Ipsum neque dolor voluptate nisi sed.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Bài kiểm tra theo cấp độ – Từ cơ bản đến nâng cao, phù hợp với mọi trình độ.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span> Nhiều dạng câu hỏi – Trắc nghiệm, điền từ, nghe – viết, sắp xếp câu... giúp ôn luyện toàn diện.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Phản hồi & chấm điểm tự động – Xem kết quả ngay lập tức và nhận gợi ý cải thiện.</span></li>
                 </ul>
                 <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Thực hành thường xuyên với các bài kiểm tra sẽ giúp bạn theo dõi tiến độ học tập, nâng cao kỹ năng và tự tin hơn khi sử dụng tiếng Anh!
                 </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
@@ -329,21 +312,18 @@
             <div class="tab-pane fade" id="features-tab-4">
             <div class="row">
                 <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                <h3>Omnis fugiat ea explicabo sunt dolorum asperiores sequi inventore rerum</h3>
+                <h3>Cộng Đồng Học Tập Sôi Động</h3>
                 <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum
-                </p>
-                <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Kết nối với những người học tiếng Anh trên khắp thế giới, cùng nhau chia sẻ kinh nghiệm và nâng cao kỹ năng mỗi ngày.
                 </p>
                 <ul>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Thảo luận & hỏi đáp – Đặt câu hỏi, chia sẻ mẹo học và nhận hỗ trợ từ cộng đồng.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span>Luyện tập giao tiếp – Thực hành hội thoại với bạn bè hoặc tham gia nhóm học tập.</span></li>
+                    <li><i class="bi bi-check2-all"></i> <span></span>Thử thách & thi đua – Cùng nhau chinh phục mục tiêu học tập qua các thử thách thú vị.</li>
                 </ul>
+                <p class="fst-italic">
+                    Học tiếng Anh sẽ dễ dàng và thú vị hơn khi bạn có một cộng đồng đồng hành, cùng nhau tiến bộ và đạt được mục tiêu nhanh chóng!
+                </p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
                 <img src="img/community.jpg" alt="" class="img-fluid rounded-4">
@@ -355,89 +335,9 @@
 
         </div>
 
-    </section><!-- /Features Section -->
+    </section>
 
-    <!-- Services 2 Section -->
-    {{-- <section id="services-2" class="services-2 section light-background">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-        <h2>Services</h2>
-        <p>CHECK OUR SERVICES</p>
-        </div><!-- End Section Title -->
-
-        <div class="container">
-
-        <div class="row gy-4">
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-briefcase icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Lorem Ipsum</a></h4>
-                <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-card-checklist icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Dolor Sitema</a></h4>
-                <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-bar-chart icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Sed ut perspiciatis</a></h4>
-                <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-binoculars icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Magni Dolores</a></h4>
-                <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-brightness-high icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Nemo Enim</a></h4>
-                <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-            <div class="service-item d-flex position-relative h-100">
-                <i class="bi bi-calendar4-week icon flex-shrink-0"></i>
-                <div>
-                <h4 class="title"><a href="#" class="stretched-link">Eiusmod Tempor</a></h4>
-                <p class="description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
-                </div>
-            </div>
-            </div><!-- End Service Item -->
-
-        </div>
-
-        </div>
-
-    </section><!-- /Services 2 Section --> --}}
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section dark-background">
+    {{-- <section id="testimonials" class="testimonials section dark-background">
 
         <img src="img/testimonials-bg.jpg" class="testimonials-bg" alt="">
 
@@ -547,184 +447,125 @@
 
         </div>
 
-    </section><!-- /Testimonials Section -->
+    </section> --}}
 
-    <!-- Portfolio Section -->
-    {{-- <section id="portfolio" class="portfolio section">
+    <section id="testimonials" class="testimonials section dark-background">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
 
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-        <h2>Portfolio</h2>
-        <p>CHECK OUR PORTFOLIO</p>
-        </div><!-- End Section Title -->
+                    <!-- Feedback 1 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                            <h3>Thanh Tùng</h3>
+                            <h4>DTU Student</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>Trang web này thực sự tuyệt vời! Các bài nghe và từ vựng rất dễ hiểu và hữu ích.</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
 
-        <div class="container">
+                    <!-- Feedback 2 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                            <h3>Ngọc Anh</h3>
+                            <h4>Giáo viên Tiếng Anh</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>Website có nhiều nội dung hay, bài luyện nghe rất hiệu quả cho học viên.</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
 
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+                    <!-- Feedback 3 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                            <h3>Minh Tú</h3>
+                            <h4>Người đi làm</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>Giao diện đơn giản, dễ sử dụng. Học mỗi ngày giúp mình cải thiện kỹ năng nghe.</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
 
-            <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-app">App</li>
-            <li data-filter=".filter-product">Product</li>
-            <li data-filter=".filter-branding">Branding</li>
-            <li data-filter=".filter-books">Books</li>
-            </ul><!-- End Portfolio Filters -->
+                    <!-- Feedback 4 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                            <h3>Minh Tú</h3>
+                            <h4>Người đi làm</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>Giao diện đơn giản, dễ sử dụng. Học mỗi ngày giúp mình cải thiện kỹ năng nghe.</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
 
-            <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                    <!-- Feedback 5 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                            <h3>Minh Tú</h3>
+                            <h4>Người đi làm</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>Giao diện đơn giản, dễ sử dụng. Học mỗi ngày giúp mình cải thiện kỹ năng nghe.</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
 
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/app-1.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>App 1</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/product-1.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Product 1</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/branding-1.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Branding 1</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/books-1.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Books 1</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/app-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>App 2</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/product-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Product 2</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/branding-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Branding 2</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/books-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Books 2</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/app-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>App 3</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/product-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Product 3</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/branding-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Branding 3</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                <div class="portfolio-content h-100">
-                <img src="img/portfolio/books-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Books 3</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                    <a href="img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-                </div>
-            </div><!-- End Portfolio Item -->
-
-            </div><!-- End Portfolio Container -->
-
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
+    </section>
 
-        </div>
-
-    </section><!-- /Portfolio Section --> --}}
-
-    <!-- Team Section -->
     <section id="team" class="team section light-background">
 
         <!-- Section Title -->
@@ -741,7 +582,7 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-1.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>Nguyễn Văn A</h4>
+                <h4>Phan Thế Tài</h4>
                 <span>Customer Support</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -757,7 +598,7 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-2.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>Nguyễn Thị B</h4>
+                <h4>Nguyễn Đức Thắng</h4>
                 <span>Admin/Moderator</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -773,7 +614,7 @@
             <div class="member">
                 <div class="pic"><img src="img/team/team-3.jpg" class="img-fluid" alt=""></div>
                 <div class="member-info">
-                <h4>Nguyễn Văn C</h4>
+                <h4>Nguyễn Hòa Nam</h4>
                 <span>Academic Team</span>
                 <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -789,87 +630,6 @@
 
         </div>
 
-    </section><!-- /Team Section -->
-
-    <!-- Contact Section -->
-    {{-- <section id="contact" class="contact section">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-        <h2>Contact</h2>
-        <p>Necessitatibus eius consequatur</p>
-        </div><!-- End Section Title -->
-
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-            <div class="col-lg-6 ">
-            <div class="row gy-4">
-
-                <div class="col-lg-12">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-                    <i class="bi bi-geo-alt"></i>
-                    <h3>Address</h3>
-                    <p>A108 Adam Street, New York, NY 535022</p>
-                </div>
-                </div><!-- End Info Item -->
-
-                <div class="col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-                    <i class="bi bi-telephone"></i>
-                    <h3>Call Us</h3>
-                    <p>+1 5589 55488 55</p>
-                </div>
-                </div><!-- End Info Item -->
-
-                <div class="col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
-                    <i class="bi bi-envelope"></i>
-                    <h3>Email Us</h3>
-                    <p>info@example.com</p>
-                </div>
-                </div><!-- End Info Item -->
-
-            </div>
-            </div>
-
-            <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
-                <div class="row gy-4">
-
-                <div class="col-md-6">
-                    <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
-
-                <div class="col-md-6 ">
-                    <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
-
-                <div class="col-md-12">
-                    <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
-
-                <div class="col-md-12">
-                    <textarea class="form-control" name="message" rows="4" placeholder="Message" required=""></textarea>
-                </div>
-
-                <div class="col-md-12 text-center">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                    <button type="submit">Send Message</button>
-                </div>
-
-                </div>
-            </form>
-            </div><!-- End Contact Form -->
-
-        </div>
-
-        </div>
-
-    </section><!-- /Contact Section --> --}}
-
+    </section>
 </main>
 @endsection

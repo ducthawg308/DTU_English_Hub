@@ -8,9 +8,9 @@
         </ol>
         <div class="card mb-4">
             <div class="card-body">
-                <a href="{{ route('addtopic.custom') }}" class="btn btn-success">Thêm topic<i class="fa-solid fa-plus"></i></a>
-                <a href="{{ route('addvocab.custom') }}" class="btn btn-success">Thêm từ mới<i class="fa-solid fa-plus"></i></a>
-                <a href="{{ route('topic.custom') }}" class="btn btn-success">Học từ mới<i class="fa-solid fa-plus"></i></a>
+                <a href="{{ route('addtopic.custom') }}" class="btn btn-success">Thêm topic <i class="fa-solid fa-plus"></i></a>
+                <a href="{{ route('addvocab.custom') }}" class="btn btn-success">Thêm từ mới <i class="fa-solid fa-plus"></i></a>
+                <a href="{{ route('topic.custom') }}" class="btn btn-success">Học từ mới <i class="fa-solid fa-book"></i></a>
             </div>
         </div>
         @if(session('status'))

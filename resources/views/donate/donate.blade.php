@@ -6,7 +6,7 @@
         <form method="POST" action="{{ route('donate.generate') }}" class="mb-4">
             @csrf
             <input type="number" name="amount" min="1000" class="form-control w-25 mx-auto" placeholder="Nhập số tiền muốn donate!">
-            <button type="submit" class="btn btn-primary mt-2">Tạo QR</button>
+            <button type="submit" class="btn btn-success mt-2">Tạo QR</button>
         </form>
 
         @isset($qrUrl)

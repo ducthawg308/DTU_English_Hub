@@ -67,15 +67,15 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
     Route::post('exam/{id}/submit', [App\Http\Controllers\ExamController::class, 'submitTest'])->name('exam.submit');
     Route::get('exam/result/{id}', [App\Http\Controllers\ExamController::class, 'showResult'])->name('exam.result');
+
+    Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
+    Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
 });
 
 Route::get('home/topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
 Route::get('home/topic/{id}', [App\Http\Controllers\ExercisesController::class, 'show'])->name('topic.show');
 Route::get('home/topic/{topicId}/{id}', [App\Http\Controllers\ExercisesController::class, 'listening'])->name('topic.listening');
 Route::post('home/topic/{id}/check', [App\Http\Controllers\ExercisesController::class, 'check'])->name('check.answer');
-
-Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
-Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
 
 Route::get('home/vocabulary', [App\Http\Controllers\VocabularyController::class, 'home'])->name('home.vocabulary');
 Route::get('home/vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
