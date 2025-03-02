@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container px-4 px-lg-5">
+    <div class="container px-4 py-4 px-lg-5">
         <div class="card shadow border-0 mb-4 mt-4">
             <div class="card-body text-center">
                 <h3 class="card-title text-primary fw-bold">{{ $topic->name }}</h3>
