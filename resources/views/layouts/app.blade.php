@@ -170,11 +170,11 @@
               </nav>
               @guest
                     @if (Route::has('login'))
-                            <a class="cta-btn" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="cta-btn" href="{{ route('login') }}">Đăng nhập</a>
                     @endif
           
                     @if (Route::has('register'))
-                            <a class="cta-btn" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="cta-btn" href="{{ route('register') }}">Đăng ký</a>
                     @endif
                 @else
                     <div class="dropdown text-end">

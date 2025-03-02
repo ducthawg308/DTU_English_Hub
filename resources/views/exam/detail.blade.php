@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container d-flex my-2">
+    <div class="container d-flex my-5">
         <!-- Sidebar -->
         <div class="border p-3 me-4" style="width: 250px;">
             <h5 class="text-center fw-bold">Chọn câu hỏi</h5>
@@ -21,12 +21,12 @@
     
         <!-- Nội dung bài test -->
         <div class="flex-grow-1">
-            <h2 class="text-center mb-4 fw-bold display-6 pt-4">{{ $exam->name }}</h2>
+            <h2 class="text-center mb-4 fw-bold display-6">{{ $exam->name }}</h2>
             
             <!-- Đồng hồ đếm ngược -->
             <div class="text-center mb-3">
                 <h4 class="fw-bold">Thời gian còn lại:</h4>
-                <div id="timer" class="display-6 text-danger fw-bold bg-light px-4 py-2 rounded d-inline-block shadow">
+                <div id="timer" class="fs-3 text-danger fw-bold bg-light px-4 py-2 rounded d-inline-block shadow">
                     --:--
                 </div>
             </div>

@@ -51,14 +51,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Nhật ký hoạt động</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                Đăng xuất
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -124,19 +124,19 @@
                             </div>
                             <div class="sb-sidenav-menu-heading">Quản lý</div>
                             <a class="nav-link" href="{{url('admin/users/list')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                                 Quản lý người dùng
                             </a>
                             <a class="nav-link" href="{{url('admin/exercise/list')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-headphones-simple"></i></div>
                                 Quản lý bài nghe
                             </a>
                             <a class="nav-link" href="{{url('admin/vocabulary/list')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-book"></i></div>
                                 Quản lý từ vựng
                             </a>
                             <a class="nav-link" href="{{url('admin/exam/list')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-note-sticky"></i></i></div>
                                 Quản lý bài kiểm tra
                             </a>
                         </div>
@@ -151,18 +151,6 @@
                 <main>
                     @yield('content')
                 </main>
-                <!-- <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer> -->
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

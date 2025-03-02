@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Models\TopicVocabulary;
 use App\Models\Wordnote;
@@ -36,13 +37,15 @@ class VocabularyController extends Controller
     }       
 
     function default($id){
+        $topic = TopicVocabulary::findOrFail($id);
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
-        return view('vocabulary.default',compact('vocabularys'));
+        return view('vocabulary.default',compact(['vocabularys','topic']));
     }
 
     function learncustom($id){
+        $topic = TopicVocabulary::findOrFail($id);
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
-        return view('vocabulary.default',compact('vocabularys'));
+        return view('vocabulary.default',compact(['vocabularys','topic']));
     }
 
     function addtopic(){
@@ -94,7 +97,8 @@ class VocabularyController extends Controller
     }
 
     function review($id){
+        $topic = TopicVocabulary::findOrFail($id);
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
-        return view('vocabulary.review',compact('vocabularys')); 
+        return view('vocabulary.review',compact(['vocabularys','topic'])); 
     }
 }

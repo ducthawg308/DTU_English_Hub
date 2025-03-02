@@ -1,118 +1,160 @@
 @extends('layouts.app')
+
 @section('content')
-    <div class="container my-5">
-        <h4 class="text-center mb-4">Điền từ</h4>
-        <div class="d-flex justify-content-center mb-3">
-            <button id="play-sound" class="btn btn-link">
-                <img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play Sound" style="width: 24px; height: 24px;">
-            </button>
+    <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+        <div class="d-flex justify-content-center align-items-center mb-4">
+            <h1 class="h3 fw-bold text-primary display-6">Topic: {{ $topic->name }}</h1>
         </div>
-        <div id="card-container" class="text-center mb-4">
-            <!-- Nội dung câu hỏi sẽ được render tại đây bằng JavaScript -->
+
+        <div id="vocab-container">
+            <div class="d-flex align-items-center justify-content-between mb-5">
+                <i class="fas fa-times text-muted"></i>
+                <div class="progress w-100 mx-3">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%;"
+                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <img src="https://storage.googleapis.com/a1aa/image/PD6KjzeKbD3-_SfZHT-8D4kcv_v1NqWykrKqTdud2so.jpg"
+                     alt="small orange icon" class="rounded-circle" width="20" height="20">
+            </div>
+            @foreach ($vocabularys as $index => $vocab)
+                <div class="vocab-card bg-white w-100 max-w-md mx-auto p-4 rounded shadow mb-4"
+                     data-word="{{ $vocab->word }}" 
+                     style="{{ $index === 0 ? '' : 'display: none;' }}">
+                    <div class="text-center mb-4">
+                        <h6 class="text-muted">Điền từ</h6>
+                        <h4 class="fw-bold">{{ $vocab->meaning }} ({{ $vocab->typeVocabulary->name }})</h4>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="rounded px-3 py-3 d-inline-block position-relative input-container">
+                            @foreach (str_split($vocab->word) as $letter)
+                                <input type="text" class="letter-input" maxlength="1">
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        <div class="d-flex justify-content-center">
-            <input id="answer-input" type="text" class="form-control text-center" style="width: 200px;" placeholder="Nhập từ vào đây">
+
+        <div class="text-center">
+            <button id="check-btn" class="btn btn-secondary btn-lg">Kiểm tra</button>
         </div>
-        <div class="text-center mt-4">
-            <button id="check-answer" class="btn btn-primary me-2">Kiểm tra</button>
-            <button id="next-question" class="btn btn-secondary" disabled>Tiếp theo</button>
-        </div>
-        <p id="feedback" class="text-center mt-3"></p>
     </div>
 
-    <script>
-        const vocabularys = @json($vocabularys);
-
-        let currentQuestionIndex = 0;
-
-        // Hàm render câu hỏi
-        function renderQuestion() {
-            const currentWord = vocabularys[currentQuestionIndex];
-            const revealedLetters = getRevealedLetters(currentWord.word); // Lấy từ với các chữ cái đã tiết lộ
-            const wordMeaning = currentWord.meaning;
-
-            // Render câu hỏi
-            const cardContainer = document.getElementById('card-container');
-            cardContainer.innerHTML = `
-                <p><strong>${wordMeaning}</strong></p>
-                <div class="d-flex justify-content-center">
-                    ${revealedLetters}
-                </div>
-            `;
-
-            // Reset input và feedback
-            document.getElementById('answer-input').value = '';
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('next-question').disabled = true;
-            document.getElementById('play-sound').onclick = () => {
-                speak(currentWord.word);
-            };
-        }
-
-        function speak(text) {
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = text;
-            msg.lang = 'en-US';
-            window.speechSynthesis.speak(msg);
-        }
-
-        // Hàm tạo từ với các chữ cái đã tiết lộ
-        function getRevealedLetters(word) {
-            const firstLetter = word[0];
-            const lastLetter = word[word.length - 1];
-            let revealed = `<span class="revealed-letter">${firstLetter}</span>`;
-            for (let i = 1; i < word.length - 1; i++) {
-                revealed += `<span class="blank">_</span>`;
-            }
-            revealed += `<span class="revealed-letter">${lastLetter}</span>`;
-            return revealed;
-        }
-
-        // Hàm kiểm tra đáp án
-        document.getElementById('check-answer').addEventListener('click', function () {
-            const userAnswer = document.getElementById('answer-input').value.trim().toLowerCase();
-            const correctAnswer = vocabularys[currentQuestionIndex].word.toLowerCase();
-            const feedback = document.getElementById('feedback');
-
-            if (userAnswer === correctAnswer) {
-                feedback.textContent = "Chính xác! 🎉";
-                feedback.classList.add('text-success');
-                feedback.classList.remove('text-danger');
-                document.getElementById('next-question').disabled = false;
-            } else {
-                feedback.textContent = "Sai rồi. Hãy thử lại! 😢";
-                feedback.classList.add('text-danger');
-                feedback.classList.remove('text-success');
-            }
-        });
-
-        // Hàm chuyển sang câu hỏi tiếp theo
-        document.getElementById('next-question').addEventListener('click', function () {
-            if (currentQuestionIndex < vocabularys.length - 1) {
-                currentQuestionIndex++;
-                renderQuestion();
-            } else {
-                alert("Bạn đã hoàn thành tất cả các câu hỏi!");
-            }
-        });
-
-        // Khởi tạo câu hỏi đầu tiên
-        renderQuestion();
-    </script>
-
     <style>
-        .revealed-letter {
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin: 0 5px;
-        }
-        .blank {
-            font-size: 1.5rem;
-            margin: 0 5px;
-            border-bottom: 2px solid #ccc;
-            display: inline-block;
-            width: 20px;
+        .letter-input {
+            width: 50px;
+            height: 60px;
             text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 3px solid gray;
+            outline: none;
+            margin: 0 5px;
+            text-transform: uppercase;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .letter-input:focus {
+            border-bottom: 3px solid orange;
+        }
+
+        .letter-input.correct {
+            background-color: lightgreen;
+        }
+
+        .letter-input.wrong {
+            background-color: lightcoral;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #vocab-container{
+            width: 70%;
         }
     </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const vocabCards = document.querySelectorAll(".vocab-card");
+        const progressBar = document.querySelector(".progress-bar");
+        let currentIndex = 0;
+
+        function updateProgress() {
+            let percent = ((currentIndex + 1) / vocabCards.length) * 100;
+            progressBar.style.width = percent + "%";
+            progressBar.setAttribute("aria-valuenow", percent);
+        }
+
+        function showCard(index) {
+            vocabCards.forEach((card, i) => {
+                card.style.display = i === index ? "block" : "none";
+            });
+            focusFirstInput();
+            updateProgress();
+        }
+
+        function focusFirstInput() {
+            let firstInput = vocabCards[currentIndex].querySelector(".letter-input");
+            if (firstInput) firstInput.focus();
+        }
+
+        function checkWord() {
+            let currentCard = vocabCards[currentIndex];
+            let inputs = currentCard.querySelectorAll(".letter-input");
+            let correctWord = currentCard.dataset.word.toUpperCase();
+            let userInput = Array.from(inputs).map(input => input.value.toUpperCase()).join("");
+
+            if (userInput === correctWord) {
+                inputs.forEach(input => input.classList.add("correct"));
+                setTimeout(() => {
+                    currentIndex++;
+                    if (currentIndex < vocabCards.length) {
+                        showCard(currentIndex);
+                    } else {
+                        progressBar.style.width = "100%";
+                        alert("Bạn đã hoàn thành!");
+                    }
+                }, 500);
+            } else {
+                inputs.forEach((input, index) => {
+                    if (input.value.toUpperCase() !== correctWord[index]) {
+                        input.classList.add("wrong");
+                    } else {
+                        input.classList.remove("wrong");
+                    }
+                });
+            }
+        }
+
+        function setupLetterInputs() {
+            document.querySelectorAll(".letter-input").forEach((input, index, inputs) => {
+                input.addEventListener("input", function () {
+                    if (this.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener("keydown", function (e) {
+                    if (e.key === "Backspace" && index > 0 && this.value === "") {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+        }
+
+        document.querySelector("#check-btn").addEventListener("click", checkWord);
+        showCard(currentIndex);
+        setupLetterInputs();
+    });
+</script>
+
+
+
 @endsection

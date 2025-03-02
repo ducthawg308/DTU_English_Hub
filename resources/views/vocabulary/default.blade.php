@@ -1,84 +1,167 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container my-5">
-        <div class="d-flex justify-content-end">
-            <img src="https://img.icons8.com/ios-filled/50/000000/bookmark.png" alt="Wordnote" style="width: 24px; height: 24px;">
+    <div class="container border rounded-3 shadow my-5 p-5">
+        <div class="d-flex justify-content-center align-items-center mb-4">
+            <h1 class="h3 fw-bold text-primary">Topic: {{ $topic->name }}</h1>
         </div>
-        <div class="row justify-content-center">
-            <div class="d-flex justify-content-center gap-5">
-                <button id="play-sound" class="btn btn-link p-0 mt-2">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play Sound" style="width: 30px; height: 30px;">
-                </button>
-                <button id="add-wordnote" class="btn btn-link p-0 mt-2">
-                    <img src="https://img.icons8.com/ios/50/000000/plus--v1.png" alt="Add to Wordnote" style="width: 30px; height: 30px;">
-                </button>
+        <div class="card-body">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-lg btn-white custom-btn me-2 sound-btn">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <button class="btn btn-lg btn-white custom-btn me-2 sound-btn">
+                        🐌
+                    </button>
+                </div>
             </div>
-            <div class="col-12 col-sm-8 col-md-6 d-flex justify-content-center">
-                <div id="flashcard-container" class="flashcard-container" onclick="flipCard(this)">
-                    <div class="flashcard">
-                        <div class="front d-flex flex-column align-items-center p-3">
-                            <div>
-                                <strong id="word"></strong>
-                                <strong id="type"></strong>
-                            </div>
-                            <p id="pronounce"></p>
-                        </div>
-                        
-                        <div class="back d-flex flex-column align-items-center p-3">
-                            <strong id="meaning"></strong>
-                            <p id="example"></p>
-                        </div>
+    
+            <div class="flashcard-container mt-4" onclick="flipCard(this)">
+                <div class="flashcard">
+                    <div class="front text-center p-3 flex-column">
+                        <strong class="fs-3" id="word">Word</strong>
+                        <p class="fs-5" id="pronounce">/Pronunciation/</p>
+                    </div>
+                    <div class="back text-center p-3 flex-column">
+                        <strong class="fs-3" id="meaning">Meaning</strong>
+                        <p class="fs-5" id="example">Example sentence</p>
                     </div>
                 </div>
             </div>
         </div>
-        <p id="example_note" class="text-center mt-5 mb-5"></p>
-        <div class="mt-3 text-center">
-            <div class="d-flex justify-content-center">
-                <button id="next-btn" class="btn btn-primary me-2">Next</button>
+                            
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <button class="btn btn-white custom-btn favorite-btn">
+                <i class="fas fa-star"></i>
+            </button>
+            <div>
+                <button class="btn btn-white custom-btn prev-btn me-2">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <span class="text-muted" id="progress">1 / {{ count($vocabularys) }}</span>
+                <button class="btn btn-white custom-btn next-btn ms-2">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-white custom-btn expand-btn">
+                    <i class="fas fa-expand"></i>
+                </button>                
             </div>
         </div>
     </div>
 
     <script>
-        function flipCard(cardContainer) {
-            const card = cardContainer.querySelector('.flashcard');
-            card.classList.toggle('is-flipped');
-        }
-        const vocabularies = @json($vocabularys, JSON_UNESCAPED_UNICODE);
-        let currentIndex = 0;
+        document.addEventListener("DOMContentLoaded", function () {
+            const flashcardContainer = document.querySelector(".flashcard-container");
+            if (flashcardContainer) {
+                flashcardContainer.addEventListener("click", function () {
+                    const flashcard = this.querySelector(".flashcard");
+                    flashcard.classList.toggle("is-flipped");
+                });
+            }
+        });
 
-        function updateFlashcard() {
-            if (currentIndex >= vocabularies.length) {
-                alert('Bạn đã học hết tất cả từ vựng!');
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentIndex = 0;
+            const flashcard = document.querySelector(".flashcard");
+            const wordElement = document.getElementById("word");
+            const pronounceElement = document.getElementById("pronounce");
+            const meaningElement = document.getElementById("meaning");
+            const exampleElement = document.getElementById("example");
+            const soundButton = document.querySelector(".sound-btn");
+            const slowSoundButton = document.querySelector(".sound-btn:nth-child(2)");
+
+            // Dữ liệu từ vựng (được truyền từ Blade)
+            let vocabularys = @json($vocabularys);
+
+            if (!vocabularys || vocabularys.length === 0) {
+                console.error("Dữ liệu từ vựng trống!");
                 return;
             }
 
-            const currentWord = vocabularies[currentIndex];
-            document.getElementById('word').innerText = currentWord.word;
-            document.getElementById('type').innerText = `(${currentWord.type_vocabulary.name})`;
-            document.getElementById('pronounce').innerText = currentWord.pronounce;
-            document.getElementById('meaning').innerText = currentWord.meaning;
-            document.getElementById('example').innerText = currentWord.example;
-            document.getElementById('example_note').innerText = currentWord.example;
+            function updateFlashcard(index) {
+                if (!flashcard) return;
 
-            document.getElementById('play-sound').onclick = () => {
-                speak(currentWord.word);
-            };
-        }
+                flashcard.classList.add("hide");
 
-        function speak(text) {
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = text;
-            msg.lang = 'en-US';
-            window.speechSynthesis.speak(msg);
-        }
+                setTimeout(() => {
+                    wordElement.textContent = vocabularys[index].word;
+                    pronounceElement.textContent = vocabularys[index].pronounce;
+                    meaningElement.textContent = vocabularys[index].meaning;
+                    exampleElement.textContent = vocabularys[index].example;
 
-        document.getElementById('next-btn').addEventListener('click', () => {
-            currentIndex++;
-            updateFlashcard();
+                    flashcard.classList.remove("hide");
+                }, 500);
+            }
+
+            // Sự kiện phát âm khi bấm nút loa
+            function speakWord(word, rate = 0.9) {
+                if ("speechSynthesis" in window) {
+                    let speech = new SpeechSynthesisUtterance(word);
+                    speech.lang = "en-US"; // Ngôn ngữ tiếng Anh
+                    speech.rate = rate; // Tốc độ đọc
+                    window.speechSynthesis.speak(speech);
+                } else {
+                    alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản!");
+                }
+            }
+            
+
+            // Gán sự kiện click cho nút loa
+            soundButton.addEventListener("click", function () {
+                speakWord(vocabularys[currentIndex].word, 1);
+            });
+
+            slowSoundButton.addEventListener("click", function () {
+                speakWord(vocabularys[currentIndex].word, 0.2);
+            });
+
+            document.querySelector(".next-btn").addEventListener("click", function () {
+                if (currentIndex < vocabularys.length - 1) {
+                    currentIndex++;
+                    updateFlashcard(currentIndex);
+                    updateProgress();
+                }
+            });
+
+            document.querySelector(".prev-btn").addEventListener("click", function () {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateFlashcard(currentIndex);
+                    updateProgress();
+                }
+            });
+
+            function updateProgress() {
+                document.getElementById("progress").textContent = `${currentIndex + 1} / ${vocabularys.length}`;
+            }
+
+            updateFlashcard(currentIndex);
+            updateProgress();
         });
 
-        updateFlashcard();
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const expandButton = document.querySelector(".custom-btn.expand-btn");
+        const header = document.querySelector("header");
+        const footer = document.querySelector("footer");
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    if (header) header.style.display = "none";
+                    if (footer) footer.style.display = "none";
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    if (header) header.style.display = "";
+                    if (footer) footer.style.display = "";
+                });
+            }
+        }
+
+        expandButton.addEventListener("click", toggleFullScreen);
+    });
     </script>
 @endsection

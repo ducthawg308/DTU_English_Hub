@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container my-5">
         <div class="mb-4 text-center mt-4">
             <h2 class="fw-bold text-primary">{{ $topic->name }}</h2>
             <h4 class="text-secondary">{{ $exercise->title }}</h4>
