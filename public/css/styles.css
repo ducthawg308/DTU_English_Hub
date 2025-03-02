@@ -13181,3 +13181,8 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+.btn-pronounce{
+  background-color: #198754;
+  color: white;
+}

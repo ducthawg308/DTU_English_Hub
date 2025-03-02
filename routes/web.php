@@ -91,3 +91,8 @@ Route::get('home/community', [App\Http\Controllers\CommunityController::class, '
 
 // AI
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);
+
+//Pronounce
+Route::get('home/pronounce', function () {
+    return view('pronounce.index');
+})->name('home.pronounce');

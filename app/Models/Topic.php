@@ -12,7 +12,8 @@ class Topic extends Model{
         'level_id', 
         'name', 
         'total_less', 
-        'desc'
+        'desc',
+        'price'
     ];
 
     public $timestamps = false;

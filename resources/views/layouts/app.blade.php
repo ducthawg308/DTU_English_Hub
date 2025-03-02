@@ -161,6 +161,7 @@
                   <li><a href="{{ route('list.topic') }}" class="{{ request()->is('home/topic*') ? 'active' : '' }}">Luyện nghe</a></li>
                   <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('home/vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
                   <li><a href="{{ route('home.exam') }}" class="{{ request()->is('home/exam*') ? 'active' : '' }}">Thi thử</a></li>
+                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('home/pronounce*') ? 'active' : '' }}">Phát âm</a></li>
                   <li><a href="{{ route('home.donate') }}" class="{{ request()->is('home/donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                   <li><a href="#" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
                   
@@ -205,7 +206,7 @@
             <div class="container footer-top">
                 <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
-                    <a href="index.html" class="logo d-flex align-items-center">
+                    <a href="{{ route('home') }}" class="logo d-flex align-items-center">
                     <span class="sitename">Daily Dictation</span>
                     </a>
                     <div class="footer-contact pt-2">
@@ -219,18 +220,18 @@
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Liên kết</h4>
                     <ul>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Trang chủ</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#">Cộng đồng</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Ủng hộ</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('home.donate') }}" class="{{ request()->is('home/donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Tính năng</h4>
                     <ul>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Luyện nghe</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Học từ vựng</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Bài kiểm tra</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('list.topic') }}" class="{{ request()->is('home/topic*') ? 'active' : '' }}">Luyện nghe</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('home.vocabulary') }}" class="{{ request()->is('home/vocabulary*') ? 'active' : '' }}">Học từ vựng</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('home.exam') }}" class="{{ request()->is('home/exam*') ? 'active' : '' }}">Bài kiểm tra</a></li>
                     </ul>
                 </div>
 
