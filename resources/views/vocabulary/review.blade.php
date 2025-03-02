@@ -37,7 +37,7 @@
         </div>
 
         <div class="text-center">
-            <button id="check-btn" class="btn btn-secondary btn-lg">Kiểm tra</button>
+            <button id="check-btn" class="btn btn-success btn-lg mt-4 px-5">Kiểm tra</button>
         </div>
     </div>
 

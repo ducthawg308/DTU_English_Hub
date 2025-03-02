@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container" style="min-height: 80vh;">
         <div class="my-5">
             <div class="position-relative">
                 <div class="max-w-1200px mx-4 md:mx-8 xl:mx-auto">
@@ -20,8 +20,8 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-4">
+        <div class="row d-flex">
+            <div class="col-md-6">
                 <div class="card shadow border-light rounded">
                     <div class="card-body">
                         <h5 class="card-title text-primary">Học Từ Vựng Của Hệ Thống</h5>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6">
                 <div class="card shadow border-light rounded">
                     <div class="card-body">
                         <h5 class="card-title text-success">Học Từ Vựng Tự Custom</h5>

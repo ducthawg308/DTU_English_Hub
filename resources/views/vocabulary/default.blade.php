@@ -2,7 +2,7 @@
 @section('content')
     <div class="container border rounded-3 shadow my-5 p-5">
         <div class="d-flex justify-content-center align-items-center mb-4">
-            <h1 class="h3 fw-bold text-primary">Topic: {{ $topic->name }}</h1>
+            <h1 class="h3 fw-bold text-primary display-6">Topic: {{ $topic->name }}</h1>
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-center align-items-center">

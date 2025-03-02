@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container px-4 px-lg-5">
+    <div class="container px-4 px-lg-5" style="min-height: 80vh;">
         <div class="card text-white bg-secondary my-5 py-4 text-center">
             <div class="card-body">
                 <h2 class="text-white">All Topics</h2>

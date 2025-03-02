@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container-fluid px-5 my-5">
+    <div class="container-fluid px-5 my-5" style="min-height: 80vh;">
         <h1 class="mt-4">Quản lý từ vựng custom</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">DailyDictation</a></li>
