@@ -13,7 +13,7 @@ class GeminiController extends Controller
 
         $data = [
             "contents" => [
-                ["parts" => [["text" => 'tôi đang học tiếng anh cơ bản, ở mức độ vstep b1. hãy tạo cho tôi 50 từ vựng liên quan đến chủ đề "học đường, sinh viên, tình yêu, thể thao", kèm theo đó là phần ngữ âm, ngữ nghĩa, từ đồng nghĩa, các câu ví dụ. Và chỉ cần xuất ra kết quả với định dạng được bố trí theo dạng JSON. VD {["word":"footbal","meaning":"môn đá banh","synonym":"soccer","example":"I like playing football"],....}']]]
+                ["parts" => [["text" => "Viết bài thơ về mùa xuân"]]]
             ]
         ];
 

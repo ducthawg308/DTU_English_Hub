@@ -7,6 +7,7 @@ use App\Models\Vocabulary;
 use App\Models\TopicVocabulary;
 use App\Models\TypeVocabulary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AdminVocabularyController extends Controller
 {
@@ -37,14 +38,29 @@ class AdminVocabularyController extends Controller
     }    
 
     function storevocab(Request $request){
-        Vocabulary::create([
-            'word' => $request->input('word'),
-            'pronounce' => $request->input('pronounce'),
-            'meaning' => $request->input('meaning'),
-            'example' => $request->input('example'),
-            'topic_id' => $request->input('topic'),
-            'type_id' => $request->input('type'),
-        ]);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $destinationPath = public_path('img/vocab');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->move($destinationPath, $fileName);
+
+            Vocabulary::create([
+                'word' => $request->input('word'),
+                'pronounce' => $request->input('pronounce'),
+                'meaning' => $request->input('meaning'),
+                'example' => $request->input('example'),
+                'topic_id' => $request->input('topic'),
+                'type_id' => $request->input('type'),
+                'image' => $fileName,
+            ]);
+        }
         return redirect('admin/vocabulary/list')->with('status','Thêm từ vựng thành công!');
     }
 
@@ -57,21 +73,56 @@ class AdminVocabularyController extends Controller
 
     function delete($id){
         $vocab = Vocabulary::find($id);
-        $vocab->delete();
-        return redirect('admin/vocabulary/list')->with('status','Xóa từ vựng thành công!');
-    }
-    
-    function update(Request $request,$id){
 
-        Vocabulary::where('id', $id)->update([
+        if ($vocab) {
+            $filePath = public_path('img\\vocab\\' . $vocab->image);
+            
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            $vocab->delete();
+
+            return redirect('admin/vocabulary/list')->with('status', 'Xóa từ vựng thành công!');
+        }
+
+        return redirect('admin/vocabulary/list')->with('error', 'Từ vựng không tồn tại!');
+    }
+
+    function update(Request $request, $id) {
+        // Validate dữ liệu
+        $request->validate([
+            'word' => 'required|string|max:255',
+            'pronounce' => 'nullable|string|max:255',
+            'meaning' => 'required|string',
+            'example' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        $vocab = Vocabulary::findOrFail($id);
+    
+        $updateData = [
             'word' => $request->input('word'),
             'pronounce' => $request->input('pronounce'),
             'meaning' => $request->input('meaning'),
             'example' => $request->input('example'),
-            'topic_id' => $request->input('topic_id'),
-            'type_id' => $request->input('type_id'),
-        ]);
-
+            'topic_id' => $request->input('topic'),
+            'type_id' => $request->input('type'),
+        ];
+    
+        if ($request->hasFile('image')) {
+            if (!empty($vocab->image) && file_exists(public_path('img/vocab/' . $vocab->image))) {
+                unlink(public_path('img/vocab/' . $vocab->image));
+            }
+    
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('img/vocab'), $imageName);
+    
+            $updateData['image'] = $imageName;
+        }
+    
+        $vocab->update($updateData);
+    
         return redirect('admin/vocabulary/list')->with('status', 'Sửa từ vựng thành công!');
     }
 }

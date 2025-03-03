@@ -21,9 +21,10 @@
                     <div class="front text-center p-3 flex-column">
                         <strong class="fs-3" id="word">Word</strong>
                         <p class="fs-5" id="pronounce">/Pronunciation/</p>
+                        <strong class="" id="meaning">Meaning</strong>
                     </div>
                     <div class="back text-center p-3 flex-column">
-                        <strong class="fs-3" id="meaning">Meaning</strong>
+                        <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-3" style="max-height: 150px;">
                         <p class="fs-5" id="example">Example sentence</p>
                     </div>
                 </div>
@@ -63,83 +64,91 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-            let currentIndex = 0;
-            const flashcard = document.querySelector(".flashcard");
-            const wordElement = document.getElementById("word");
-            const pronounceElement = document.getElementById("pronounce");
-            const meaningElement = document.getElementById("meaning");
-            const exampleElement = document.getElementById("example");
-            const soundButton = document.querySelector(".sound-btn");
-            const slowSoundButton = document.querySelector(".sound-btn:nth-child(2)");
+    let currentIndex = 0;
+    const flashcard = document.querySelector(".flashcard");
+    const wordElement = document.getElementById("word");
+    const pronounceElement = document.getElementById("pronounce");
+    const meaningElement = document.getElementById("meaning");
+    const exampleElement = document.getElementById("example");
+    const imageElement = document.getElementById("word-image");
+    const soundButton = document.querySelector(".sound-btn");
+    const slowSoundButton = document.querySelector(".sound-btn:nth-child(2)");
 
-            // Dữ liệu từ vựng (được truyền từ Blade)
-            let vocabularys = @json($vocabularys);
+    // Dữ liệu từ vựng từ Blade
+    let vocabularys = @json($vocabularys);
 
-            if (!vocabularys || vocabularys.length === 0) {
-                console.error("Dữ liệu từ vựng trống!");
-                return;
-            }
+    if (!vocabularys || vocabularys.length === 0) {
+        console.error("Dữ liệu từ vựng trống!");
+        return;
+    }
 
-            function updateFlashcard(index) {
-                if (!flashcard) return;
+    function updateFlashcard(index) {
+        if (!flashcard) return;
 
-                flashcard.classList.add("hide");
+        flashcard.classList.add("hide");
 
-                setTimeout(() => {
-                    wordElement.textContent = vocabularys[index].word;
-                    pronounceElement.textContent = vocabularys[index].pronounce;
-                    meaningElement.textContent = vocabularys[index].meaning;
-                    exampleElement.textContent = vocabularys[index].example;
+        setTimeout(() => {
+            wordElement.textContent = vocabularys[index].word;
+            pronounceElement.textContent = vocabularys[index].pronounce;
+            meaningElement.textContent = vocabularys[index].meaning;
+            exampleElement.textContent = vocabularys[index].example;
 
-                    flashcard.classList.remove("hide");
-                }, 500);
-            }
+            // Cập nhật hình ảnh
+            let imagePath = vocabularys[index].image 
+                ? "{{ asset('img/vocab') }}/" + vocabularys[index].image 
+                : "{{ asset('img/vocab/default.jpg') }}";
+            imageElement.src = imagePath;
 
-            // Sự kiện phát âm khi bấm nút loa
-            function speakWord(word, rate = 0.9) {
-                if ("speechSynthesis" in window) {
-                    let speech = new SpeechSynthesisUtterance(word);
-                    speech.lang = "en-US"; // Ngôn ngữ tiếng Anh
-                    speech.rate = rate; // Tốc độ đọc
-                    window.speechSynthesis.speak(speech);
-                } else {
-                    alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản!");
-                }
-            }
-            
+            flashcard.classList.remove("hide");
+        }, 500);
+    }
 
-            // Gán sự kiện click cho nút loa
-            soundButton.addEventListener("click", function () {
-                speakWord(vocabularys[currentIndex].word, 1);
-            });
+    // Sự kiện phát âm khi bấm nút loa
+    function speakWord(word, rate = 0.9) {
+        if ("speechSynthesis" in window) {
+            let speech = new SpeechSynthesisUtterance(word);
+            speech.lang = "en-US"; // Ngôn ngữ tiếng Anh
+            speech.rate = rate; // Tốc độ đọc
+            window.speechSynthesis.speak(speech);
+        } else {
+            alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản!");
+        }
+    }
 
-            slowSoundButton.addEventListener("click", function () {
-                speakWord(vocabularys[currentIndex].word, 0.2);
-            });
+    // Gán sự kiện click cho nút loa
+    soundButton.addEventListener("click", function () {
+        speakWord(vocabularys[currentIndex].word, 1);
+    });
 
-            document.querySelector(".next-btn").addEventListener("click", function () {
-                if (currentIndex < vocabularys.length - 1) {
-                    currentIndex++;
-                    updateFlashcard(currentIndex);
-                    updateProgress();
-                }
-            });
+    slowSoundButton.addEventListener("click", function () {
+        speakWord(vocabularys[currentIndex].word, 0.6);
+    });
 
-            document.querySelector(".prev-btn").addEventListener("click", function () {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateFlashcard(currentIndex);
-                    updateProgress();
-                }
-            });
-
-            function updateProgress() {
-                document.getElementById("progress").textContent = `${currentIndex + 1} / ${vocabularys.length}`;
-            }
-
+    document.querySelector(".next-btn").addEventListener("click", function () {
+        if (currentIndex < vocabularys.length - 1) {
+            currentIndex++;
             updateFlashcard(currentIndex);
             updateProgress();
-        });
+        }
+    });
+
+    document.querySelector(".prev-btn").addEventListener("click", function () {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateFlashcard(currentIndex);
+            updateProgress();
+        }
+    });
+
+    function updateProgress() {
+        document.getElementById("progress").textContent = `${currentIndex + 1} / ${vocabularys.length}`;
+    }
+
+    // Load từ đầu tiên khi trang mở
+    updateFlashcard(currentIndex);
+    updateProgress();
+});
+
 
 
         document.addEventListener("DOMContentLoaded", function () {
