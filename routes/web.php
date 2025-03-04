@@ -61,7 +61,11 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/learn/{id}', [App\Http\Controllers\VocabularyController::class, 'learncustom'])->name('learn.custom');
     Route::get('home/vocabulary/custom', [App\Http\Controllers\VocabularyController::class, 'custom'])->name('custom.vocabulary');
     Route::get('home/vocabulary/custom/edit/{id}', [App\Http\Controllers\VocabularyController::class, 'edit'])->name('edit.vocabUser');
+    Route::post('home/vocabulary/custom/update/{id}', [App\Http\Controllers\VocabularyController::class, 'update'])->name('update.vocabUser');
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
+
+    Route::get('home/vocabulary/custom/ai', [App\Http\Controllers\VocabularyController::class, 'ai'])->name('ai.custom');
+    Route::post('/vocabularyAI', [App\Http\Controllers\VocabularyController::class, 'generateVocabulary'])->name('generate.vocabulary');
 
     Route::get('home/exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
     Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');

@@ -26,7 +26,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h2 class="card-title">{{ $topic->name }}</h2>
-                            <p class="text-success">Level: {{ $topic->level->name }}</p>
+                            <p class="text-success">Cấp độ: {{ $topic->level->name }}</p>
                             <p class="text-warning">Số bài học: {{ $topic->total_less }} lessons</p>
                             <p class="card-text">Mô tả: {{ $topic->desc }}</p>
                             <p class="text-danger fw-bold">

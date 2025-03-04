@@ -81,8 +81,28 @@ class VocabularyController extends Controller
         return redirect('home/vocabulary/custom')->with('status','Thêm từ vựng thành công!');
     }   
 
-    function edit(){
-        return view('vocabulary.custom.edit');
+    function edit($id){
+        $vocab = Vocabulary::findOrFail($id);
+        $userId = Auth::id();
+        $topics = TopicVocabulary::where('user_id', $userId)->get();
+        $types = TypeVocabulary::all();
+    
+        return view('vocabulary.custom.edit', compact('vocab', 'topics', 'types'));
+    }
+
+    function update(Request $request, $id){
+        $vocabulary = Vocabulary::findOrFail($id);
+        
+        $vocabulary->update([
+            'word' => $request->input('word'),
+            'pronounce' => $request->input('pronounce'),
+            'meaning' => $request->input('meaning'),
+            'example' => $request->input('example'),
+            'topic_id' => $request->input('topic'),
+            'type_id' => $request->input('type'),
+        ]);
+    
+        return redirect('home/vocabulary/custom')->with('status', 'Cập nhật từ vựng thành công!');
     }
 
     function delete($id){
@@ -101,4 +121,102 @@ class VocabularyController extends Controller
         $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
         return view('vocabulary.review',compact(['vocabularys','topic'])); 
     }
+
+    function ai(){
+        return view('vocabulary.custom.ai');
+    }
+
+    function generateVocabulary(Request $request){
+        $apiKey = env('GEMINI_API_KEY');
+        if (!$apiKey) {
+            return response()->json(['error' => 'Missing API Key'], 500);
+        }
+
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey";
+        $topic = $request->input('topic', 'Life');
+        $wordCount = $request->input('word_count', 10);
+
+        $prompt = "
+        Hãy tạo danh sách gồm $wordCount từ vựng thuộc chủ đề '$topic'.
+        Trả về JSON với cấu trúc sau:
+
+        ```json
+        {
+            \"vocabularies\": [
+                {
+                    \"word\": \"Existence\",
+                    \"pronounce\": \"/ɪɡˈzɪstəns/\",
+                    \"meaning\": \"Sự tồn tại, cuộc sống\",
+                    \"example\": \"The meaning of human existence is a question philosophers have pondered for centuries.\",
+                    \"exercise\": {
+                        \"question\": \"What is the correct meaning of the word 'Existence'?\",
+                        \"options\": [
+                            \"A. Life\",
+                            \"B. Death\",
+                            \"C. Wealth\",
+                            \"D. Success\"
+                        ],
+                        \"answer\": \"A\"
+                    }
+                }
+            ]
+        }
+        ```
+
+        ⚠ **Yêu cầu quan trọng:**  
+        - Hãy đảm bảo đáp án đúng được random `options` và `answer  `.  
+        - Đáp án đúng phải khớp với một trong các lựa chọn trong `options`.  
+        - Không cần giải thích, chỉ trả về JSON.
+        ";
+
+
+        $data = [
+            "contents" => [
+                ["parts" => [["text" => $prompt]]]
+            ]
+        ];
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_HTTPHEADER => ["Content-Type: application/json"],
+            CURLOPT_POSTFIELDS => json_encode($data),
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        if ($httpCode !== 200) {
+            return response()->json([
+                'error' => 'Lỗi khi gọi API AI',
+                'http_code' => $httpCode,
+                'response' => json_decode($response, true),
+                'curl_error' => $curlError
+            ], 500);
+        }
+
+        $result = json_decode($response, true);
+        $responseText = $result['candidates'][0]['content']['parts'][0]['text'] ?? '';
+
+        // Bóc tách JSON từ nội dung AI trả về
+        $jsonStart = strpos($responseText, '{');
+        $jsonEnd = strrpos($responseText, '}');
+        if ($jsonStart === false || $jsonEnd === false) {
+            return response()->json(["error" => "Phản hồi không hợp lệ từ AI"], 500);
+        }
+
+        $jsonData = substr($responseText, $jsonStart, $jsonEnd - $jsonStart + 1);
+        $parsedData = json_decode($jsonData, true);
+
+        if (!isset($parsedData['vocabularies'])) {
+            return response()->json(["error" => "Không tìm thấy dữ liệu từ vựng"], 500);
+        }
+
+        return response()->json($parsedData);
+    }
+
 }

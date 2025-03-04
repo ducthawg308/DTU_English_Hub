@@ -121,7 +121,7 @@
     });
 
     slowSoundButton.addEventListener("click", function () {
-        speakWord(vocabularys[currentIndex].word, 0.6);
+        speakWord(vocabularys[currentIndex].word, 0.3);
     });
 
     document.querySelector(".next-btn").addEventListener("click", function () {

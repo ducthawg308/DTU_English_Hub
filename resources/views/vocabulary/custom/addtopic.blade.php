@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container my-5">
         <div class="card shadow-lg border-0 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Thêm topic</h3></div>
             <div class="card-body">

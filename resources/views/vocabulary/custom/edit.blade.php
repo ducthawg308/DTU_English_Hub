@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container my-5">
         <div class="card shadow-lg border-0 rounded-lg mt-1">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Sửa từ vựng</h3></div>
             <div class="card-body">
@@ -35,7 +35,7 @@
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select" name="topic_id" id="topic_id">
+                        <select class="form-select" name="topic" id="topic_id">
                         <option value="">Topic</option>
                         @foreach ($topics as $topic)
                             <option value="{{ $topic->id }}" 
@@ -47,7 +47,7 @@
                         <label for="floatingSelect">Topic</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select" name="type_id" id="type_id">
+                        <select class="form-select" name="type" id="type_id">
                         <option value="">Loại từ</option>
                         @foreach ($types as $type)
                             <option value="{{ $type->id }}" 
