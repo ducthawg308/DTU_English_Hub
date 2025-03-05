@@ -219,4 +219,33 @@ class VocabularyController extends Controller
         return response()->json($parsedData);
     }
 
+    public function saveVocabulary(Request $request) {
+        $userId = Auth::id();
+        $topicName = $request->input('topic');
+        $vocabularies = $request->input('vocabularies');
+
+        if (!$userId || !$topicName || empty($vocabularies)) {
+            return response()->json(['error' => 'Dữ liệu không hợp lệ!'], 400);
+        }
+
+        // Thêm chủ đề vào bảng topic_vocabulary
+        $topic = TopicVocabulary::create([
+            'name' => $topicName,
+            'user_id' => $userId
+        ]);
+
+        // Thêm danh sách từ vựng vào bảng vocabulary
+        foreach ($vocabularies as $word) {
+            Vocabulary::create([
+                'word' => $word['word'],
+                'pronounce' => $word['pronounce'],
+                'meaning' => $word['meaning'],
+                'example' => $word['example'],
+                'topic_id' => $topic->id,
+                'type_id' => null, // Có thể cập nhật sau nếu cần
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

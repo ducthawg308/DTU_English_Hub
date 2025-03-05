@@ -34,7 +34,7 @@
                             <th>Nghĩa</th>
                             <th>Câu ví dụ</th>
                             <th>Chủ đề</th>
-                            <th>Loại từ</th>
+                            {{-- <th>Loại từ</th> --}}
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
@@ -47,7 +47,7 @@
                             <th>Nghĩa</th>
                             <th>Câu ví dụ</th>
                             <th>Chủ đề</th>
-                            <th>Loại từ</th>
+                            {{-- <th>Loại từ</th> --}}
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
@@ -68,7 +68,7 @@
                                 <td>{{ $vocabulary->meaning }}</td>
                                 <td>{{$vocabulary->example}}</td>
                                 <td>{{$vocabulary->topicVocabulary->name}}</td>
-                                <td>{{$vocabulary->typeVocabulary->name}}</td>
+                                {{-- <td>{{$vocabulary->typeVocabulary->name}}</td> --}}
                                 <td><a href="{{route('edit.vocabUser',$vocabulary->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                 <td>
                                     <a href="{{ route('delete.custom', $vocabulary->id) }}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa từ vựng này?')"><i class="fa-solid fa-trash"></i></a>
