@@ -65,13 +65,13 @@
                 loading.style.display = 'none';
 
                 if (data.error) {
-                    resultContainer.innerHTML = <p class='text-danger'>Lỗi: ${data.error}</p>;
+                    resultContainer.innerHTML = `<p class='text-danger'>Lỗi: ${data.error}</p>`;
                     console.error("Chi tiết lỗi:", data);
                     return;
                 }
 
-                let vocabHtml = "<h3 class='mt-5 text-center'>Danh sách từ vựng</h3><ul class='list-group'>";
-                let exerciseHtml = "<h3 class='mt-5 text-center'>Bài tập trắc nghiệm</h3>";
+                let vocabHtml = "<h3 class='mt-4 text-center'>Danh sách từ vựng</h3><ul class='list-group'>";
+                let exerciseHtml = "<h3 class='mt-4 text-center'>Bài tập trắc nghiệm</h3>";
 
                 data.vocabularies.forEach((word, index) => {
                     vocabHtml += `<li class="list-group-item list-group-item-action">
@@ -111,7 +111,7 @@
                     button.addEventListener('click', function() {
                         let index = this.getAttribute('data-index');
                         let correctAnswer = this.getAttribute('data-answer');
-                        let selectedOption = document.querySelector(input[name="question-${index}"]:checked);
+                        let selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
 
                         if (!selectedOption) {
                             alert("Vui lòng chọn một đáp án!");
@@ -124,7 +124,7 @@
                             feedback.classList.remove("text-danger");
                             feedback.classList.add("text-success");
                         } else {
-                            feedback.textContent = Sai! Đáp án đúng là: ${correctAnswer};
+                            feedback.textContent = `Sai! Đáp án đúng là: ${correctAnswer}`;
                             feedback.classList.remove("text-success");
                             feedback.classList.add("text-danger");
                         }
@@ -135,7 +135,7 @@
             })
             .catch(error => {
                 loading.style.display = 'none';
-                resultContainer.innerHTML = <p class='text-danger'>Lỗi: ${error.message}</p>;
+                resultContainer.innerHTML = `<p class='text-danger'>Lỗi: ${error.message}</p>`;
                 console.error('Lỗi khi gọi API:', error);
             });
         });
