@@ -7,7 +7,7 @@
         <img src="img/learn.jpg" alt="" data-aos="fade-in">
 
         <div class="container d-flex flex-column align-items-center">
-        <h2 data-aos="fade-up" data-aos-delay="100">Daily Dictation</h2>
+        <h2 class="animate__backInDown wow" data-aos="fade-up" data-aos-delay="100">Daily Dictation</h2>
         <p data-aos="fade-up" data-aos-delay="200">Chúng tôi giúp bạn nâng cao kỹ năng nghe, mở rộng vốn từ vựng và làm bài kiểm tra để chinh phục tiếng Anh.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
             <a href="#about" class="btn-get-started">Bắt đầu ngay</a>
@@ -18,39 +18,35 @@
     </section>
 
     <section id="about" class="about section">
-
         <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-6 animate__backInLeft wow" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Nâng cao trình độ tiếng Anh cùng Daily Dictation</h3>
+                    <img src="img/listen_home.jpg" class="img-fluid rounded-4 mb-4" alt="">
+                    <p>Đồng hành cùng hơn 1 triệu người học và giáo viên trên toàn thế giới</p>
+                    <p>Chúng tôi cam kết mang đến môi trường học tập an toàn và hiệu quả, giúp bạn nâng cao kỹ năng nghe, từ vựng và khả năng làm bài kiểm tra một cách dễ dàng.</p>
+                </div>
+                <div class="col-lg-6 animate__backInRight wow" data-aos="fade-up" data-aos-delay="250">
+                    <div class="content ps-0 ps-lg-5">
+                        <p class="fst-italic">
+                            Chúng tôi cung cấp cho bạn:
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Giao diện thân thiện: Giúp bạn học dễ dàng hơn mọi lúc, mọi nơi.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Luyện nghe thực tế: Nghe audio/video từ người bản ngữ, tin tức, và hội thoại thường ngày để cải thiện kỹ năng nghe hiểu.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Học từ vựng dễ nhớ: Tích hợp flashcards thông minh và bài tập tương tác để mở rộng vốn từ vựng.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Bài kiểm tra online: Đánh giá trình độ và định hướng lộ trình học tập của bạn.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Cộng đồng học tập: Kết nối với những người học tiếng Anh khác, chia sẻ kinh nghiệm và cùng nhau tiến bộ.</span></li>
+                        </ul>
 
-        <div class="row gy-4">
-            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3>Nâng cao trình độ tiếng Anh cùng Daily Dictation</h3>
-            <img src="img/listen_home.jpg" class="img-fluid rounded-4 mb-4" alt="">
-            <p>Đồng hành cùng hơn 1 triệu người học và giáo viên trên toàn thế giới</p>
-            <p>Chúng tôi cam kết mang đến môi trường học tập an toàn và hiệu quả, giúp bạn nâng cao kỹ năng nghe, từ vựng và khả năng làm bài kiểm tra một cách dễ dàng.</p>
-            </div>
-            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
-            <div class="content ps-0 ps-lg-5">
-                <p class="fst-italic">
-                    Chúng tôi cung cấp cho bạn:
-                </p>
-                <ul>
-                    <li><i class="bi bi-check-circle-fill"></i> <span>Giao diện thân thiện: Giúp bạn học dễ dàng hơn mọi lúc, mọi nơi.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span>Luyện nghe thực tế: Nghe audio/video từ người bản ngữ, tin tức, và hội thoại thường ngày để cải thiện kỹ năng nghe hiểu.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span>Học từ vựng dễ nhớ: Tích hợp flashcards thông minh và bài tập tương tác để mở rộng vốn từ vựng.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span>Bài kiểm tra online: Đánh giá trình độ và định hướng lộ trình học tập của bạn.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span>Cộng đồng học tập: Kết nối với những người học tiếng Anh khác, chia sẻ kinh nghiệm và cùng nhau tiến bộ.</span></li>
-                </ul>
-
-                <div class="position-relative mt-4">
-                <img src="img/vocab_home.jpg" class="img-fluid rounded-4" alt="">
-                <a href="https://www.youtube.com/watch?v=mgty3Bgu-YY&t=1043s" class="glightbox pulsating-play-btn"></a>
+                        <div class="position-relative mt-4">
+                        <img src="img/vocab_home.jpg" class="img-fluid rounded-4" alt="">
+                        <a href="https://www.youtube.com/watch?v=mgty3Bgu-YY&t=1043s" class="glightbox pulsating-play-btn"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
-
-        </div>
-
     </section>
 
     <section id="stats" class="stats section light-background">

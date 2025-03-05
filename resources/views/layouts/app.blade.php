@@ -48,6 +48,8 @@
     <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -158,11 +160,11 @@
               <nav id="navmenu" class="navmenu">
                 <ul>
                   <li><a href="{{ route('home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Trang chủ</a></li>
-                  <li><a href="{{ route('list.topic') }}" class="{{ request()->is('home/topic*') ? 'active' : '' }}">Luyện nghe</a></li>
-                  <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('home/vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
-                  <li><a href="{{ route('home.exam') }}" class="{{ request()->is('home/exam*') ? 'active' : '' }}">Thi thử</a></li>
-                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('home/pronounce*') ? 'active' : '' }}">Phát âm</a></li>
-                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('home/donate*') ? 'active' : '' }}">Ủng hộ</a></li>
+                  <li><a href="{{ route('list.topic') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện nghe</a></li>
+                  <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
+                  <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
+                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">Phát âm</a></li>
+                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                   <li><a href="#" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
                   
                 </ul>
@@ -263,6 +265,13 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{asset('js/datatables-simple-demo.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="{{asset('js/wow.js')}}"></script>
+    <script>
+        new WOW({
+            animateClass: 'animate__animated',
+        }).init();
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

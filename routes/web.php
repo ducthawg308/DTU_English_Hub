@@ -53,21 +53,21 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
 });
 
 Route::middleware(['auth','verified'])->group(function(){
-    Route::get('home/vocabulary/custom/addtopic', [App\Http\Controllers\VocabularyController::class, 'addtopic'])->name('addtopic.custom');
-    Route::post('home/vocabulary/custom/addtopic/storetopic', [App\Http\Controllers\VocabularyController::class, 'storetopic']);
-    Route::get('home/vocabulary/custom/addvocab', [App\Http\Controllers\VocabularyController::class, 'addvocab'])->name('addvocab.custom');
-    Route::post('home/vocabulary/custom/addtopic/storevocab', [App\Http\Controllers\VocabularyController::class, 'storevocab']);
-    Route::get('home/vocabulary/custom/topic', [App\Http\Controllers\VocabularyController::class, 'topiccustom'])->name('topic.custom');
-    Route::get('home/vocabulary/custom/learn/{id}', [App\Http\Controllers\VocabularyController::class, 'learncustom'])->name('learn.custom');
-    Route::get('home/vocabulary/custom', [App\Http\Controllers\VocabularyController::class, 'custom'])->name('custom.vocabulary');
-    Route::get('home/vocabulary/custom/edit/{id}', [App\Http\Controllers\VocabularyController::class, 'edit'])->name('edit.vocabUser');
-    Route::post('home/vocabulary/custom/update/{id}', [App\Http\Controllers\VocabularyController::class, 'update'])->name('update.vocabUser');
-    Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
+    Route::get('vocabulary/custom/addtopic', [App\Http\Controllers\VocabularyController::class, 'addtopic'])->name('addtopic.custom');
+    Route::post('vocabulary/custom/addtopic/storetopic', [App\Http\Controllers\VocabularyController::class, 'storetopic']);
+    Route::get('vocabulary/custom/addvocab', [App\Http\Controllers\VocabularyController::class, 'addvocab'])->name('addvocab.custom');
+    Route::post('vocabulary/custom/addtopic/storevocab', [App\Http\Controllers\VocabularyController::class, 'storevocab']);
+    Route::get('vocabulary/custom/topic', [App\Http\Controllers\VocabularyController::class, 'topiccustom'])->name('topic.custom');
+    Route::get('vocabulary/custom/learn/{id}', [App\Http\Controllers\VocabularyController::class, 'learncustom'])->name('learn.custom');
+    Route::get('vocabulary/custom', [App\Http\Controllers\VocabularyController::class, 'custom'])->name('custom.vocabulary');
+    Route::get('vocabulary/custom/edit/{id}', [App\Http\Controllers\VocabularyController::class, 'edit'])->name('edit.vocabUser');
+    Route::post('vocabulary/custom/update/{id}', [App\Http\Controllers\VocabularyController::class, 'update'])->name('update.vocabUser');
+    Route::get('vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
 
-    Route::get('home/vocabulary/custom/ai', [App\Http\Controllers\VocabularyController::class, 'ai'])->name('ai.custom');
+    Route::get('vocabulary/custom/ai', [App\Http\Controllers\VocabularyController::class, 'ai'])->name('ai.custom');
     Route::post('/vocabularyAI', [App\Http\Controllers\VocabularyController::class, 'generateVocabulary'])->name('generate.vocabulary');
 
-    Route::get('home/exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
+    Route::get('exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
     Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
     Route::post('exam/{id}/submit', [App\Http\Controllers\ExamController::class, 'submitTest'])->name('exam.submit');
     Route::get('exam/result/{id}', [App\Http\Controllers\ExamController::class, 'showResult'])->name('exam.result');
@@ -76,27 +76,27 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
 });
 
-Route::get('home/topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
-Route::get('home/topic/{id}', [App\Http\Controllers\ExercisesController::class, 'show'])->name('topic.show');
-Route::get('home/topic/{topicId}/{id}', [App\Http\Controllers\ExercisesController::class, 'listening'])->name('topic.listening');
-Route::post('home/topic/{id}/check', [App\Http\Controllers\ExercisesController::class, 'check'])->name('check.answer');
+Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
+Route::get('topic/{id}', [App\Http\Controllers\ExercisesController::class, 'show'])->name('topic.show');
+Route::get('topic/{topicId}/{id}', [App\Http\Controllers\ExercisesController::class, 'listening'])->name('topic.listening');
+Route::post('topic/{id}/check', [App\Http\Controllers\ExercisesController::class, 'check'])->name('check.answer');
 
-Route::get('home/vocabulary', [App\Http\Controllers\VocabularyController::class, 'home'])->name('home.vocabulary');
-Route::get('home/vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
-Route::get('home/vocabulary/default/{id}', [App\Http\Controllers\VocabularyController::class, 'default'])->name('default.vocabulary');
-Route::get('home/vocabulary/review/{id}', [App\Http\Controllers\VocabularyController::class, 'review'])->name('review.vocabulary');
+Route::get('vocabulary', [App\Http\Controllers\VocabularyController::class, 'home'])->name('home.vocabulary');
+Route::get('vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
+Route::get('vocabulary/default/{id}', [App\Http\Controllers\VocabularyController::class, 'default'])->name('default.vocabulary');
+Route::get('vocabulary/review/{id}', [App\Http\Controllers\VocabularyController::class, 'review'])->name('review.vocabulary');
 
 // Donate
-Route::get('home/donate', [App\Http\Controllers\DonateController::class, 'show'])->name('home.donate');
+Route::get('donate', [App\Http\Controllers\DonateController::class, 'show'])->name('home.donate');
 Route::post('home/donate', [App\Http\Controllers\DonateController::class, 'generate'])->name('donate.generate');
 
 //Community
-Route::get('home/community', [App\Http\Controllers\CommunityController::class, 'show'])->name('home.community');
+Route::get('community', [App\Http\Controllers\CommunityController::class, 'show'])->name('home.community');
 
 // AI
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);
 
 //Pronounce
-Route::get('home/pronounce', function () {
+Route::get('pronounce', function () {
     return view('pronounce.index');
 })->name('home.pronounce');
