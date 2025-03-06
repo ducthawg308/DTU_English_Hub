@@ -404,8 +404,8 @@
                     <!-- Feedback 4 -->
                     <div class="swiper-slide">
                         <div class="testimonial-item">
-                            <img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                            <h3>Minh Tú</h3>
+                            <img src="img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                            <h3>Thu Hương</h3>
                             <h4>Người đi làm</h4>
                             <div class="stars">
                                 <i class="bi bi-star-fill"></i>
@@ -425,8 +425,8 @@
                     <!-- Feedback 5 -->
                     <div class="swiper-slide">
                         <div class="testimonial-item">
-                            <img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                            <h3>Minh Tú</h3>
+                            <img src="img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                            <h3>Lan Anh</h3>
                             <h4>Người đi làm</h4>
                             <div class="stars">
                                 <i class="bi bi-star-fill"></i>

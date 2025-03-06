@@ -160,11 +160,11 @@
               <nav id="navmenu" class="navmenu">
                 <ul>
                   <li><a href="{{ route('home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Trang chủ</a></li>
-                  <li><a href="{{ route('list.topic') }}" class="{{ request()->is('home/topic*') ? 'active' : '' }}">Luyện nghe</a></li>
-                  <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('home/vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
-                  <li><a href="{{ route('home.exam') }}" class="{{ request()->is('home/exam*') ? 'active' : '' }}">Thi thử</a></li>
-                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('home/pronounce*') ? 'active' : '' }}">Phát âm</a></li>
-                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('home/donate*') ? 'active' : '' }}">Ủng hộ</a></li>
+                  <li><a href="{{ route('list.topic') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện nghe</a></li>
+                  <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
+                  <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
+                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">Phát âm</a></li>
+                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                   <li><a href="#" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
                   
                 </ul>
