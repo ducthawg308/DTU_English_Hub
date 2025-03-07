@@ -92,10 +92,9 @@ class PaymentController extends Controller{
 
             PurchasedExercise::create($transaction);
 
-            return redirect()->route('list.topic')->with('status', 'Thanh toán thành công!');
+            return redirect()->route('topic.show', ['id' => $request->get('vnp_OrderInfo')])->with('status', 'Thanh toán thành công!');
         }
 
-        return redirect()->route('list.topic')->with('status', 'Thanh toán thất bại!');
+        return redirect()->route('topic.show', ['id' => $request->get('vnp_OrderInfo')])->with('status', 'Thanh toán thành công!');
     }
-
 }

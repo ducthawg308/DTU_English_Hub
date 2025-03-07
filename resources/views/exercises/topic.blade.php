@@ -10,45 +10,58 @@
                 <a class="btn btn-primary" href="#!">Bắt đầu ngay!</a>
             </div>
         </div>
-        <!-- Call to Action-->
-        <div class="card text-white bg-secondary my-5 py-3 text-center">
-            <div class="card-body"><h2 class="text-white">All topic</h2></div>
-        </div>
-        @if(session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
         <!-- Content Row-->
         <div class="row gx-4 gx-lg-5"> 
             @foreach ($topics as $topic)
-                <div class="col-md-4 mb-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h2 class="card-title">{{ $topic->name }}</h2>
-                            <p class="text-success">Cấp độ: {{ $topic->level->name }}</p>
-                            <p class="text-warning">Số bài học: {{ $topic->total_less }} lessons</p>
-                            <p class="card-text">Mô tả: {{ $topic->desc }}</p>
-                            <p class="text-danger fw-bold">
-                                Giá: {{ $topic->price == 0 ? 'Free' : number_format($topic->price, 0, ',', '.') . 'đ' }}
-                            </p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a class="btn btn-primary btn-sm" href="{{ route('topic.show', $topic->id) }}">Xem chi tiết</a>
-                            @if(!in_array($topic->id, $purchasedTopics))
-                                <form method="POST" action="{{ url('/vnpay_payment') }}">
-                                    @csrf
-                                    <input hidden type="number" name="price" value="{{ $topic->price }}">
-                                    <input hidden type="number" name="id_topic" value="{{ $topic->id }}">
-                                    {!! $topic->price == 0 ? '' : '<button class="btn btn-primary btn-sm" type="submit" name="redirect">Mua bài học</button>' !!}
-                                </form>
-                            @else
-                                <button class="btn btn-secondary btn-sm" disabled>Đã mua</button>
-                            @endif
-                        </div>
+                <div class="col-md-4 mb-5 d-flex">
+                    <div class="position-relative bg-white border rounded p-4">
+                        @if ($topic->price == 0)
+                            <div class="ribbon free"><span>FREE</span></div>
+                        @else
+                            <div class="ribbon premium"><span>PREMIUM</span></div>
+                        @endif
+                        <h1 class="h4 fw-bold"><a href="{{ route('topic.show', $topic->id) }}">{{ $topic->name }}</a></h1>
+                        <p class="text-success mb-1">Cấp độ: {{ $topic->level->name }}</p>
+                        <p class="text-warning mb-3">Số bài học: {{ $topic->listening_exercises_count }} lessons</p>
+                        <p class="text-muted mb-4">Mô tả: {{ $topic->desc }}</p>
                     </div>
-                </div>
+                </div>  
             @endforeach
         </div>
     </div>
+    <style>
+        .ribbon {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        overflow: hidden;
+        width: 75px;
+        height: 75px;
+        text-align: right;
+        }
+        .ribbon span {
+            font-size: 10px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 20px;
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            width: 100px;
+            display: block;
+            box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+            position: absolute;
+            top: 19px;
+            right: -21px;
+        }
+        .ribbon.free span {
+            background: #28a745; /* Màu xanh lá */
+            background: linear-gradient(#28a745 0%, #28a745 100%);
+        }
+        .ribbon.premium span {
+            background:rgb(236, 189, 61); /* Màu vàng */
+            background: linear-gradient(#ffc107 0%,rgb(236, 189, 61) 100%);
+        }
+    </style>
 @endsection

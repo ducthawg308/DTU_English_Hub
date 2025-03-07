@@ -11,19 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class ExercisesController extends Controller
 {
-    public function list()
-    {
-        $topics = Topic::with('level')->get();
-        $purchasedTopics = PurchasedExercise::where('user_id', Auth::id())->pluck('topic_id')->toArray();
-    
-        return view('exercises.topic', compact('topics', 'purchasedTopics'));
+    public function list(){
+        $topics = Topic::with('level')->withCount('listeningExercises')->get();
+        return view('exercises.topic', compact('topics'));
     }
 
-    function show($id){
-        $topic = Topic::with('listeningExercises')->findOrFail($id);
-        $isPurchased = PurchasedExercise::where('user_id', Auth::id())->where('topic_id', $id)->exists();
-        return view('exercises.topic-detail', compact('topic', 'isPurchased'));
+    function show($id) {
+        $topic = Topic::with('listeningExercises','level')->withCount('listeningExercises')->findOrFail($id);
+        $purchasedTopics = PurchasedExercise::where('user_id', Auth::id())->pluck('topic_id')->toArray();
+        $isFree = $topic->price == 0;
+        $isPurchased = $isFree || PurchasedExercise::where('user_id', Auth::id())->where('topic_id', $id)->exists();
+        return view('exercises.topic-detail', compact('topic', 'isPurchased', 'purchasedTopics'));
     }
+    
+    
 
     public function listening($topicId, $id) {
         $topic = Topic::findOrFail($topicId);
