@@ -3,16 +3,25 @@
 @section('content')
     <div class="container d-flex my-5">
         <!-- Sidebar -->
-        <div class="border p-3 me-4" style="width: 250px;">
-            <h5 class="text-center fw-bold">Chọn câu hỏi</h5>
+        <div class="border rounded p-3 me-4 sticky-top" style="width: 320px; height: fit-content; top:120px">
+            <h3 class="mb-4 fw-bold">{{ $exam->name }}</h3>
+    
+            <!-- Đồng hồ đếm ngược -->
+            <div class="text-center mb-3">
+                <h4 class="fw-bold">Thời gian còn lại:</h4>
+                <div id="timer" class="fs-3 text-danger fw-bold bg-light px-4 py-2 rounded d-inline-block shadow">
+                    --:--
+                </div>
+            </div>
+            <hr>
             <div class="d-flex flex-wrap">
                 @foreach ($questions as $index => $question)
                     @php
                         $answered = session("answers.{$question->id}", false);
                     @endphp
                     <a href="#question-{{ $question->id }}" 
-                    id="question-btn-{{ $question->id }}"
-                    class="btn btn-sm m-1 {{ $answered ? 'btn-success' : 'btn-light' }}">
+                       id="question-btn-{{ $question->id }}"
+                       class="btn btn-md m-1 {{ $answered ? 'btn-success' : 'btn-light' }}">
                         {{ $loop->iteration }}
                     </a>
                 @endforeach
@@ -21,16 +30,6 @@
     
         <!-- Nội dung bài test -->
         <div class="flex-grow-1">
-            <h2 class="text-center mb-4 fw-bold display-6">{{ $exam->name }}</h2>
-            
-            <!-- Đồng hồ đếm ngược -->
-            <div class="text-center mb-3">
-                <h4 class="fw-bold">Thời gian còn lại:</h4>
-                <div id="timer" class="fs-3 text-danger fw-bold bg-light px-4 py-2 rounded d-inline-block shadow">
-                    --:--
-                </div>
-            </div>
-    
             <form action="{{ route('exam.submit', $exam->id) }}" method="POST">
                 @csrf
                 @foreach ($questions as $index => $question)
@@ -51,6 +50,7 @@
             </form>
         </div>
     </div>
+    
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let timeLeft = {{ $exam->time }} * 60; // Chuyển phút thành giây
