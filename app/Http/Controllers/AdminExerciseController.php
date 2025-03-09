@@ -96,7 +96,6 @@ class AdminExerciseController extends Controller
         Topic::create([
             'level_id' => $request->input('level'),
             'name' => $request->input('name'),
-            'total_less' => $request->input('total_less'),
             'desc' => $request->input('desc'),
             'price' => $request->input('price'),
         ]);

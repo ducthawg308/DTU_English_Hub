@@ -80,7 +80,8 @@
                 let vocabHtml = "<h3 class='mt-5 text-center'>Danh sách từ vựng</h3><ul class='list-group'>";
                 let exerciseHtml = "<h3 class='mt-5 text-center'>Bài tập trắc nghiệm</h3>";
                 data.vocabularies.forEach((word, index) => {
-                    vocabHtml += `<li class="list-group-item list-group-item-action">
+                    vocabHtml += `<li class="list-group-item">
+                                    <input type="checkbox" class="form-check-input select-word" data-index="${index}">
                                     <strong>${word.word}</strong> (${word.pronounce}): ${word.meaning} <br>
                                     <em>Ví dụ:</em> ${word.example}
                                 </li>`;
@@ -138,10 +139,21 @@
                 });
     
                 saveButton.onclick = function () {
+                    let selectedWords = [];
+                    document.querySelectorAll('.select-word:checked').forEach(checkbox => {
+                        let index = checkbox.getAttribute('data-index');
+                        selectedWords.push(generatedVocabulary[index]);
+                    });
+
+                    if (selectedWords.length === 0) {
+                        alert("Vui lòng chọn ít nhất một từ vựng để lưu!");
+                        return;
+                    }
+
                     fetch('{{ route("save.vocabulary") }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                        body: JSON.stringify({ topic: topic, vocabularies: generatedVocabulary })
+                        body: JSON.stringify({ topic: topic, vocabularies: selectedWords })
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -153,11 +165,11 @@
                         }
                     })
                     .catch(error => {
-                        console.log(data);
                         console.error('Lỗi khi lưu từ vựng:', error);
                         alert("Đã xảy ra lỗi khi lưu danh sách.");
                     });
                 };
+
             })
             .catch(error => {
                 loading.style.display = 'none';

@@ -23,13 +23,6 @@
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="inputTitle" name="total_less" type="number" placeholder="Title" />
-                        <label for="inputTitle">Số lượng lesson</label>
-                        @error('total_less')
-                            <small class="text-danger">{{$message}}</small>
-                        @enderror
-                    </div>
-                    <div class="form-floating mb-3">
                         <input class="form-control" id="inputTitle" name="desc" type="text" placeholder="Title" />
                         <label for="inputTitle">Mô tả topic</label>
                         @error('desc')

@@ -38,7 +38,7 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
     Route::get('admin/exercise/delete_audio/{id}', [App\Http\Controllers\AdminExerciseController::class, 'delete_audio'])->name('delete_audio');
     Route::post('admin/exercise/update/{id}', [App\Http\Controllers\AdminExerciseController::class, 'update'])->name('update.exercise');
 
-    Route::get('admin/exam /list', [App\Http\Controllers\AdminExamController::class, 'list']);
+    Route::get('admin/exam/list', [App\Http\Controllers\AdminExamController::class, 'list']);
     Route::get('admin/exam/add', [App\Http\Controllers\AdminExamController::class, 'add']);
     Route::get('admin/exam/delete/{id}', [App\Http\Controllers\AdminExamController::class, 'delete'])->name('delete_exam');
     Route::get('admin/exam/edit/{id}', [App\Http\Controllers\AdminExamController::class, 'edit'])->name('edit.exam');
