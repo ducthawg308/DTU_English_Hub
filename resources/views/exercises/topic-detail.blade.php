@@ -28,7 +28,7 @@
         <div class="list-group">
             @foreach ($topic->listeningExercises as $index => $exercise)
                 @php
-                    $isUnlocked = $isPurchased || $index < 2; // Cho phép xem nếu đã mua hoặc là 3 bài đầu
+                    $isUnlocked = $isPurchased || $index < 3; // Cho phép xem nếu đã mua hoặc là 3 bài đầu
                 @endphp
                 <a 
                     href="{{ $isUnlocked ? route('topic.listening', ['topicId' => $topic->id, 'id' => $exercise->id]) : '#' }}" 

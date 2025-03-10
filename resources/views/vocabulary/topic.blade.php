@@ -1,10 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container px-4 px-lg-5" style="min-height: 80vh;">
-        <div class="card text-white bg-secondary my-5 py-4 text-center">
-            <div class="card-body">
-                <h2 class="text-white">All Topics</h2>
+    <div class="container px-4 my-5 px-lg-5" style="min-height: 80vh;">
+        <div class="card shadow border-0 mb-4 mt-4">
+            <div class="card-body px-5">
+                @if ($isCustoms)
+                    <h3 class="card-title text-primary fw-bold">Học Từ Vựng Tự Custom</h3>
+                    <p class="text-success mb-2">Tạo danh sách từ vựng riêng của bạn và học theo cách của bạn.</p>
+                @else
+                    <h3 class="card-title text-primary fw-bold">Học từ vựng của hệ thống</h3>
+                    <p class="text-success mb-2">Khám phá các từ vựng được hệ thống cung cấp và học tập theo cách hiệu quả nhất.</p>
+                @endif
             </div>
         </div>
         

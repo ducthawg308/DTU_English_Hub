@@ -23,8 +23,6 @@ class ExercisesController extends Controller
         $isPurchased = $isFree || PurchasedExercise::where('user_id', Auth::id())->where('topic_id', $id)->exists();
         return view('exercises.topic-detail', compact('topic', 'isPurchased', 'purchasedTopics'));
     }
-    
-    
 
     public function listening($topicId, $id) {
         $topic = Topic::findOrFail($topicId);
@@ -34,39 +32,64 @@ class ExercisesController extends Controller
         return view('exercises.listening', compact('topic', 'exercise', 'audios'));
     }
     
-
     public function check(Request $request, $id) {
         $audio = Audios::findOrFail($id);
         
-        // Chuẩn hóa câu trả lời và đáp án: Xóa khoảng trắng dư thừa + chuyển về chữ thường
         $answer_user = strtolower(trim($request->input('answer')));
         $answer_text = strtolower(trim($audio->answer_correct));
     
         $correctWords = explode(' ', $answer_text);
         $userWords = explode(' ', $answer_user);
     
-        // Kiểm tra số lần kiểm tra trước đó từ session
-        $sessionKey = 'hints_' . $id;
-        $hintCount = session($sessionKey, 0); // Lấy số từ gợi ý hiện tại
-        $hintCount = min($hintCount + 1, count($correctWords)); // Tăng gợi ý nhưng không vượt quá số từ
+        $correct = ($answer_user === $answer_text); // Kiểm tra xem đúng hoàn toàn không
     
         $result = [];
         foreach ($correctWords as $index => $word) {
             if (isset($userWords[$index]) && $userWords[$index] === $word) {
-                $result[] = "<span style='color: green;'>{$word}</span>"; // Đúng thì xanh
-            } else if ($index < $hintCount) {
-                $result[] = "<span style='color: blue;'>{$word}</span>"; // Gợi ý thì xanh dương
+                $result[] = "<span style='color: green;'>{$word}</span>";
             } else {
-                $result[] = "<span style='color: red;'>" . str_repeat('*', strlen($word)) . "</span>"; // Sai thì che
+                // Thay từ sai bằng số lượng `*` tương ứng với độ dài từ gốc
+                $result[] = "<span style='color: red;'>" . str_repeat('*', strlen($word)) . "</span>";
             }
         }
     
-        // Lưu số lần gợi ý vào session
-        session([$sessionKey => $hintCount]);
-    
         return response()->json([
             'result' => implode(' ', $result),
-            'hint_count' => $hintCount
+            'correct' => $correct
         ]);
     }
+    
+    public function hint(Request $request, $id) {
+        $audio = Audios::findOrFail($id);
+        $answer_text = strtolower(trim($audio->answer_correct));
+        $correctWords = explode(' ', $answer_text);
+    
+        // Lấy danh sách từ đã gợi ý từ session (nếu có)
+        $hint = session("hint_$id", array_fill(0, count($correctWords), '****'));
+        
+        // Lấy vị trí từ tiếp theo cần hiển thị
+        $hintIndex = session("hint_index_$id", 0);
+    
+        // Kiểm tra xem còn từ nào để gợi ý không
+        if ($hintIndex < count($correctWords)) {
+            $word = $correctWords[$hintIndex];
+    
+            if (strlen($word) <= 2) {
+                $hint[$hintIndex] = $word; // Nếu từ có 1-2 ký tự, giữ nguyên
+            } else {
+                $hint[$hintIndex] = $word[0] . str_repeat('*', strlen($word) - 2) . $word[strlen($word) - 1];
+            }
+    
+            // Cập nhật vị trí gợi ý tiếp theo
+            session(["hint_index_$id" => $hintIndex + 1]);
+            session(["hint_$id" => $hint]);
+        }
+    
+        return response()->json(['hint' => implode(' ', $hint)]);
+    }
+
+    public function showAnswer($id) {
+        $audio = Audios::findOrFail($id);
+        return response()->json(['answer' => $audio->answer_correct]);
+    }    
 }

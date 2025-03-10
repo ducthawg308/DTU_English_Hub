@@ -33,7 +33,7 @@
                             
         <div class="d-flex justify-content-between align-items-center mt-5">
             <button class="btn btn-white custom-btn favorite-btn">
-                <i class="fas fa-star"></i>
+                <i class="fa-solid fa-heart"></i>
             </button>
             <div>
                 <button class="btn btn-white custom-btn prev-btn me-2">

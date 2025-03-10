@@ -17,14 +17,16 @@ class VocabularyController extends Controller
     }
     
     function topic() {
+        $isCustoms = false;
         $topics = TopicVocabulary::whereNull('user_id')->get();
-        return view('vocabulary.topic', compact('topics'));
+        return view('vocabulary.topic', compact('topics','isCustoms'));
     }
 
     function topiccustom(){
+        $isCustoms = true;
         $userId = Auth::id();
         $topics = TopicVocabulary::where('user_id', $userId)->get();
-        return view('vocabulary.topic',compact('topics'));
+        return view('vocabulary.topic',compact('topics','isCustoms'));
     }
 
     function custom(){

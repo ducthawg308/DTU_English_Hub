@@ -8,8 +8,8 @@
         </ol>
         <div class="card mb-4">
             <div class="card-body">
-                <a href="{{url('admin/vocabulary/addtopic')}}" class="btn btn-success">Thêm topic<i class="fa-solid fa-plus"></i></a>
-                <a href="{{url('admin/vocabulary/addvocab')}}" class="btn btn-success">Thêm từ mới<i class="fa-solid fa-plus"></i></a>
+                <a href="{{url('admin/vocabulary/addtopic')}}" class="btn btn-success">Thêm topic <i class="fa-solid fa-plus"></i></a>
+                <a href="{{url('admin/vocabulary/addvocab')}}" class="btn btn-success">Thêm từ mới <i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
         @if(session('status'))

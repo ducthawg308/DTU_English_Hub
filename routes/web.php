@@ -56,6 +56,8 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
 });
 
 Route::middleware(['auth','verified'])->group(function(){
+    Route::get('setting', [App\Http\Controllers\UserController::class, 'index'])->name('user.setting');
+
     Route::get('home/vocabulary/custom/addtopic', [App\Http\Controllers\VocabularyController::class, 'addtopic'])->name('addtopic.custom');
     Route::post('home/vocabulary/custom/addtopic/storetopic', [App\Http\Controllers\VocabularyController::class, 'storetopic']);
     Route::get('home/vocabulary/custom/addvocab', [App\Http\Controllers\VocabularyController::class, 'addvocab'])->name('addvocab.custom');
@@ -85,6 +87,8 @@ Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->
 Route::get('topic/{id}', [App\Http\Controllers\ExercisesController::class, 'show'])->name('topic.show');
 Route::get('topic/{topicId}/{id}', [App\Http\Controllers\ExercisesController::class, 'listening'])->name('topic.listening');
 Route::post('topic/{id}/check', [App\Http\Controllers\ExercisesController::class, 'check'])->name('check.answer');
+Route::get('hint/{id}', [App\Http\Controllers\ExercisesController::class, 'hint'])->name('hint');
+Route::get('/show-answer/{id}', [App\Http\Controllers\ExercisesController::class, 'showAnswer'])->name('show.answer');
 
 Route::get('vocabulary', [App\Http\Controllers\VocabularyController::class, 'home'])->name('home.vocabulary');
 Route::get('vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
