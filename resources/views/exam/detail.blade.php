@@ -3,10 +3,9 @@
 @section('content')
     <div class="container d-flex my-5">
         <!-- Sidebar -->
-        <div class="border rounded p-3 me-4 sticky-top" style="width: 320px; height: fit-content; top:120px">
+        <div class="border rounded p-4 me-5 sticky-top" style="width: 320px; height: fit-content; top:120px">
             <h3 class="mb-4 fw-bold">{{ $exam->name }}</h3>
-    
-            <!-- Đồng hồ đếm ngược -->
+
             <div class="text-center mb-3">
                 <h4 class="fw-bold">Thời gian còn lại:</h4>
                 <div id="timer" class="fs-3 text-danger fw-bold bg-light px-4 py-2 rounded d-inline-block shadow">
@@ -20,35 +19,41 @@
                         $answered = session("answers.{$question->id}", false);
                     @endphp
                     <a href="#question-{{ $question->id }}" 
-                       id="question-btn-{{ $question->id }}"
-                       class="btn btn-md m-1 {{ $answered ? 'btn-success' : 'btn-light' }}">
+                    id="question-btn-{{ $question->id }}"
+                    class="btn btn-md m-1 {{ $answered ? 'btn-success' : 'btn-light' }}">
                         {{ $loop->iteration }}
                     </a>
                 @endforeach
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-primary w-100 px-4 py-2" onclick="document.getElementById('exam-form').submit();">
+                    Nộp bài
+                </button>
             </div>
         </div>
     
         <!-- Nội dung bài test -->
         <div class="flex-grow-1">
-            <form action="{{ route('exam.submit', $exam->id) }}" method="POST">
-                @csrf
-                @foreach ($questions as $index => $question)
-                    <p id="question-{{ $question->id }}" class="mt-4"><strong>Câu {{ $loop->iteration }}:</strong> {{ $question->question }}</p>
-                    @foreach (['A', 'B', 'C', 'D'] as $option)
-                        <label>
-                            <input type="radio" name="answers[{{ $question->id }}]" 
-                                   value="{{ $option }}" 
-                                   onchange="markAnswered({{ $question->id }})"
-                                   {{ session("answers.{$question->id}") ? 'checked' : '' }}>
-                            {{ $question['option_' . strtolower($option)] }}
-                        </label><br>
-                    @endforeach
-                @endforeach
-                <div class="text-center p-4">
-                    <button type="submit" class="btn btn-primary px-4">Nộp bài</button>
-                </div>
-            </form>
-        </div>
+    <form id="exam-form" action="{{ route('exam.submit', $exam->id) }}" method="POST">
+        @csrf
+        @foreach ($questions as $index => $question)
+            <p id="question-{{ $question->id }}" class="mt-4 fs-5 fw-bold">
+                <strong>Câu {{ $loop->iteration }}:</strong> {{ $question->question }}
+            </p>
+            @foreach (['A', 'B', 'C', 'D'] as $option)
+                <label class="d-block fs-5"> 
+                    <input type="radio" name="answers[{{ $question->id }}]" 
+                        value="{{ $option }}" 
+                        onchange="markAnswered({{ $question->id }})"
+                        {{ session("answers.{$question->id}") ? 'checked' : '' }}>
+                    {{ $question['option_' . strtolower($option)] }}
+                </label>
+            @endforeach
+        @endforeach
+    </form>
+</div>
+
     </div>
     
 <script>

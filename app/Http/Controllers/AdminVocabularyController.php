@@ -72,21 +72,22 @@ class AdminVocabularyController extends Controller
     }
 
     function delete($id){
-        $vocab = Vocabulary::find($id);
-
-        if ($vocab) {
-            $filePath = public_path('img\\vocab\\' . $vocab->image);
+        try {
+            $vocab = Vocabulary::findOrFail($id); // Sử dụng findOrFail để tự động báo lỗi nếu không tìm thấy
             
-            if (file_exists($filePath)) {
-                unlink($filePath);
+            if ($vocab->image) {
+                $filePath = public_path('img/vocab/' . $vocab->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
-
+    
             $vocab->delete();
-
+    
             return redirect('admin/vocabulary/list')->with('status', 'Xóa từ vựng thành công!');
+        } catch (\Exception $e) {
+            return redirect('admin/vocabulary/list')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        return redirect('admin/vocabulary/list')->with('error', 'Từ vựng không tồn tại!');
     }
 
     function update(Request $request, $id) {

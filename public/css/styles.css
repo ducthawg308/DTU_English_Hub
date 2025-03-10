@@ -116,6 +116,7 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(to right, #ffe4e1, #ffffff, #add8e6);
 }
 
 main {

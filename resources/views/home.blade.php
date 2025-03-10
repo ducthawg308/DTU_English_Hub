@@ -111,7 +111,7 @@
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row gy-5">
+        <div class="row gy-5 wow animate__zoomInDown">
 
             <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
             <div class="service-item">
