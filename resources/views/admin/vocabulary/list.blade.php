@@ -3,7 +3,7 @@
 <div class="container-fluid px-4">
         <h1 class="mt-2">Quản lý từ vựng</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">DailyDictation</a></li>
+            <li class="breadcrumb-item"><a href="index.html">DTU English Hub</a></li>
             <li class="breadcrumb-item active">Quản lý từ vựng</li>
         </ol>
         <div class="card mb-4">

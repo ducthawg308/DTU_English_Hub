@@ -12,7 +12,7 @@ class DonateController extends Controller
 
     public function generate(Request $request){
         $amount = $request->input('amount');
-        $qrUrl = "https://img.vietqr.io/image/VCB-9889641156-compact2.png?amount={$amount}&addInfo=Donate%20cho%20Dailydictation&accountName=Website%20DailyDictation";
+        $qrUrl = "https://img.vietqr.io/image/VCB-9889641156-compact2.png?amount={$amount}&addInfo=Donate%20cho%20DTUEnglishHub&accountName=Website%20DTUEnglishHub";
 
         return view('donate.donate', compact('amount', 'qrUrl'));
     }

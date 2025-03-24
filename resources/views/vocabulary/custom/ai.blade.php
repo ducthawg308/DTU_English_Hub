@@ -4,7 +4,7 @@
     <div class="container px-5 my-5" style="min-height: 80vh;">
         <h1 class="mt-4">Tạo từ vựng từ AI</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">DailyDictation</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">DTU English Hub</a></li>
             <li class="breadcrumb-item active">Tạo từ vựng từ AI</li>   
         </ol>
 

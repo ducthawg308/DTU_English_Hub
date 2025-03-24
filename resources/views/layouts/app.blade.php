@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>DTU English Hub</title>
 
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
@@ -83,7 +83,7 @@
                 </g>
                 </svg> -->
                 <img src="img/logo.png" alt="">
-                <h1 class="sitename">Daily Dictation</h1>
+                <h1 class="sitename">DTU English Hub</h1>
               </a>
               <nav id="navmenu" class="navmenu">
                 <ul>
@@ -93,8 +93,7 @@
                   <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
                   <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">IPA</a></li>
                   <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
-                  <li><a href="#" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
-                  
+                  <li><a href="{{ route('home.community') }}" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
               </nav>
@@ -137,7 +136,7 @@
                 <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-                    <span class="sitename">Daily Dictation</span>
+                    <span class="sitename">DTU English Hub</span>
                     </a>
                     <div class="footer-contact pt-2">
                     <p>03 Quang Trung</p>

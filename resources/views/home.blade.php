@@ -7,7 +7,7 @@
         <img src="img/learn.jpg" alt="" data-aos="fade-in">
 
         <div class="container d-flex flex-column align-items-center">
-        <h2 class="animate__backInDown wow" data-aos="fade-up" data-aos-delay="100">Daily Dictation</h2>
+        <h2 class="animate__backInDown wow" data-aos="fade-up" data-aos-delay="100">DTU English Hub</h2>
         <p class="wow animate__flipInX" data-aos="fade-up" data-aos-delay="200">Chúng tôi giúp bạn nâng cao kỹ năng nghe, mở rộng vốn từ vựng và làm bài kiểm tra để chinh phục tiếng Anh.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
             <a href="#about" class="btn-get-started">Bắt đầu ngay</a>
@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-6 animate__backInLeft wow" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Nâng cao trình độ tiếng Anh cùng Daily Dictation</h3>
+                    <h3>Nâng cao trình độ tiếng Anh cùng DTU English Hub</h3>
                     <img src="img/listen_home.jpg" class="img-fluid rounded-4 mb-4" alt="">
                     <p>Đồng hành cùng hơn 1 triệu người học và giáo viên trên toàn thế giới</p>
                     <p>Chúng tôi cam kết mang đến môi trường học tập an toàn và hiệu quả, giúp bạn nâng cao kỹ năng nghe, từ vựng và khả năng làm bài kiểm tra một cách dễ dàng.</p>

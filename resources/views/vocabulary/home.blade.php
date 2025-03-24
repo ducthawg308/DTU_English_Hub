@@ -11,7 +11,7 @@
                                 English Vocabulary
                             </h1>
                             <p class="text-sm sm:text-base lg:text-lg font-text-regular text-sub-title mb-0 text-gray-600">
-                                Hãy bắt đầu hành trình học từ vựng tiếng Anh được phân loại trên Daily Dictation
+                                Hãy bắt đầu hành trình học từ vựng tiếng Anh được phân loại trên DTU English Hub
                             </p>
                         </div>
                         <img src="Star" class="position-absolute top-0 right-30p d-none lg:block" alt="Start" />
