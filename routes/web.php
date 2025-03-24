@@ -100,7 +100,7 @@ Route::get('donate', [App\Http\Controllers\DonateController::class, 'show'])->na
 Route::post('donate/generate', [App\Http\Controllers\DonateController::class, 'generate'])->name('donate.generate');
 
 //Community
-Route::get('community', [App\Http\Controllers\CommunityController::class, 'show'])->name('home.community');
+Route::get('community', [App\Http\Controllers\CommunityController::class, 'home'])->name('home.community');
 
 // AI
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);
