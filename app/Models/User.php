@@ -59,12 +59,22 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TopicVocabulary::class);
     }
 
-    public function wordnote(){
-        // Một User có thể có nhiều Wordnote
-        return $this->hasMany(Wordnote::class);
-    }
-
     public function resultExam(){
         return $this->hasMany(ResultExam::class);
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(BlogLike::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -81,6 +81,9 @@ Route::middleware(['auth','verified'])->group(function(){
 
     Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
     Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
+
+    Route::get('community/create', [App\Http\Controllers\CommunityController::class, 'create'])->name('create.community');
+    Route::post('community/store', [App\Http\Controllers\CommunityController::class, 'store'])->name('store.community');
 });
 
 Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
@@ -100,7 +103,10 @@ Route::get('donate', [App\Http\Controllers\DonateController::class, 'show'])->na
 Route::post('donate/generate', [App\Http\Controllers\DonateController::class, 'generate'])->name('donate.generate');
 
 //Community
-Route::get('community', [App\Http\Controllers\CommunityController::class, 'home'])->name('home.community');
+Route::get('community', [App\Http\Controllers\CommunityController::class, 'index'])->name('home.community');
+Route::get('community/detail/{id}', [App\Http\Controllers\CommunityController::class, 'detail'])->name('detail.community');
+Route::post('community/{id}/like', [App\Http\Controllers\CommunityController::class, 'toggleLike'])->name('like.community');
+Route::post('community/comment/store', [App\Http\Controllers\CommunityController::class, 'storeComment'])->name('storeComment.community');
 
 // AI
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);

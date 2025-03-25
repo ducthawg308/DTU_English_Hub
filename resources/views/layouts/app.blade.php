@@ -92,8 +92,8 @@
                   <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
                   <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
                   <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">IPA</a></li>
-                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                   <li><a href="{{ route('home.community') }}" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
+                  <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
               </nav>
@@ -108,7 +108,9 @@
                 @else
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-dark text-decoration-none ms-4" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&s" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}"
+                                 class="rounded-circle me-3"
+                                 width="34" height="34" alt="Avatar">
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                             <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
@@ -184,6 +186,7 @@
 
         </footer>
     </div>
+    @yield('scripts')
 </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
