@@ -110,11 +110,21 @@
                         <a href="#" class="d-block link-dark text-decoration-none ms-4" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}"
                                  class="rounded-circle me-3"
-                                 width="34" height="34" alt="Avatar">
+                                 width="36" height="36" alt="Avatar">
                         </a>
-                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+                        <ul class="dropdown-menu text-small dropdown-menu-end profile-dropdown mt-2" aria-labelledby="dropdownUser1" style="">
+                            <li class="p-3 d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}"
+                                    class="rounded-circle"
+                                    width="50" height="50" alt="Avatar">
+                                <div>
+                                    <div class="fw-semibold">{{ Auth::user()->name }}</div>
+                                    <div class="text-muted">{{ \Illuminate\Support\Str::before(Auth::user()->email, '@') }}</div>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Bài đăng</a></li>
+                            <li><a class="dropdown-item" href="#">Bài viết của tôi</a></li>
                             <li><a class="dropdown-item" href="{{ route('user.setting') }}">Cài đặt</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

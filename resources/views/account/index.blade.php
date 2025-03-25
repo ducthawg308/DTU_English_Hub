@@ -7,7 +7,9 @@
                 <div class="col-md-4 border-end">
                     <div class="card-body custom-card-body">
                         <div class="d-flex align-items-center mb-4">
-                            <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 1.5rem;">F8</div>
+                            <img src="https://ui-avatars.com/api/?name={{ $user->name }}"
+                                    class="rounded-circle"
+                                    width="50" height="50" alt="Avatar">
                             <h1 class="ms-3 h4">Cài đặt tài khoản</h1>
                         </div>
                         <p class="text-muted mb-4">Quản lý cài đặt tài khoản của bạn như thông tin cá nhân, cài đặt bảo mật, quản lý thông báo, v.v.</p>
@@ -37,14 +39,14 @@
                                 <div class="list-group-item d-flex justify-content-between align-items-center custom-list-group-item">
                                     <div>
                                         <p class="text-muted mb-1">Họ và tên</p>
-                                        <p class="mb-0">Đức Thắng Nguyễn</p>
+                                        <p class="mb-0">{{ $user->name }}</p>
                                     </div>
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
                                 <div class="list-group-item d-flex justify-content-between align-items-center custom-list-group-item">
                                     <div>
-                                        <p class="text-muted mb-1">Tên người dùng</p>
-                                        <p class="mb-0">nguyenducthang19</p>
+                                        <p class="text-muted mb-1">Email</p>
+                                        <p class="mb-0">{{ $user->email }}</p>
                                     </div>
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
@@ -59,7 +61,9 @@
                                     <div>
                                         <p class="text-muted mb-1">Ảnh đại diện</p>
                                         <div class="d-flex align-items-center">
-                                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 1.5rem;">N</div>
+                                            <img src="https://ui-avatars.com/api/?name={{ $user->name }}"
+                                                class="rounded-circle"
+                                                width="50" height="50" alt="Avatar">
                                         </div>
                                     </div>
                                     <i class="fas fa-chevron-right"></i>
@@ -94,7 +98,6 @@
 </div>
 <style>
     .card-wrapper {
-        background: linear-gradient(to right, #ffe4e1, #ffffff, #add8e6);
         display: flex;
         align-items: center;
         justify-content: center;
