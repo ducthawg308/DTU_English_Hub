@@ -39,7 +39,14 @@ class CommunityController extends Controller
     }
 
     public function detail($id){
-        $blog = Blog::with('user', 'comments.user')->findOrFail($id);
+        $blog = Blog::with([
+            'user',
+            'comments' => function ($q) {
+                $q->whereNull('parent_id')->latest();
+            },
+            'comments.user',
+            'comments.children.user'
+        ])->findOrFail($id);
 
         return view('community.detail', compact('blog'));
     }
@@ -65,22 +72,25 @@ class CommunityController extends Controller
 
     public function storeComment(Request $request){
         $request->validate([
-            'blog_id' => 'required|exists:blogs,id',
-            'content' => 'required|string|max:1000',
+            'blog_id'   => 'required|exists:blogs,id',
+            'content'   => 'required|string|max:1000',
+            'parent_id' => 'nullable|exists:comments,id', // Cho phép gửi comment con
         ]);
 
         $comment = Comment::create([
-            'blog_id' => $request->blog_id,
-            'user_id' => auth()->id(),
-            'content' => $request->content,
+            'blog_id'   => $request->blog_id,
+            'user_id'   => auth()->id(),
+            'content'   => $request->content,
+            'parent_id' => $request->parent_id ?? null,
         ]);
 
         return response()->json([
             'message' => 'Bình luận thành công',
             'comment' => $comment,
-            'user' => [
+            'user'    => [
                 'name' => auth()->user()->name
-            ]
+            ],
+            'parent_id' => $request->parent_id
         ]);
     }
 }
