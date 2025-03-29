@@ -27,7 +27,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary w-100 px-4 py-2" onclick="document.getElementById('exam-form').submit();">
+                <button type="button" class="btn btn-success w-100 px-4 py-2" onclick="document.getElementById('exam-form').submit();">
                     Nộp bài
                 </button>
             </div>

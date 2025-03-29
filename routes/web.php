@@ -84,6 +84,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
     Route::get('community/create', [App\Http\Controllers\CommunityController::class, 'create'])->name('create.community');
     Route::post('community/store', [App\Http\Controllers\CommunityController::class, 'store'])->name('store.community');
+    Route::post('community/storeTL', [App\Http\Controllers\CommunityController::class, 'storeTL'])->name('storeTL.community');
 });
 
 Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
@@ -107,6 +108,9 @@ Route::get('community', [App\Http\Controllers\CommunityController::class, 'index
 Route::get('community/detail/{id}', [App\Http\Controllers\CommunityController::class, 'detail'])->name('detail.community');
 Route::post('community/{id}/like', [App\Http\Controllers\CommunityController::class, 'toggleLike'])->name('like.community');
 Route::post('community/comment/store', [App\Http\Controllers\CommunityController::class, 'storeComment'])->name('storeComment.community');
+Route::get('community/document/{id}', [App\Http\Controllers\CommunityController::class, 'show'])->name('document.show');
+Route::get('/community/download/{id}', [App\Http\Controllers\CommunityController::class, 'download'])->name('document.download');
+
 
 // AI
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);

@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Blog;
 use App\Models\Comment;
+use App\Models\Document;
 
 class CommunityController extends Controller
 {
     public function index(){
         $blogs = Blog::with('user')->latest()->get();
-        return view('community.index', compact('blogs'));
+        $documents = Document::with('user')->latest()->paginate(10);
+        return view('community.index', compact('blogs', 'documents'));
     }
 
 
@@ -20,13 +22,11 @@ class CommunityController extends Controller
     }   
 
     public function store(Request $request){
-        // Validate dữ liệu
         $request->validate([
             'title'   => 'required',
             'content' => 'required',
         ]);
 
-        // Lưu blog
         Blog::create([
             'user_id'  => auth()->id(),
             'title'    => $request->title,
@@ -92,5 +92,49 @@ class CommunityController extends Controller
             ],
             'parent_id' => $request->parent_id
         ]);
+    }
+
+    public function storeTL(Request $request){
+        $request->validate([
+            'title'         => 'required|string|max:255',
+            'subject'  => 'required|string|max:50',
+            'file_path'      => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
+            'description'   => 'required|string',
+        ]);
+
+        $file = $request->file('file_path');
+        $filePath = $file->store('documents', 'public');
+        $fileType = $file->getClientOriginalExtension();
+
+
+        Document::create([
+            'user_id'       => auth()->id(),
+            'title'         => $request->title,
+            'subject'  => $request->subject,
+            'file_path'     => $filePath,
+            'file_type'   => $fileType,
+            'description'   => $request->description,
+        ]);
+
+        return redirect()->route('home.community')->with('success', 'Tài liệu đã được đăng thành công!');
+    }
+
+    public function show($id){
+        $document = Document::with('user')->findOrFail($id);
+        $document->increment('views');
+        return view('community.show', compact('document'));
+    }
+
+    public function download($id){
+        $document = Document::findOrFail($id);
+        $document->increment('downloads');
+
+        $path = storage_path('app/public/' . $document->file_path);
+
+        if (file_exists($path)) {
+            return response()->download($path);
+        } else {
+            abort(404);
+        }
     }
 }

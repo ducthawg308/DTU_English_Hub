@@ -18,7 +18,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                    <label for="inputFirstName">Name</label>
+                                    <label for="inputFirstName">Tên đầy đủ</label>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                            <label for="inputEmail">Email address</label>
+                            <label for="inputEmail">Địa chỉ Email</label>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -40,13 +40,13 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                    <label for="inputPassword">Password</label>
+                                    <label for="inputPassword">Mật khẩu</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 mb-md-0">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                    <label for="inputPasswordConfirm">Confirm Password</label>
+                                    <label for="inputPasswordConfirm">Nhập lại mật khẩu</label>
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                            <label for="inputEmail">Email address</label>
+                            <label for="inputEmail">Địa chỉ Email</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -25,7 +25,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                            <label for="inputPassword">Password</label>
+                            <label for="inputPassword">Mật khẩu</label>
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>

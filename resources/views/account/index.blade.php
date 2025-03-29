@@ -18,7 +18,7 @@
                                 <i class="fas fa-user me-3"></i> Thông tin cá nhân
                             </button>
                             <button class="list-group-item list-group-item-action d-flex align-items-center custom-list-group-item">
-                                <i class="fas fa-shield-alt me-3"></i> Mật khẩu và bảo mật
+                                <a href="{{ route('password.request') }}"><i class="fas fa-shield-alt me-3"></i> Thay đổi mật khẩu</a>
                             </button>
                         </div>
                     </div>

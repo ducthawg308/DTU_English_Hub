@@ -16,6 +16,93 @@
         </ul>
 
         <div class="tab-content" id="blogTabContent">
+            <!-- Tab 2: Tài liệu -->
+            <div class="tab-pane fade" id="documents-content" role="tabpanel" aria-labelledby="documents-tab">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="font-weight-bold mb-0">Tài liệu chia sẻ</h2>
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                        <i class="fas fa-upload"></i> Đăng tài liệu
+                    </button>
+                </div>
+                
+                @if($documents->count())
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th scope="col">Tiêu đề</th>
+                                    <th scope="col">Mã môn</th>
+                                    <th scope="col">Lượt xem</th>
+                                    <th scope="col">Lượt tải</th>
+                                    <th scope="col">Ngày đăng</th>
+                                    <th scope="col">Người đăng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($documents as $doc)
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('document.show', $doc->id) }}">
+                                                {{ $doc->title }}
+                                            </a>
+                                        </td>
+                                        <td class="text-center">{{ $doc->subject }}</td>
+                                        <td class="text-center">{{ $doc->views }}</td>
+                                        <td class="text-center">{{ $doc->downloads }}</td>
+                                        <td class="text-center">{{ $doc->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ $doc->user->name ?? 'Ẩn danh' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $documents->links('pagination::bootstrap-5') }}
+                    </div>
+                @else
+                    <p class="text-muted">Chưa có tài liệu nào được chia sẻ.</p>
+                @endif
+                <!-- Modal -->
+                <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content shadow-lg">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="uploadModalLabel">Đăng tài liệu mới</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{{ route('storeTL.community') }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label class="form-label">Tiêu đề</label>
+                                        <input type="text" name="title" class="form-control" placeholder="Nhập tiêu đề tài liệu" required>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label class="form-label">Mã môn</label>
+                                        <input type="text" name="subject" class="form-control" placeholder="VD: ENG101" required>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label class="form-label">Tập tin</label>
+                                        <input type="file" name="file_path" class="form-control" required>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label class="form-label">Mô tả</label>
+                                        <textarea name="description" class="form-control" rows="3" placeholder="Mô tả ngắn về tài liệu..." required></textarea>
+                                    </div>
+                                
+                                    <button type="submit" class="btn btn-primary">Đăng tài liệu</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tab 1: Blog -->
             <div class="tab-pane fade show active" id="blog-content" role="tabpanel" aria-labelledby="blog-tab">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -117,11 +204,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Tab 2: Tài liệu -->
-            <div class="tab-pane fade" id="documents-content" role="tabpanel" aria-labelledby="documents-tab">
-                <p>Chức năng trao đổi tài liệu sẽ hiển thị ở đây.</p>
             </div>
         </div>
     </div>
