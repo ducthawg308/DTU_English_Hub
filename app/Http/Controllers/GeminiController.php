@@ -8,7 +8,7 @@ class GeminiController extends Controller
 {
     public function callGemini(){
 
-        $apiKey = "AIzaSyCjJJ-XSRaFaPGXYFuufefNeiE74tKxlhI";
+        $apiKey = "AIzaSyC1-1KcjkXCSvcJ4qaaQ8OZhTuAadULRfs";
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey";
 
         $data = [

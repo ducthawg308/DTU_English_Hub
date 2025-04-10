@@ -135,6 +135,10 @@
         display: block;
         margin: 1rem auto;
     }
+    .reply-form textarea {
+        width: 100%;
+        resize: vertical;
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
