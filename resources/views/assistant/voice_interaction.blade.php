@@ -2,50 +2,143 @@
 
 @section('content')
 <div class="container px-5 my-5" style="min-height: 80vh;">
-    <h1 class="mt-4">Trợ lý học tiếng Anh bằng giọng nói</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">DTU English Hub</a></li>
-        <li class="breadcrumb-item active">Trợ lý AI giọng nói</li>   
-    </ol>
-
-    <div class="chat-container">
-        <div class="chat-messages" id="chat-messages">
-            <div class="message system">
-                <div class="message-content">
-                    <p>Xin chào! Tôi là trợ lý học tiếng Anh của bạn. Bạn có thể hỏi tôi về từ vựng, ngữ pháp, cách phát âm hoặc bất kỳ điều gì liên quan đến tiếng Anh.</p>
-                </div>
-            </div>
-            <!-- Messages will be added here dynamically -->
+    <div class="row mb-4">
+        <div class="col-lg-11 mx-auto">
+            <h1 class="fw-bold text-primary mb-2">Trợ lý học tiếng Anh bằng giọng nói</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none">DTU English Hub</a></li>
+                    <li class="breadcrumb-item active">Trợ lý AI giọng nói</li>   
+                </ol>
+            </nav>
         </div>
+    </div>
 
-        <div class="chat-input-area">
-            <textarea id="voice-transcript" class="chat-input" placeholder="Nội dung bạn đã nói sẽ hiển thị ở đây..." readonly></textarea>
-            <div class="chat-controls">
-                <button id="start-voice" class="voice-button">
-                    <i class="fas fa-microphone"></i>
-                </button>
-                <div id="voice-status">Nhấn vào nút micro để bắt đầu nói</div>
+    <div class="row">
+        <div class="col-lg-11 mx-auto">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-container me-2">
+                            <div class="avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Trợ lý học tiếng Anh</h5>
+                            <div class="status"><span class="status-indicator"></span> Trực tuyến</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message system">
+                        <div class="message-content">
+                            <p>Xin chào! Tôi là trợ lý học tiếng Anh của bạn. Bạn có thể hỏi tôi về từ vựng, ngữ pháp, cách phát âm hoặc bất kỳ điều gì liên quan đến tiếng Anh.</p>
+                        </div>
+                    </div>
+                    <!-- Messages will be added here dynamically -->
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <textarea id="voice-transcript" class="chat-input" placeholder="Nội dung bạn đã nói sẽ hiển thị ở đây..." readonly></textarea>
+                        <div class="input-actions">
+                            <button id="clear-transcript" class="action-button" title="Xóa">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-controls">
+                        <div id="voice-status">Nhấn vào nút micro để bắt đầu nói</div>
+                        <button id="start-voice" class="voice-button">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="loading" class="loading-indicator" style="display: none;">
         <div class="spinner"></div>
-        <p>Đang xử lý...</p>
+        <p>Đang xử lý câu hỏi của bạn...</p>
     </div>
 
     <audio id="tts-audio" style="display: none;"></audio>
 </div>
 
 <style>
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #4361ee15;
+        --secondary-color: #3f37c9;
+        --text-color: #333;
+        --light-text: #6c757d;
+        --light-bg: #f8f9fa;
+        --border-color: #e9ecef;
+        --success-color: #4cc9a9;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --border-radius: 16px;
+        --border-radius-sm: 8px;
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        color: var(--text-color);
+    }
+
     .chat-container {
         display: flex;
         flex-direction: column;
         height: 70vh;
-        background-color: #f8f9fa;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
         overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .chat-header {
+        padding: 16px 20px;
+        background-color: white;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .avatar-container {
+        position: relative;
+    }
+
+    .avatar {
+        width: 42px;
+        height: 42px;
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .status {
+        font-size: 12px;
+        color: var(--light-text);
+        display: flex;
+        align-items: center;
+    }
+
+    .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--success-color);
+        border-radius: 50%;
+        margin-right: 5px;
     }
 
     .chat-messages {
@@ -55,12 +148,19 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        background-color: var(--light-bg);
     }
 
     .message {
         display: flex;
         margin-bottom: 10px;
-        max-width: 80%;
+        max-width: 85%;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .message.user {
@@ -77,13 +177,14 @@
     }
 
     .message-content {
-        padding: 12px 16px;
-        border-radius: 18px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        padding: 14px 18px;
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+        line-height: 1.5;
     }
 
     .user .message-content {
-        background-color: #0d6efd;
+        background-color: var(--primary-color);
         color: white;
         border-bottom-right-radius: 4px;
     }
@@ -91,134 +192,280 @@
     .assistant .message-content {
         background-color: white;
         border-bottom-left-radius: 4px;
+        color: var(--text-color);
+    }
+
+    .assistant .message-content p:last-child {
+        margin-bottom: 0;
     }
 
     .system .message-content {
-        background-color: #e9ecef;
+        background-color: var(--light-bg);
+        border: 1px solid var(--border-color);
         text-align: center;
     }
 
     .chat-input-area {
-        padding: 15px;
+        padding: 16px;
         background-color: white;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .input-wrapper {
+        position: relative;
+        margin-bottom: 14px;
     }
 
     .chat-input {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
+        padding: 14px 40px 14px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
         resize: none;
         min-height: 60px;
-        margin-bottom: 10px;
         font-size: 16px;
+        transition: var(--transition);
+        background-color: var(--light-bg);
+    }
+
+    .chat-input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+    }
+
+    .input-actions {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .action-button {
+        background: none;
+        border: none;
+        color: var(--light-text);
+        cursor: pointer;
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .action-button:hover {
+        background-color: var(--border-color);
+        color: var(--text-color);
     }
 
     .chat-controls {
         display: flex;
         align-items: center;
-        gap: 15px;
+        justify-content: space-between;
+    }
+
+    #voice-status {
+        font-size: 14px;
+        color: var(--light-text);
     }
 
     .voice-button {
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
-        background-color: #0d6efd;
+        background-color: var(--primary-color);
         color: white;
         border: none;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 20px;
+        font-size: 22px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
     }
 
     .voice-button:hover {
-        background-color: #0b5ed7;
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .voice-button:active {
+        transform: translateY(0);
     }
 
     .voice-button.listening {
         animation: pulse 1.5s infinite;
-        background-color: #dc3545;
-    }
-
-    #voice-status {
-        font-size: 14px;
-        color: #6c757d;
+        background-color: var(--danger-color);
     }
 
     .loading-indicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 24px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        z-index: 1000;
     }
 
     .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(67, 97, 238, 0.2);
         border-radius: 50%;
-        border-top-color: #0d6efd;
+        border-top-color: var(--primary-color);
         animation: spin 1s ease-in-out infinite;
+        margin-bottom: 12px;
     }
 
     .vocabulary-list {
-        margin-top: 15px;
-        border-top: 1px solid #e9ecef;
-        padding-top: 15px;
+        margin-top: 16px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 16px;
+    }
+
+    .vocabulary-list h5 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        color: var(--primary-color);
     }
 
     .vocabulary-item {
         background-color: white;
-        border-radius: 8px;
-        padding: 10px 15px;
-        margin-bottom: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-sm);
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        box-shadow: var(--shadow-sm);
+        border-left: 3px solid var(--accent-color);
+        transition: var(--transition);
+    }
+
+    .vocabulary-item:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .vocabulary-item strong {
+        color: var(--primary-color);
     }
 
     .audio-controls {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-top: 10px;
+        margin-top: 12px;
     }
 
     .audio-button {
-        background-color: #0d6efd;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
+        background-color: var(--light-bg);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        padding: 6px 12px;
         cursor: pointer;
         font-size: 14px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
+        transition: var(--transition);
+    }
+
+    .audio-button:hover {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .audio-button i {
+        font-size: 14px;
+    }
+
+    .tips-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        padding: 16px 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+    }
+
+    .tips-card h5 {
+        font-size: 18px;
+        color: var(--text-color);
+        margin-bottom: 12px;
+    }
+
+    .tips-list {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    .tips-list li {
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .tips-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    .tips-list li em {
+        color: var(--primary-color);
     }
 
     @keyframes pulse {
         0% {
             transform: scale(1);
-            opacity: 1;
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
         }
-        50% {
-            transform: scale(1.1);
-            opacity: 0.8;
+        70% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
         }
         100% {
             transform: scale(1);
-            opacity: 1;
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
         }
     }
 
     @keyframes spin {
         to {
             transform: rotate(360deg);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .chat-container {
+            height: 65vh;
+        }
+        
+        .message {
+            max-width: 90%;
+        }
+        
+        .chat-input {
+            font-size: 15px;
+        }
+        
+        .chat-controls {
+            flex-direction: column-reverse;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        #voice-status {
+            text-align: center;
+            margin-top: 8px;
         }
     }
 </style>
@@ -239,7 +486,7 @@
         recognition.interimResults = true;
         
         recognition.onstart = function() {
-            document.getElementById('voice-status').innerHTML = 'Đang lắng nghe...';
+            document.getElementById('voice-status').innerHTML = '<i class="fas fa-circle-notch fa-spin me-2"></i>Đang lắng nghe...';
             document.getElementById('start-voice').classList.add('listening');
             document.getElementById('voice-transcript').value = '';
         };
@@ -254,7 +501,7 @@
         };
         
         recognition.onend = function() {
-            document.getElementById('voice-status').innerHTML = 'Đã hoàn thành lắng nghe';
+            document.getElementById('voice-status').innerHTML = 'Nhấn vào nút micro để bắt đầu nói';
             document.getElementById('start-voice').classList.remove('listening');
             
             const transcript = document.getElementById('voice-transcript').value.trim();
@@ -266,11 +513,11 @@
         
         recognition.onerror = function(event) {
             console.error('Lỗi nhận diện giọng nói:', event.error);
-            document.getElementById('voice-status').innerHTML = `Lỗi: ${event.error}. Vui lòng thử lại`;
+            document.getElementById('voice-status').innerHTML = `<i class="fas fa-exclamation-triangle text-warning me-2"></i>Lỗi: ${event.error}. Vui lòng thử lại`;
             document.getElementById('start-voice').classList.remove('listening');
         };
     } else {
-        document.getElementById('voice-status').innerHTML = 'Trình duyệt của bạn không hỗ trợ nhận diện giọng nói';
+        document.getElementById('voice-status').innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Trình duyệt không hỗ trợ nhận diện giọng nói';
         document.getElementById('start-voice').disabled = true;
     }
     
@@ -285,6 +532,11 @@
                 setTimeout(() => recognition.start(), 200);
             }
         }
+    });
+    
+    // Xử lý nút xóa văn bản
+    document.getElementById('clear-transcript').addEventListener('click', function() {
+        document.getElementById('voice-transcript').value = '';
     });
     
     // Hàm thêm tin nhắn vào khung chat
@@ -305,7 +557,7 @@
             
             const speakButton = document.createElement('button');
             speakButton.className = 'audio-button';
-            speakButton.innerHTML = '<i class="fas fa-volume-up"></i> Đọc lại';
+            speakButton.innerHTML = '<i class="fas fa-volume-up"></i> Nghe phản hồi';
             speakButton.onclick = function() {
                 if (currentAudioId) {
                     playAudioFromServer(currentAudioId);
@@ -323,15 +575,16 @@
                 vocabList.className = 'vocabulary-list';
                 
                 const vocabTitle = document.createElement('h5');
-                vocabTitle.textContent = 'Từ vựng liên quan:';
+                vocabTitle.innerHTML = '<i class="fas fa-book me-2"></i>Từ vựng liên quan:';
                 vocabList.appendChild(vocabTitle);
                 
                 vocabularies.forEach(word => {
                     const vocabItem = document.createElement('div');
                     vocabItem.className = 'vocabulary-item';
                     vocabItem.innerHTML = `
-                        <strong>${word.word}</strong> (${word.pronounce}): ${word.meaning} <br>
-                        <em>Ví dụ:</em> ${word.example}
+                        <strong>${word.word}</strong> <span class="text-muted">${word.pronounce}</span><br>
+                        <span class="meaning">${word.meaning}</span><br>
+                        <span class="example"><em>Ví dụ:</em> ${word.example}</span>
                     `;
                     vocabList.appendChild(vocabItem);
                 });
@@ -367,7 +620,12 @@
                 query: text
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             // Ẩn trạng thái đang tải
             document.getElementById('loading').style.display = 'none';
@@ -390,7 +648,7 @@
         .catch(error => {
             console.error('Lỗi:', error);
             document.getElementById('loading').style.display = 'none';
-            addMessageToChat('assistant', '<p class="text-danger">Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.</p>');
+            addMessageToChat('assistant', '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.</div>');
         });
     }
     
@@ -401,20 +659,38 @@
         }
         
         // Đặt nguồn audio từ route phát audio
-        audioElement.src = '{{ url("play-audio") }}/' + audioId;
+        const audioSrc = '{{ url("play-audio") }}/' + audioId;
+        
+        // Chỉ tải lại nếu nguồn audio thay đổi
+        if (audioElement.src !== audioSrc) {
+            audioElement.src = audioSrc;
+        }
+        
         audioElement.controls = false;
         
-        // Tự động phát audio
-        audioElement.onloadedmetadata = function() {
+        // Hiển thị thông báo đang tải audio
+        const statusElement = document.getElementById('voice-status');
+        const originalStatus = statusElement.innerHTML;
+        statusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin me-2"></i>Đang tải audio...';
+        
+        // Tự động phát audio sau khi tải
+        audioElement.onloadeddata = function() {
+            statusElement.innerHTML = '<i class="fas fa-volume-up me-2"></i>Đang phát audio...';
             audioElement.play().catch(error => {
                 console.error('Lỗi khi phát audio:', error);
+                statusElement.innerHTML = originalStatus;
                 // Fallback to browser's speech synthesis if audio playback fails
                 speakWithBrowser(lastResponseText);
             });
         };
         
+        audioElement.onended = function() {
+            statusElement.innerHTML = originalStatus;
+        };
+        
         audioElement.onerror = function() {
             console.error('Lỗi khi tải audio');
+            statusElement.innerHTML = originalStatus;
             // Fallback to browser's speech synthesis if audio loading fails
             speakWithBrowser(lastResponseText);
         };
@@ -433,12 +709,30 @@
             // Dừng nếu đang nói
             speechSynthesis.cancel();
             
+            // Cập nhật trạng thái
+            const statusElement = document.getElementById('voice-status');
+            const originalStatus = statusElement.innerHTML;
+            statusElement.innerHTML = '<i class="fas fa-volume-up me-2"></i>Đang đọc...';
+            
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'vi-VN';
             utterance.rate = 1.0;
             
+            utterance.onend = function() {
+                statusElement.innerHTML = originalStatus;
+            };
+            
+            utterance.onerror = function() {
+                statusElement.innerHTML = originalStatus;
+            };
+            
             speechSynthesis.speak(utterance);
         }
     }
+    
+    // Tự động cuộn xuống tin nhắn mới nhất khi trang tải xong
+    window.addEventListener('load', function() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
 </script>
 @endsection
