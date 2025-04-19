@@ -73,7 +73,6 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/vocabularyAI', [App\Http\Controllers\VocabularyController::class, 'generateVocabulary'])->name('generate.vocabulary');
     Route::post('/save-vocabulary', [App\Http\Controllers\VocabularyController::class, 'saveVocabulary'])->name('save.vocabulary');
 
-
     Route::get('exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
     Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
     Route::post('exam/{id}/submit', [App\Http\Controllers\ExamController::class, 'submitTest'])->name('exam.submit');
@@ -119,3 +118,11 @@ Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini
 Route::get('pronounce', function () {
     return view('pronounce.index');
 })->name('home.pronounce');
+
+//Assistant
+// 1. Route hiển thị giao diện tương tác giọng nói
+Route::get('/voice-interaction', [App\Http\Controllers\VoiceInteractionController::class, 'index'])->name('voice.interaction');
+// 2. Route xử lý câu hỏi từ giọng nói
+Route::post('/process-voice', [App\Http\Controllers\VoiceInteractionController::class, 'processVoice'])->name('process.voice');
+// 3. Route phát audio đã lưu
+Route::get('/play-audio/{audioId}', [App\Http\Controllers\VoiceInteractionController::class, 'playAudio'])->name('play.audio');

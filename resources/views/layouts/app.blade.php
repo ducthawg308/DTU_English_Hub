@@ -52,6 +52,7 @@
                   <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
                   <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
                   <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">IPA</a></li>
+                  <li><a href="{{ route('voice.interaction') }}" class="{{ request()->is('voice-interaction*') ? 'active' : '' }}">Trợ lý AI</a></li>
                   <li><a href="{{ route('home.community') }}" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
                   <li><a href="{{ route('home.donate') }}" class="{{ request()->is('donate*') ? 'active' : '' }}">Ủng hộ</a></li>
                 </ul>
