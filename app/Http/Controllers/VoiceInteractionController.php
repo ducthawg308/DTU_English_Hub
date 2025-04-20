@@ -249,7 +249,7 @@ class VoiceInteractionController extends Controller
         $keywords = [
             "từ vựng", "vocabulary", "nghĩa", "meaning", "từ",
             "word", "phát âm", "pronunciation", "pronounce",
-            "đọc", "tiếng anh", "english", "định nghĩa",
+            "đọc", "english", "định nghĩa",
             "definition", "dịch", "translate", "giải thích", "explain"
         ];
 
