@@ -1,55 +1,51 @@
-@extends('layouts.app')
+@extends('layouts.auth-layout')
 
 @section('content')
-<div class="container" style="min-height: 80vh;">
-    <div class="row justify-content-center">
-        <div class="col-lg-5">
-            <div class="card shadow-lg border-0 rounded-lg my-5">
-                <div class="card-header"><h3 class="text-center font-weight-light my-4">Đăng nhập</h3></div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                    @csrf
-                        <div class="form-floating mb-3">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            <label for="inputEmail">Địa chỉ Email</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            <label for="inputPassword">Mật khẩu</label>
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">
-                                Nhớ đăng nhập
-                            </label>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                            <button type="submit" class="btn btn-primary">
-                                Đăng nhập
-                            </button>
-                            @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Quên mật khẩu?
-                                </a>
-                            @endif
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer text-center py-3">
-                    <div class="small"><a href="{{ route('register') }}">Chưa có tài khoản? Đăng ký!</a></div>
-                </div>
+    <div class="auth-form">
+        <div class="form-title">Đăng nhập</div>
+        <p class="text-center text-muted mb-4">Chào mừng đến với DTU English Hub</p>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Địa chỉ Email</label>
+                <input id="email" type="email"
+                       class="form-control @error('email') is-invalid @enderror"
+                       name="email" value="{{ old('email') }}" required autofocus>
+                @error('email')
+                    <div class="invalid-feedback d-block">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input id="password" type="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       name="password" required>
+                @error('password')
+                    <div class="invalid-feedback d-block">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox"
+                       name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label class="form-check-label" for="remember">Nhớ đăng nhập</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+            <div class="auth-footer mt-4">
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}">Quên mật khẩu?</a>
+                @endif
+                <br />
+                <a href="{{ route('register') }}">Chưa có tài khoản? Đăng ký!</a>
+            </div>
+        </form>
     </div>
-</div>
 @endsection
