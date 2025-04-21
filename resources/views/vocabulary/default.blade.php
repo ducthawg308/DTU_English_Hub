@@ -24,7 +24,7 @@
                         <strong class="" id="meaning">Meaning</strong>
                     </div>
                     <div class="back text-center p-3 flex-column">
-                        <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-3" style="max-height: 150px;">
+                        <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-3" style="max-height: 150px; border-radius: 15px;">
                         <p class="fs-5" id="example">Example sentence</p>
                     </div>
                 </div>
