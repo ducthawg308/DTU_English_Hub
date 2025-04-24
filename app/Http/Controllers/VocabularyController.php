@@ -150,17 +150,7 @@ class VocabularyController extends Controller
                     \"pronounce\": \"/ɪɡˈzɪstəns/\",
                     \"meaning\": \"Sự tồn tại, cuộc sống\",
                     \"example\": \"The meaning of human existence is a question philosophers have pondered for centuries.\",
-                    \"type_id\": \"1\",
-                    \"exercise\": {
-                        \"question\": \"What is the correct meaning of the word 'Existence'?\",
-                        \"options\": [
-                            \"A. Life\",
-                            \"B. Death\",
-                            \"C. Wealth\",
-                            \"D. Success\"
-                        ],
-                        \"answer\": \"A\"
-                    }
+                    \"type_id\": \"1\"
                 }
             ]
         }
@@ -168,15 +158,12 @@ class VocabularyController extends Controller
 
         ⚠ **Yêu cầu quan trọng:**  
         - Không cần giải thích, chỉ trả về JSON.
-        - Hãy đảm bảo đáp án đúng được random `options` và `answer  `.  
-        - Đáp án đúng phải khớp với một trong các lựa chọn trong `options`.  
         - Phân loại type_id như sau: 1 (Noun), 2 (Verb), 3 (Adjective), 4 (Adverb), 5 (Preposition), 6 (Conjunction), 7 (Interjection), 8 (Pronoun), 9 (Determiner).
         - Ví dụ:
             - Từ 'Book' (quyển sách) là danh từ, type_id là 1.
             - Từ 'Write' (viết) là động từ, type_id là 2.
             - Từ 'Happy' (vui vẻ) là tính từ, type_id là 3.
         ";
-
 
         $data = [
             "contents" => [

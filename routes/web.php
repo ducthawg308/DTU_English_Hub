@@ -84,6 +84,10 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('community/create', [App\Http\Controllers\CommunityController::class, 'create'])->name('create.community');
     Route::post('community/store', [App\Http\Controllers\CommunityController::class, 'store'])->name('store.community');
     Route::post('community/storeTL', [App\Http\Controllers\CommunityController::class, 'storeTL'])->name('storeTL.community');
+
+    Route::get('/reading', [App\Http\Controllers\ReadingController::class, 'index'])->name('index.reading');
+    Route::post('/reading/generate', [App\Http\Controllers\ReadingController::class, 'generateReading'])->name('generate.reading');
+    Route::post('/reading/save', [App\Http\Controllers\ReadingController::class, 'saveReading'])->name('save.reading');
 });
 
 Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');

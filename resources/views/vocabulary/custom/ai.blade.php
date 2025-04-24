@@ -30,7 +30,6 @@
 
         <div id="vocabulary-result" class="mt-5"></div>
         <button id="save-vocab" class="btn btn-success mt-3 mx-auto" style="display: none;">Thêm vào danh sách của tôi</button>
-        <div id="exercise-result" class="mt-5"></div>
         
     </div>
 
@@ -44,7 +43,6 @@
             let wordCount = document.getElementById('word_count').value;
             let loading = document.getElementById('loading');
             let resultContainer = document.getElementById('vocabulary-result');
-            let exerciseContainer = document.getElementById('exercise-result');
             let saveButton = document.getElementById('save-vocab');
     
             if (!topic || wordCount < 1 || wordCount > 50) {
@@ -54,7 +52,6 @@
     
             loading.style.display = 'block';
             resultContainer.innerHTML = '';
-            exerciseContainer.innerHTML = '';
             saveButton.style.display = 'none';
     
             let formData = new FormData();
@@ -78,66 +75,18 @@
                 generatedVocabulary = data.vocabularies;
     
                 let vocabHtml = "<h3 class='mt-5 text-center'>Danh sách từ vựng</h3><ul class='list-group'>";
-                let exerciseHtml = "<h3 class='mt-5 text-center'>Bài tập trắc nghiệm</h3>";
                 data.vocabularies.forEach((word, index) => {
                     vocabHtml += `<li class="list-group-item">
                                     <input type="checkbox" class="form-check-input select-word" data-index="${index}">
                                     <strong>${word.word}</strong> (${word.pronounce}): ${word.meaning} <br>
                                     <em>Ví dụ:</em> ${word.example}
                                 </li>`;
-
-                    // Hiển thị bài tập
-                    let optionsHtml = word.exercise.options.map((opt, i) => `
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="question-${index}" value="${opt[0]}">
-                            <label class="form-check-label">${opt}</label>
-                        </div>
-                    `).join("");
-
-                    exerciseHtml += `
-                        <div class="card mt-3">
-                            <div class="card-body">
-                                <p><strong>${index + 1}. ${word.exercise.question}</strong></p>
-                                ${optionsHtml}
-                                <button class="btn btn-sm btn-success mt-2 check-answer" data-index="${index}" data-answer="${word.exercise.answer}">
-                                    Kiểm tra đáp án
-                                </button>
-                                <p class="answer-feedback text-success mt-2" style="display: none;"></p>
-                            </div>
-                        </div>
-                    `;
                 });
     
                 vocabHtml += "</ul>";
                 resultContainer.innerHTML = vocabHtml;
-                exerciseContainer.innerHTML = exerciseHtml;
                 saveButton.style.display = 'block';
 
-                document.querySelectorAll('.check-answer').forEach(button => {
-                    button.addEventListener('click', function() {
-                        let index = this.getAttribute('data-index');
-                        let correctAnswer = this.getAttribute('data-answer');
-                        let selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
-
-                        if (!selectedOption) {
-                            alert("Vui lòng chọn một đáp án!");
-                            return;
-                        }
-
-                        let feedback = this.nextElementSibling;
-                        if (selectedOption.value === correctAnswer) {
-                            feedback.textContent = "Chính xác!";
-                            feedback.classList.remove("text-danger");
-                            feedback.classList.add("text-success");
-                        } else {
-                            feedback.textContent = `Sai! Đáp án đúng là: ${correctAnswer}`;
-                            feedback.classList.remove("text-success");
-                            feedback.classList.add("text-danger");
-                        }
-                        feedback.style.display = "block";
-                    });
-                });
-    
                 saveButton.onclick = function () {
                     let selectedWords = [];
                     document.querySelectorAll('.select-word:checked').forEach(checkbox => {
@@ -169,7 +118,6 @@
                         alert("Đã xảy ra lỗi khi lưu danh sách.");
                     });
                 };
-
             })
             .catch(error => {
                 loading.style.display = 'none';
