@@ -48,10 +48,19 @@
               <nav id="navmenu" class="navmenu">
                 <ul>
                   <li><a href="{{ route('home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Trang chủ</a></li>
-                  <li><a href="{{ route('list.topic') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện nghe</a></li>
-                  <li><a href="{{ route('index.reading') }}" class="{{ request()->is('reading*') ? 'active' : '' }}">Luyện đọc hiểu</a></li>
+                  <div class="dropdown">
+                    <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Luyện tập
+                    </a>
+                  
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('list.topic') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện bài nghe</a></li>
+                        <li><a href="{{ route('index.reading') }}" class="{{ request()->is('reading*') ? 'active' : '' }}">Luyện bài đọc</a></li>
+                        <li><a href="{{ route('index.writing') }}" class="{{ request()->is('writing*') ? 'active' : '' }}">Luyện viết</a></li>
+                        <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">Luyện phát âm</a></li>
+                    </ul>
+                  </div>    
                   <li><a href="{{ route('home.vocabulary') }}" class="{{ request()->is('vocabulary*') ? 'active' : '' }}">Từ vựng</a></li>
-                  <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">IPA</a></li>
                   <li><a href="{{ route('home.exam') }}" class="{{ request()->is('exam*') ? 'active' : '' }}">Thi thử</a></li>
                   <li><a href="{{ route('voice.interaction') }}" class="{{ request()->is('voice-interaction*') ? 'active' : '' }}">Trợ lý AI</a></li>
                   <li><a href="{{ route('home.community') }}" class="{{ request()->is('community*') ? 'active' : '' }}">Cộng đồng</a></li>
@@ -110,12 +119,12 @@
                 <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-                    <span class="sitename">DTU English Hub</span>
+                        <span class="sitename">DTU English Hub</span>
                     </a>
                     <div class="footer-contact pt-2">
                     <p>03 Quang Trung</p>
                     <p>Da Nang</p>
-                    <p><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                    <p><strong>Phone:</strong> <span>+84 5589 5598 55</span></p>
                     <p><strong>Email:</strong> <span>duytan@dtu.edu.vn</span></p>
                     </div>
                 </div>

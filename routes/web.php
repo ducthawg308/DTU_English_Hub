@@ -88,6 +88,10 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('/reading', [App\Http\Controllers\ReadingController::class, 'index'])->name('index.reading');
     Route::post('/reading/generate', [App\Http\Controllers\ReadingController::class, 'generateReading'])->name('generate.reading');
     Route::post('/reading/save', [App\Http\Controllers\ReadingController::class, 'saveReading'])->name('save.reading');
+    
+    Route::get('/writing', [App\Http\Controllers\WritingController::class, 'index'])->name('index.writing');
+    Route::post('/writing/generate-prompt', [App\Http\Controllers\WritingController::class, 'generatePrompt'])->name('writing.generate-prompt');
+    Route::post('/writing/evaluate', [App\Http\Controllers\WritingController::class, 'evaluateWriting'])->name('writing.evaluate');
 });
 
 Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
