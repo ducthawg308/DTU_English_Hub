@@ -135,8 +135,8 @@ class VocabularyController extends Controller
         }
 
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey";
-        $topic = $request->input('topic', 'Life');
-        $wordCount = $request->input('word_count', 10);
+        $topic = $request->input('topic');
+        $wordCount = $request->input('word_count');
 
         $prompt = "
         Hãy tạo danh sách gồm $wordCount từ vựng thuộc chủ đề '$topic'.
@@ -156,7 +156,7 @@ class VocabularyController extends Controller
         }
         ```
 
-        ⚠ **Yêu cầu quan trọng:**  
+        **Yêu cầu quan trọng:**  
         - Không cần giải thích, chỉ trả về JSON.
         - Phân loại type_id như sau: 1 (Noun), 2 (Verb), 3 (Adjective), 4 (Adverb), 5 (Preposition), 6 (Conjunction), 7 (Interjection), 8 (Pronoun), 9 (Determiner).
         - Ví dụ:
