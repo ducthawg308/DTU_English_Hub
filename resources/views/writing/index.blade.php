@@ -13,7 +13,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelA1" value="A1">
+                        <input class="form-check-input" type="radio" name="level" id="levelA1" value="A1" checked>
                         <label class="form-check-label" for="levelA1">A1 - Cơ bản tối thiểu</label>
                     </div>
                     <div class="form-check mb-2">
@@ -21,7 +21,7 @@
                         <label class="form-check-label" for="levelA2">A2 - Sơ cấp</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelB1" value="B1" checked>
+                        <input class="form-check-input" type="radio" name="level" id="levelB1" value="B1">
                         <label class="form-check-label" for="levelB1">B1 - Trung cấp</label>
                     </div>
                     <div class="form-check mb-2">

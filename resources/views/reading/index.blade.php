@@ -439,12 +439,26 @@
                                 }
                                 .question { margin-top: 30px; page-break-inside: avoid; }
                                 .options { margin-left: 20px; }
+                                .student-info { font-size: 14pt; margin-bottom: 20px; }
+                                .student-info label { display: inline-block; width: 100px; font-weight: bold; }
+                                .student-info input { border: none; width: 300px; font-size: 14pt; }
+                                @media print {
+                                    .student-info input { background: none; }
+                                }
                             </style>
                         </head>
                         <body>
                             <div class="container">
                                 <div class="no-print text-end mb-3">
-                                    <button onclick="window.print()" class="btn btn-primary">Print</button>
+                                    <button onclick="window.print()" class="btn btn-primary">In đề Reading</button>
+                                </div>
+
+                                <div class="student-info">
+                                    <label>Họ và tên:</label>
+                                    <input type="text" value="........................................" readonly>
+                                    <br>
+                                    <label>MSSV:</label>
+                                    <input type="text" value="........................................" readonly>
                                 </div>
                                 
                                 <h1>${data.reading.title}</h1>
