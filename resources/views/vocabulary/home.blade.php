@@ -1,41 +1,79 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container" style="min-height: 80vh;">
-        <div class="my-5">
-            <div class="position-relative">
-                <div class="max-w-1200px mx-4 md:mx-8 xl:mx-auto">
-                    <div class="leading-6 d-flex justify-content-center gap-8 align-items-center mt-8 flex-column-reverse lg:flex-row mb-3 lg:mb-6">
-                        <img src="Star" class="position-absolute top-12 left-27p d-none lg:block" alt="Star" />
-                        <div class="d-flex flex-column align-items-center">
-                            <h1 class="text-lg sm:text-2xl lg:text-40px text-title text-center lg:text-start fw-bold mb-4">
-                                English Vocabulary
-                            </h1>
-                            <p class="text-sm sm:text-base lg:text-lg font-text-regular text-sub-title mb-0 text-gray-600">
-                                Hãy bắt đầu hành trình học từ vựng tiếng Anh được phân loại trên DTU English Hub
-                            </p>
-                        </div>
-                        <img src="Star" class="position-absolute top-0 right-30p d-none lg:block" alt="Start" />
-                    </div>
-                </div>
+    <div class="container py-5" style="min-height: 80vh;">
+        <!-- Learning Methods Section -->
+        <div id="learning-methods" class="row mb-1">
+            <div class="col-12 text-center mb-4">
+                <h2 class="fw-bold">Phương pháp học từ vựng</h2>
+                <p class="text-muted">Lựa chọn phương pháp học từ vựng phù hợp với bạn</p>
             </div>
         </div>
 
-        <div class="row d-flex">
+        <!-- Cards Section -->
+        <div class="row g-4">
+            <!-- System Vocabulary Card -->
             <div class="col-md-6">
-                <div class="card shadow border-light rounded">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">Học Từ Vựng Của Hệ Thống</h5>
-                        <p class="card-text">Khám phá các từ vựng được hệ thống cung cấp và học tập theo cách hiệu quả nhất.</p>
-                        <a href="{{ route('topic.vocabulary') }}" class="btn btn-primary">Bắt đầu học</a>
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="text-primary mb-3">
+                            <i class="bi bi-collection-fill fs-1"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Học Từ Vựng Của Hệ Thống</h4>
+                        <p class="card-text text-muted mb-4">
+                            Khám phá các danh sách từ vựng được biên soạn bởi đội ngũ giảng viên DTU, phân loại theo chủ đề và mức độ khó.
+                            Sử dụng các danh sách này để cải thiện vốn từ vựng của bạn một cách hiệu quả.
+                        </p>
+                        <a href="{{ route('topic.vocabulary') }}" class="btn btn-primary px-4 fw-semibold mt-auto">
+                            Bắt đầu học <i class="bi bi-book ms-1"></i>
+                        </a>
                     </div>
                 </div>
             </div>
+
+            <!-- Custom Vocabulary Card -->
             <div class="col-md-6">
-                <div class="card shadow border-light rounded">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Học Từ Vựng Tự Custom</h5>
-                        <p class="card-text">Tạo danh sách từ vựng riêng của bạn và học theo cách của bạn.</p>
-                        <a href="{{ route('custom.vocabulary') }}" class="btn btn-success">Tạo danh sách từ vựng</a>
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="text-success mb-3">
+                            <i class="bi bi-pencil-square fs-1"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Học Từ Vựng Tự Custom</h4>
+                        <p class="card-text text-muted mb-4">
+                            Tạo danh sách từ vựng riêng của bạn và học theo cách của bạn. Nhập từ vựng một cách thủ công
+                            hoặc sinh từ vựng từ AI, sau đó sử dụng các công cụ học tập để ghi nhớ chúng hiệu quả.
+                        </p>
+                        <a href="{{ route('custom.vocabulary') }}" class="btn btn-success px-4 fw-semibold mt-auto">
+                            Tạo danh sách từ vựng <i class="bi bi-plus-circle ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spaced Repetition Card -->
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                    <div class="row g-0">
+                        <div class="col-md-4 bg-warning bg-opacity-10">
+                            <div class="d-flex align-items-center justify-content-center h-100 p-3">
+                                <img src="{{ asset('img/spaced_repetition1.jpg') }}" alt="Spaced Repetition" class="img-fluid" style="max-height: 200px;">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body p-4 p-lg-5">
+                                <div class="d-flex align-items-center mb-3">
+                                    <span class="badge bg-warning-subtle text-warning fs-6 me-2">Khuyên dùng</span>
+                                    <h3 class="card-title fw-bold mb-0">Ôn Luyện Theo Phương Pháp Spaced Repetition</h3>
+                                </div>
+                                <p class="card-text fs-6 text-muted mb-4">
+                                    Ứng dụng phương pháp <strong>Spaced Repetition</strong> thông minh giúp bạn ghi nhớ từ vựng hiệu quả hơn. 
+                                    Các từ sẽ được phân loại vào các box như "Dễ nhớ", "Dễ quên" và "Rất dễ quên" dựa trên khả năng ghi nhớ của bạn.
+                                    Hệ thống sẽ nhắc bạn ôn tập từ vựng đúng thời điểm để tối ưu hóa quá trình học tập.
+                                </p>
+                                <a href="{{ route('spacedrepetition.vocabulary') }}" class="btn btn-warning px-4 fw-semibold">
+                                    Ôn luyện ngay <i class="bi bi-lightning-charge-fill ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

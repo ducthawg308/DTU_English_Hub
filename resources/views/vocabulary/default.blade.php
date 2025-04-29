@@ -10,13 +10,13 @@
                     <button class="btn btn-lg btn-white custom-btn me-2 sound-btn">
                         <i class="fas fa-volume-up"></i>
                     </button>
-                    <button class="btn btn-lg btn-white custom-btn me-2 sound-btn">
+                    <button class="btn btn-lg btn-white custom-btn me-2 slow-sound-btn">
                         🐌
                     </button>
                 </div>
             </div>
     
-            <div class="flashcard-container mt-4" onclick="flipCard(this)">
+            <div class="flashcard-container mt-4">
                 <div class="flashcard">
                     <div class="front text-center p-3 flex-column">
                         <strong class="fs-3" id="word">Word</strong>
@@ -50,113 +50,129 @@
                 </button>                
             </div>
         </div>
+        
+        <!-- New buttons for memorization levels -->
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            <button class="btn btn-success custom-btn me-2 memorize-btn" data-level="1">Dễ nhớ</button>
+            <button class="btn btn-warning custom-btn me-2 memorize-btn" data-level="2">Dễ quên</button>
+            <button class="btn btn-danger custom-btn memorize-btn" data-level="3">Rất dễ quên</button>
+        </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const flashcardContainer = document.querySelector(".flashcard-container");
-            if (flashcardContainer) {
-                flashcardContainer.addEventListener("click", function () {
-                    const flashcard = this.querySelector(".flashcard");
-                    flashcard.classList.toggle("is-flipped");
-                });
+    <!-- Toast container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="memorizeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Thông báo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Đã gửi đánh giá từ vựng!
+            </div>
+        </div>
+    </div>
+
+<script>
+    const flashcard = {
+        currentIndex: 0,
+        vocabularys: @json($vocabularys),
+        elements: {
+            flashcard: document.querySelector(".flashcard"),
+            container: document.querySelector(".flashcard-container"),
+            word: document.getElementById("word"),
+            pronounce: document.getElementById("pronounce"),
+            meaning: document.getElementById("meaning"),
+            example: document.getElementById("example"),
+            image: document.getElementById("word-image"),
+            progress: document.getElementById("progress"),
+            soundBtn: document.querySelector(".sound-btn"),
+            slowSoundBtn: document.querySelector(".slow-sound-btn"),
+            nextBtn: document.querySelector(".next-btn"),
+            prevBtn: document.querySelector(".prev-btn"),
+            expandBtn: document.querySelector(".expand-btn"),
+            memorizeBtns: document.querySelectorAll(".memorize-btn"),
+        },
+
+        init() {
+            if (!this.vocabularys || this.vocabularys.length === 0) {
+                console.error("Dữ liệu từ vựng trống!");
+                return;
             }
-        });
+            this.bindEvents();
+            this.updateFlashcard(this.currentIndex);
+            this.updateProgress();
+        },
 
-        document.addEventListener("DOMContentLoaded", function () {
-    let currentIndex = 0;
-    const flashcard = document.querySelector(".flashcard");
-    const wordElement = document.getElementById("word");
-    const pronounceElement = document.getElementById("pronounce");
-    const meaningElement = document.getElementById("meaning");
-    const exampleElement = document.getElementById("example");
-    const imageElement = document.getElementById("word-image");
-    const soundButton = document.querySelector(".sound-btn");
-    const slowSoundButton = document.querySelector(".sound-btn:nth-child(2)");
+        bindEvents() {
+            this.elements.container.addEventListener("click", () => this.flipCard());
+            this.elements.soundBtn.addEventListener("click", () => this.speakWord(this.vocabularys[this.currentIndex].word, 1));
+            this.elements.slowSoundBtn.addEventListener("click", () => this.speakWord(this.vocabularys[this.currentIndex].word, 0.3));
+            this.elements.nextBtn.addEventListener("click", () => this.nextCard());
+            this.elements.prevBtn.addEventListener("click", () => this.prevCard());
+            this.elements.expandBtn.addEventListener("click", () => this.toggleFullScreen());
+            this.elements.memorizeBtns.forEach(btn => 
+                btn.addEventListener("click", () => this.handleMemorize(btn.dataset.level))
+            );
+        },
 
-    // Dữ liệu từ vựng từ Blade
-    let vocabularys = @json($vocabularys);
+        flipCard() {
+            this.elements.flashcard.classList.toggle("is-flipped");
+        },
 
-    if (!vocabularys || vocabularys.length === 0) {
-        console.error("Dữ liệu từ vựng trống!");
-        return;
-    }
+        updateFlashcard(index) {
+            if (!this.elements.flashcard) return;
 
-    function updateFlashcard(index) {
-        if (!flashcard) return;
+            this.elements.flashcard.classList.add("hide");
+            setTimeout(() => {
+                this.elements.word.textContent = this.vocabularys[index].word;
+                this.elements.pronounce.textContent = this.vocabularys[index].pronounce;
+                this.elements.meaning.textContent = this.vocabularys[index].meaning;
+                this.elements.example.textContent = this.vocabularys[index].example;
 
-        flashcard.classList.add("hide");
+                const imagePath = this.vocabularys[index].image 
+                    ? `{{ asset('img/vocab') }}/${this.vocabularys[index].image}`
+                    : `{{ asset('img/vocab/default.jpg') }}`;
+                this.elements.image.src = imagePath;
 
-        setTimeout(() => {
-            wordElement.textContent = vocabularys[index].word;
-            pronounceElement.textContent = vocabularys[index].pronounce;
-            meaningElement.textContent = vocabularys[index].meaning;
-            exampleElement.textContent = vocabularys[index].example;
+                this.elements.flashcard.classList.remove("hide");
+            }, 500);
+        },
 
-            // Cập nhật hình ảnh
-            let imagePath = vocabularys[index].image 
-                ? "{{ asset('img/vocab') }}/" + vocabularys[index].image 
-                : "{{ asset('img/vocab/default.jpg') }}";
-            imageElement.src = imagePath;
+        updateProgress() {
+            this.elements.progress.textContent = `${this.currentIndex + 1} / ${this.vocabularys.length}`;
+        },
 
-            flashcard.classList.remove("hide");
-        }, 500);
-    }
+        speakWord(word, rate) {
+            if ("speechSynthesis" in window) {
+                const speech = new SpeechSynthesisUtterance(word);
+                speech.lang = "en-US";
+                speech.rate = rate;
+                window.speechSynthesis.speak(speech);
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản!");
+            }
+        },
 
-    // Sự kiện phát âm khi bấm nút loa
-    function speakWord(word, rate = 0.9) {
-        if ("speechSynthesis" in window) {
-            let speech = new SpeechSynthesisUtterance(word);
-            speech.lang = "en-US"; // Ngôn ngữ tiếng Anh
-            speech.rate = rate; // Tốc độ đọc
-            window.speechSynthesis.speak(speech);
-        } else {
-            alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản!");
-        }
-    }
+        nextCard() {
+            if (this.currentIndex < this.vocabularys.length - 1) {
+                this.currentIndex++;
+                this.updateFlashcard(this.currentIndex);
+                this.updateProgress();
+            }
+        },
 
-    // Gán sự kiện click cho nút loa
-    soundButton.addEventListener("click", function () {
-        speakWord(vocabularys[currentIndex].word, 1);
-    });
+        prevCard() {
+            if (this.currentIndex > 0) {
+                this.currentIndex--;
+                this.updateFlashcard(this.currentIndex);
+                this.updateProgress();
+            }
+        },
 
-    slowSoundButton.addEventListener("click", function () {
-        speakWord(vocabularys[currentIndex].word, 0.3);
-    });
+        toggleFullScreen() {
+            const header = document.querySelector("header");
+            const footer = document.querySelector("footer");
 
-    document.querySelector(".next-btn").addEventListener("click", function () {
-        if (currentIndex < vocabularys.length - 1) {
-            currentIndex++;
-            updateFlashcard(currentIndex);
-            updateProgress();
-        }
-    });
-
-    document.querySelector(".prev-btn").addEventListener("click", function () {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateFlashcard(currentIndex);
-            updateProgress();
-        }
-    });
-
-    function updateProgress() {
-        document.getElementById("progress").textContent = `${currentIndex + 1} / ${vocabularys.length}`;
-    }
-
-    // Load từ đầu tiên khi trang mở
-    updateFlashcard(currentIndex);
-    updateProgress();
-});
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-        const expandButton = document.querySelector(".custom-btn.expand-btn");
-        const header = document.querySelector("header");
-        const footer = document.querySelector("footer");
-
-        function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().then(() => {
                     if (header) header.style.display = "none";
@@ -168,9 +184,57 @@
                     if (footer) footer.style.display = "";
                 });
             }
-        }
+        },
 
-        expandButton.addEventListener("click", toggleFullScreen);
-    });
-    </script>
+        handleMemorize(level) {
+            const vocabularyId = this.vocabularys[this.currentIndex].id;
+            
+            fetch('/memorize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'  // Yêu cầu phản hồi dạng JSON
+                },
+                body: JSON.stringify({ vocabulary_id: vocabularyId, level: parseInt(level) })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Error response:', text);
+                        throw new Error('Có lỗi xảy ra khi gửi yêu cầu');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.showToast(`Đã thêm vào box: ${this.getLevelText(level)}`);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.showToast('Có lỗi xảy ra, vui lòng thử lại!', 'error');
+            });
+        },
+        showToast(message, type = 'success') {
+            const toastEl = document.getElementById('memorizeToast');
+            const toastBody = toastEl.querySelector('.toast-body');
+            toastBody.textContent = message;
+            toastEl.classList.remove('bg-success', 'bg-danger');
+            toastEl.classList.add(type === 'success' ? 'bg-success' : 'bg-danger');
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        },
+
+        getLevelText(level) {
+            switch (parseInt(level)) {
+                case 1: return 'Dễ nhớ';
+                case 2: return 'Dễ quên';
+                case 3: return 'Rất dễ quên';
+                default: return '';
+            }
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => flashcard.init());
+</script>
 @endsection

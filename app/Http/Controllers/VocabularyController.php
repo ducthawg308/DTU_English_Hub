@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Topic;
-use Illuminate\Http\Request;
 use App\Models\TopicVocabulary;
-use App\Models\Wordnote;
-use App\Models\TypeVocabulary;
 use App\Models\Vocabulary;
+use App\Models\TypeVocabulary;
+use App\Models\UserVocabularyBox;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class VocabularyController extends Controller
 {
@@ -159,7 +160,7 @@ class VocabularyController extends Controller
         **Yêu cầu quan trọng:**  
         - Không cần giải thích, chỉ trả về JSON.
         - Phân loại type_id như sau: 1 (Noun), 2 (Verb), 3 (Adjective), 4 (Adverb), 5 (Preposition), 6 (Conjunction), 7 (Interjection), 8 (Pronoun), 9 (Determiner).
-        - Ví dụ:
+        - guiltyVí dụ:
             - Từ 'Book' (quyển sách) là danh từ, type_id là 1.
             - Từ 'Write' (viết) là động từ, type_id là 2.
             - Từ 'Happy' (vui vẻ) là tính từ, type_id là 3.
@@ -242,5 +243,49 @@ class VocabularyController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function storeMemorization(Request $request)
+    {
+        $request->validate([
+            'vocabulary_id' => 'required|exists:vocabularys,id',
+            'level' => 'required|in:1,2,3',
+        ]);
+
+        $userId = Auth::id();
+        $vocabularyId = $request->input('vocabulary_id');
+        $boxType = $request->input('level');
+
+        // Update or create a record in user_vocabulary_box
+        UserVocabularyBox::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'vocabulary_id' => $vocabularyId,
+            ],
+            [
+                'box_type' => $boxType,
+                'last_review_at' => Carbon::now(),
+                'review_count' => DB::raw('review_count + 1'),
+                'next_review_at' => $this->calculateNextReview($boxType),
+            ]
+        );
+
+        return response()->json(['message' => 'Memorization level saved successfully']);
+    }
+
+    protected function calculateNextReview($boxType)
+    {
+        // Example spaced repetition logic (customize as needed)
+        $intervals = [
+            1 => 7, // Dễ nhớ: Review after 7 days
+            2 => 3, // Dễ quên: Review after 3 days
+            3 => 1,  // Rất dễ quên: Review after 1 day
+        ];
+
+        return Carbon::now()->addDays($intervals[$boxType]);
+    }
+
+    public function showbox(){
+        return view("vocabulary.SpacedRepetition.index");
     }
 }

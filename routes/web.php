@@ -68,6 +68,8 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/edit/{id}', [App\Http\Controllers\VocabularyController::class, 'edit'])->name('edit.vocabUser');
     Route::post('home/vocabulary/custom/update/{id}', [App\Http\Controllers\VocabularyController::class, 'update'])->name('update.vocabUser');
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
+    Route::post('/memorize', [App\Http\Controllers\VocabularyController::class, 'storeMemorization']);
+    Route::get('home/vocabulary/spacedrepetition', [App\Http\Controllers\VocabularyController::class, 'showbox'])->name('spacedrepetition.vocabulary');
 
     Route::get('home/vocabulary/custom/ai', [App\Http\Controllers\VocabularyController::class, 'ai'])->name('ai.custom');
     Route::post('/vocabularyAI', [App\Http\Controllers\VocabularyController::class, 'generateVocabulary'])->name('generate.vocabulary');
