@@ -11,7 +11,7 @@ class WritingController extends Controller
     }
 
     public function generatePrompt(Request $request){
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
         if (!$apiKey) {
             return response()->json(['error' => 'Missing API Key'], 500);
         }
@@ -112,7 +112,7 @@ class WritingController extends Controller
     }
 
     public function evaluateWriting(Request $request){
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
         if (!$apiKey) {
             return response()->json(['error' => 'Missing API Key'], 500);
         }

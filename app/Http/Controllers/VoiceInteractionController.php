@@ -25,7 +25,7 @@ class VoiceInteractionController extends Controller
             return response()->json(['error' => 'Không tìm thấy nội dung đầu vào'], 400);
         }
 
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
         if (!$apiKey) {
             Log::error('Missing Gemini API Key');
             return response()->json(['error' => 'Cấu hình API chưa được thiết lập đúng'], 500);
@@ -114,7 +114,7 @@ class VoiceInteractionController extends Controller
 
     private function callGeminiAPI($data)
     {
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . env('GEMINI_API_KEY');
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . config('services.gemini.api_key');
 
         $ch = curl_init();
         curl_setopt_array($ch, [

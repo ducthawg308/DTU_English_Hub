@@ -11,7 +11,7 @@ class ReadingController extends Controller
     }
 
     public function generateReading(Request $request){
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
         if (!$apiKey) {
             return response()->json(['error' => 'Missing API Key'], 500);
         }
