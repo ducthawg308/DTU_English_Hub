@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
-        <div class="d-flex justify-content-center align-items-center mb-4">
-            <h1 class="h3 fw-bold text-primary display-6">Topic: {{ $topic->name }}</h1>
+<div class="container d-flex flex-column align-items-center justify-content-center min-vh-100 px-2 px-sm-3 px-md-4">
+        <div class="d-flex justify-content-center align-items-center mb-3">
+            <h1 class="h3 fw-bold text-primary fs-4 fs-md-5">Topic: {{ $topic->name }}</h1>
         </div>
 
         <div id="vocab-container">
-            <div class="d-flex align-items-center justify-content-between mb-5">
-                <i class="fas fa-times text-muted"></i>
-                <div class="progress w-100 mx-3">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <i class="fas fa-times text-muted fs-5"></i>
+                <div class="progress flex-grow-1 mx-2">
                     <div class="progress-bar bg-warning" role="progressbar" style="width: 40%;"
                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -17,16 +17,16 @@
                      alt="small orange icon" class="rounded-circle" width="20" height="20">
             </div>
             @foreach ($vocabularys as $index => $vocab)
-                <div class="vocab-card bg-white w-100 max-w-md mx-auto p-4 rounded shadow mb-4"
-                     data-word="{{ $vocab->word }}" 
+                <div class="vocab-card bg-white w-100 max-w-sm mx-auto p-3 p-sm-4 rounded shadow mb-3"
+                     data-word="{{ $vocab->word }}"
                      style="{{ $index === 0 ? '' : 'display: none;' }}">
-                    <div class="text-center mb-4">
-                        <h6 class="text-muted">Điền từ</h6>
-                        <h4 class="fw-bold">{{ $vocab->meaning }} ({{ $vocab->typeVocabulary->name }})</h4>
+                    <div class="text-center mb-3">
+                        <h6 class="text-muted fs-6 fs-sm-5">Điền từ</h6>
+                        <h4 class="fw-bold fs-5 fs-sm-4">{{ $vocab->meaning }} ({{ $vocab->typeVocabulary->name }})</h4>
                     </div>
 
-                    <div class="d-flex justify-content-center mb-4">
-                        <div class="rounded px-3 py-3 d-inline-block position-relative input-container">
+                    <div class="d-flex justify-content-center mb-3">
+                        <div class="rounded px-2 py-2 d-inline-block position-relative input-container">
                             @foreach (str_split($vocab->word) as $letter)
                                 <input type="text" class="letter-input" maxlength="1">
                             @endforeach
@@ -37,27 +37,27 @@
         </div>
 
         <div class="text-center">
-            <button id="check-btn" class="btn btn-success btn-lg mt-4 px-5">Kiểm tra</button>
+            <button id="check-btn" class="btn btn-success btn-sm btn-lg px-4 mt-3">Kiểm tra</button>
         </div>
     </div>
 
     <style>
         .letter-input {
-            width: 50px;
-            height: 60px;
+            width: 40px;
+            height: 50px;
             text-align: center;
-            font-size: 32px;
+            font-size: 24px;
             font-weight: bold;
             border: none;
-            border-bottom: 3px solid gray;
+            border-bottom: 2px solid gray;
             outline: none;
-            margin: 0 5px;
+            margin: 0 3px;
             text-transform: uppercase;
             transition: all 0.2s ease-in-out;
         }
 
         .letter-input:focus {
-            border-bottom: 3px solid orange;
+            border-bottom: 2px solid orange;
         }
 
         .letter-input.correct {
@@ -72,11 +72,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
         }
 
-        #vocab-container{
-            width: 70%;
+        #vocab-container {
+            width: 90%;
+            max-width: 600px;
+        }
+
+        @media (max-width: 576px) {
+            .letter-input {
+                width: 30px;
+                height: 40px;
+                font-size: 20px;
+                margin: 0 2px;
+            }
+
+            .input-container {
+                gap: 2px;
+            }
         }
     </style>
 

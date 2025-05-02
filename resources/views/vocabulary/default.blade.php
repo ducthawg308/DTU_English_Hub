@@ -1,61 +1,60 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container border rounded-3 shadow my-5 p-5">
-        <div class="d-flex justify-content-center align-items-center mb-4">
-            <h1 class="h3 fw-bold text-primary display-6">Topic: {{ $topic->name }}</h1>
+<div class="container border rounded-3 shadow my-4 p-3 p-sm-4 p-md-5">
+        <div class="d-flex justify-content-center align-items-center mb-3">
+            <h1 class="h3 fw-bold text-primary fs-4 fs-md-5">Topic: {{ $topic->name }}</h1>
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-center align-items-center">
-                <div class="d-flex align-items-center">
-                    <button class="btn btn-lg btn-white custom-btn me-2 sound-btn">
+                <div class="d-flex align-items-center flex-wrap">
+                    <button class="btn btn-lg btn-white custom-btn me-1 sound-btn">
                         <i class="fas fa-volume-up"></i>
                     </button>
-                    <button class="btn btn-lg btn-white custom-btn me-2 slow-sound-btn">
+                    <button class="btn btn-lg btn-white custom-btn me-1 slow-sound-btn">
                         🐌
                     </button>
                 </div>
             </div>
     
-            <div class="flashcard-container mt-4">
+            <div class="flashcard-container mt-3">
                 <div class="flashcard">
-                    <div class="front text-center p-3 flex-column">
-                        <strong class="fs-3" id="word">Word</strong>
-                        <p class="fs-5" id="pronounce">/Pronunciation/</p>
-                        <strong class="" id="meaning">Meaning</strong>
+                    <div class="front text-center p-2 p-sm-3 flex-column">
+                        <strong class="fs-4 fs-sm-3" id="word">Word</strong>
+                        <p class="fs-6 fs-sm-5" id="pronounce">/Pronunciation/</p>
+                        <strong class="fs-5 fs-sm-4" id="meaning">Meaning</strong>
                     </div>
-                    <div class="back text-center p-3 flex-column">
-                        <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-3" style="max-height: 150px; border-radius: 15px;">
-                        <p class="fs-5" id="example">Example sentence</p>
+                    <div class="back text-center p-2 p-sm-3 flex-column">
+                        <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-2" style="max-height: 120px; max-width: 100%; border-radius: 10px;">
+                        <p class="fs-6 fs-sm-5" id="example">Example sentence</p>
                     </div>
                 </div>
             </div>
         </div>
                             
-        <div class="d-flex justify-content-between align-items-center mt-5">
-            <button class="btn btn-white custom-btn favorite-btn">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-4">
+            <button class="btn btn-white custom-btn favorite-btn mb-2">
                 <i class="fa-solid fa-heart"></i>
             </button>
-            <div>
-                <button class="btn btn-white custom-btn prev-btn me-2">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-white custom-btn prev-btn me-2 mb-2">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <span class="text-muted" id="progress">1 / {{ count($vocabularys) }}</span>
-                <button class="btn btn-white custom-btn next-btn ms-2">
+                <span class="text-muted fs-6 fs-sm-5" id="progress">1 / {{ count($vocabularys) }}</span>
+                <button class="btn btn-white custom-btn next-btn ms-2 mb-2">
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn btn-white custom-btn expand-btn">
+                <button class="btn btn-white custom-btn expand-btn mb-2">
                     <i class="fas fa-expand"></i>
                 </button>                
             </div>
         </div>
         
-        <!-- New buttons for memorization levels -->
-        <div class="d-flex justify-content-center align-items-center mt-4">
-            <button class="btn btn-success custom-btn me-2 memorize-btn" data-level="1">Dễ nhớ</button>
-            <button class="btn btn-warning custom-btn me-2 memorize-btn" data-level="2">Dễ quên</button>
-            <button class="btn btn-danger custom-btn memorize-btn" data-level="3">Rất dễ quên</button>
+        <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+            <button class="btn btn-success custom-btn me-1 mb-2 memorize-btn" data-level="1">Dễ nhớ</button>
+            <button class="btn btn-warning custom-btn me-1 mb-2 memorize-btn" data-level="2">Dễ quên</button>
+            <button class="btn btn-danger custom-btn mb-2 memorize-btn" data-level="3">Rất dễ quên</button>
         </div>
     </div>
 
