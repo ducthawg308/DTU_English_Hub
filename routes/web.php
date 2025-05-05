@@ -70,6 +70,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('home/vocabulary/custom/delete/{id}', [App\Http\Controllers\VocabularyController::class, 'delete'])->name('delete.custom');
     Route::post('/memorize', [App\Http\Controllers\VocabularyController::class, 'storeMemorization']);
     Route::get('home/vocabulary/spacedrepetition', [App\Http\Controllers\VocabularyController::class, 'showbox'])->name('spacedrepetition.vocabulary');
+    Route::get('/learn-box/{box_type}', [App\Http\Controllers\VocabularyController::class, 'learnBox'])->name('learnBox');
 
     Route::get('home/vocabulary/custom/ai', [App\Http\Controllers\VocabularyController::class, 'ai'])->name('ai.custom');
     Route::post('/vocabularyAI', [App\Http\Controllers\VocabularyController::class, 'generateVocabulary'])->name('generate.vocabulary');

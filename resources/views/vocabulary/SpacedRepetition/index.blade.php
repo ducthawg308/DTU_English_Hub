@@ -25,12 +25,12 @@
                                 <i class="bi bi-clock me-1"></i> Ôn tập sau 7 ngày
                             </span>
                             <span class="badge bg-light text-dark px-3 py-2">
-                                <span id="box1-count">24</span> từ vựng
+                                <span id="box1-count">{{$box1}}</span> từ vựng
                             </span>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent border-0 p-3">
-                        <button class="btn btn-success w-100">Ôn tập Box 1</button>
+                        <a href="{{ route('learnBox', 1) }}" class="btn btn-success w-100">Ôn tập Box 1</a>
                     </div>
                 </div>
             </div>
@@ -51,12 +51,12 @@
                                 <i class="bi bi-clock me-1"></i> Ôn tập sau 3 ngày
                             </span>
                             <span class="badge bg-light text-dark px-3 py-2">
-                                <span id="box2-count">38</span> từ vựng
+                                <span id="box2-count">{{$box2}}</span> từ vựng
                             </span>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent border-0 p-3">
-                        <button class="btn btn-warning w-100">Ôn tập Box 2</button>
+                        <a href="{{ route('learnBox', 2) }}" class="btn btn-warning w-100">Ôn tập Box 2</a>
                     </div>
                 </div>
             </div>
@@ -77,12 +77,12 @@
                                 <i class="bi bi-clock me-1"></i> Ôn tập hàng ngày
                             </span>
                             <span class="badge bg-light text-dark px-3 py-2">
-                                <span id="box3-count">15</span> từ vựng
+                                <span id="box3-count">{{$box3}}</span> từ vựng
                             </span>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent border-0 p-3">
-                        <button class="btn btn-danger w-100">Ôn tập Box 3</button>
+                        <a href="{{ route('learnBox', 3) }}" class="btn btn-danger w-100">Ôn tập Box 3</a>
                     </div>
                 </div>
             </div>
@@ -105,17 +105,4 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
         }
     </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const boxCards = document.querySelectorAll('.box-card');
-            boxCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const boxNumber = this.getAttribute('data-box');
-                    const button = this.querySelector('.btn');
-                    button.click();
-                });
-            });
-        });
-    </script>
 @endsection

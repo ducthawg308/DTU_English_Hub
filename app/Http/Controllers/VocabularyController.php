@@ -45,12 +45,6 @@ class VocabularyController extends Controller
         return view('vocabulary.default',compact(['vocabularys','topic']));
     }
 
-    function learncustom($id){
-        $topic = TopicVocabulary::findOrFail($id);
-        $vocabularys = Vocabulary::where('topic_id', $id)->with('typeVocabulary')->get();
-        return view('vocabulary.default',compact(['vocabularys','topic']));
-    }
-
     function addtopic(){
         return view('vocabulary.custom.addtopic');
     }
@@ -285,7 +279,41 @@ class VocabularyController extends Controller
         return Carbon::now()->addDays($intervals[$boxType]);
     }
 
-    public function showbox(){
-        return view("vocabulary.SpacedRepetition.index");
+    public function showbox()
+    {
+        $userId = Auth::id();
+
+        // Lấy số lượng từ theo từng box_type cho user hiện tại
+        $boxCounts = UserVocabularyBox::select('box_type', DB::raw('count(*) as total'))
+            ->where('user_id', $userId)
+            ->whereIn('box_type', [1, 2, 3])
+            ->groupBy('box_type')
+            ->pluck('total', 'box_type')
+            ->toArray();
+
+        // Đảm bảo có đủ key cho box_type 1, 2, 3
+        $box1 = $boxCounts[1] ?? 0;
+        $box2 = $boxCounts[2] ?? 0;
+        $box3 = $boxCounts[3] ?? 0;
+
+        return view("vocabulary.SpacedRepetition.index", compact('box1', 'box2', 'box3'));
+    }
+
+    public function learnBox($box_type)
+    {
+        $userId = Auth::id();
+
+        // Lấy danh sách vocabulary thuộc box_type của user
+        $vocabularys = UserVocabularyBox::where('user_id', $userId)
+            ->where('box_type', $box_type)
+            ->join('vocabularys', 'user_vocabulary_boxes.vocabulary_id', '=', 'vocabularys.id')
+            ->with(['vocabulary.typeVocabulary'])
+            ->get()
+            ->pluck('vocabulary');
+
+        // Lấy topic đầu tiên để hiển thị (hoặc có thể để null nếu không cần)
+        $topic = TopicVocabulary::first(); // Điều chỉnh nếu cần lấy topic cụ thể
+
+        return view('vocabulary.SpacedRepetition.learn', compact('vocabularys', 'topic', 'box_type'));
     }
 }
