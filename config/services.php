@@ -34,4 +34,8 @@ return [
     'gemini' => [
         'api_key' => env('GEMINI_API_KEY'),
     ],
+
+    'zaloai' => [
+        'api_key' => env('ZALOAI_API_KEY'),
+    ],
 ];
