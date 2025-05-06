@@ -21,11 +21,11 @@
                     <div class="front text-center p-3 flex-column">
                         <strong class="fs-3" id="word">Word</strong>
                         <p class="fs-5" id="pronounce">/Pronunciation/</p>
-                        <strong class="" id="meaning">Meaning</strong>
+                        <p class="fs-5" id="example">Example sentence</p>
                     </div>
                     <div class="back text-center p-3 flex-column">
                         <img id="word-image" src="{{ asset('img/vocab/default.jpg') }}" alt="Vocabulary Image" class="img-fluid mb-3" style="max-height: 150px; border-radius: 15px;">
-                        <p class="fs-5" id="example">Example sentence</p>
+                        <strong class="" id="meaning">Meaning</strong>
                     </div>
                 </div>
             </div>
