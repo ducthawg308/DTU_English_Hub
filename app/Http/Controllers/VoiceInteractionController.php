@@ -26,10 +26,10 @@ class VoiceInteractionController extends Controller
             return response()->json(['error' => 'Không tìm thấy nội dung đầu vào'], 400);
         }
 
-        $apiKey = config('services.zaloai.api_key');
+        $apiKey = config('services.gemini.api_key'); // Changed from zaloai to gemini
         if (!$apiKey) {
             Log::error('Missing Gemini API Key');
-            return response()->json(['error' => 'Cấu hình API chưa được thiết lập đúng'], 500);
+            return response()->json(['error' => 'Cấu hình API Gemini chưa được thiết lập đúng'], 500);
         }
 
         $needVocabulary = $this->shouldIncludeVocabulary($query);
@@ -43,18 +43,18 @@ class VoiceInteractionController extends Controller
         $prompt .= "  \"response\": \"[Phản hồi chi tiết cho câu hỏi, sử dụng HTML để định dạng như <p>, <ul>, <li>, <strong>, <em>]\",";
 
         if ($needVocabulary) {
-            $prompt .= "  \"vocabularies\": [\n";
+            $prompt .= "\n  \"vocabularies\": [\n";
             $prompt .= "    {\n";
             $prompt .= "      \"word\": \"example\",\n";
             $prompt .= "      \"pronounce\": \"/ɪɡˈzæmpəl/\",\n";
             $prompt .= "      \"meaning\": \"ví dụ\",\n";
             $prompt .= "      \"example\": \"This is an example of correct pronunciation.\"\n";
             $prompt .= "    }\n";
-            $prompt .= "  ],\n";
+            $prompt .= "  ],";
         }
 
-        $prompt .= "\n  \"speech_text\": \"[Phiên bản tối ưu để đọc thành giọng nói, không có ký hiệu đặc biệt]";
-        $prompt .= "\n}\n```<br><br>";
+        $prompt .= "\n  \"speech_text\": \"[Phiên bản tối ưu để đọc thành giọng nói, không có ký hiệu đặc biệt]\"\n";
+        $prompt .= "}\n```<br><br>";
 
         $prompt .= "⚠ Yêu cầu quan trọng:<br>";
         $prompt .= "- Phần speech_text phải là văn bản thuần túy dễ đọc thành giọng nói.<br>";
@@ -71,25 +71,34 @@ class VoiceInteractionController extends Controller
 
         if (!$response['success']) {
             Log::error('Gemini API error', $response['error']);
-            return response()->json(['error' => 'Không thể kết nối với dịch vụ AI'], 500);
+            return response()->json(['error' => 'Không thể kết nối với dịch vụ AI: ' . ($response['error']['message'] ?? 'Unknown error')], 500);
         }
 
         $result = $response['data'];
         $responseText = $result['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
-        // Sử dụng regex để trích xuất JSON chính xác hơn
-        if (!preg_match('/\{(?:[^{}]|(?R))*\}/s', $responseText, $matches)) {
-            Log::error('Failed to extract JSON from response', ['raw_response' => $responseText]);
-            return response()->json(['error' => 'Không thể xử lý phản hồi từ AI'], 500);
-        }
-
-        $jsonData = $matches[0];
-        $parsedData = json_decode($jsonData, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE || !isset($parsedData['response'])) {
-            Log::error('Invalid JSON data', [
-                'json_error' => json_last_error_msg(),
-                'extracted_json' => $jsonData
+        // Try to handle JSON more robustly
+        try {
+            // First, try to extract JSON using regex (improved pattern)
+            if (preg_match('/\{(?:[^{}]|(?R))*\}/s', $responseText, $matches)) {
+                $jsonData = $matches[0];
+                $parsedData = json_decode($jsonData, true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE || !isset($parsedData['response'])) {
+                    throw new \Exception("Invalid JSON: " . json_last_error_msg());
+                }
+            } else {
+                // If regex fails, try to create a fallback response
+                Log::warning('Failed to extract JSON from response, creating fallback', ['raw_response' => $responseText]);
+                $parsedData = [
+                    'response' => '<p>' . nl2br(htmlspecialchars($responseText)) . '</p>',
+                    'speech_text' => strip_tags($responseText)
+                ];
+            }
+        } catch (\Exception $e) {
+            Log::error('JSON processing error', [
+                'error' => $e->getMessage(),
+                'raw_response' => $responseText
             ]);
             return response()->json(['error' => 'Dữ liệu phản hồi không hợp lệ'], 500);
         }
@@ -115,96 +124,88 @@ class VoiceInteractionController extends Controller
 
     private function callGeminiAPI($data)
     {
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . config('services.zaloai.api_key');
+        $apiKey = config('services.gemini.api_key'); // Changed from zaloai to gemini
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . $apiKey;
 
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => ["Content-Type: application/json"],
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_TIMEOUT => 30, // Thêm timeout 30 giây
-        ]);
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curlError = curl_error($ch);
-        curl_close($ch);
-
-        if ($httpCode !== 200) {
+        try {
+            $response = Http::timeout(30)
+                ->withHeaders(["Content-Type" => "application/json"])
+                ->post($url, $data);
+            
+            if ($response->successful()) {
+                return ['success' => true, 'data' => $response->json()];
+            } else {
+                return [
+                    'success' => false, 
+                    'error' => [
+                        'message' => 'Lỗi khi gọi API Gemini', 
+                        'http_code' => $response->status(), 
+                        'response' => $response->body()
+                    ]
+                ];
+            }
+        } catch (\Exception $e) {
             return [
-                'success' => false, 
+                'success' => false,
                 'error' => [
-                    'message' => 'Lỗi khi gọi API Gemini', 
-                    'http_code' => $httpCode, 
-                    'curl_error' => $curlError,
-                    'response' => $response
+                    'message' => 'Exception: ' . $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
                 ]
             ];
         }
-
-        return ['success' => true, 'data' => json_decode($response, true)];
     }
 
     private function generateAndSaveAudio($text)
     {
         try {
-            // Giới hạn độ dài văn bản cho API TTS
-            $text = mb_substr($text, 0, 2000);
-            
-            $apiKey = env("MINIMAX_API_KEY");
+            $text = mb_substr($text, 0, 2000); // Giới hạn độ dài
+
+            $apiKey = config('services.zaloai.api_key'); // Keep this as zaloai for TTS
+            $apiKey = "PMjfNAwn95Zb3jHTwrmW1YSuMzvCgsl9";
             if (!$apiKey) {
-                Log::error('Missing Minimax API Key');
+                Log::error('Missing ZaloAI API Key');
                 return null;
             }
-            
-            $url = "https://api.minimax.chat/v1/text_to_speech";
 
-            $data = [
-                "text" => $text,
-                "voice_id" => "female-qn-qingse",
-                "model_name" => "speech-01",
-                "speed" => 1.0
-            ];
+            $endpoint = 'https://api.zalo.ai/v1/tts/synthesize';
 
-            $ch = curl_init();
-            curl_setopt_array($ch, [
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POST => true,
-                CURLOPT_HTTPHEADER => [
-                    "Content-Type: application/json",
-                    "Authorization: Bearer $apiKey"
-                ],
-                CURLOPT_POSTFIELDS => json_encode($data),
-                CURLOPT_TIMEOUT => 30,
-            ]);
+            $response = Http::timeout(30)
+                ->withHeaders([
+                    'apikey' => $apiKey,
+                ])->asForm()->post($endpoint, [
+                    'input' => $text,
+                    'speaker_id' => 'hn_female_xuanthu_news', // hoặc speaker khác
+                ]);
 
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $curlError = curl_error($ch);
-            curl_close($ch);
-
-            if ($httpCode !== 200) {
-                Log::error('TTS API Error', [
-                    'http_code' => $httpCode, 
-                    'error' => $curlError,
-                    'response' => $response
+            if (!$response->successful()) {
+                Log::error('TTS Zalo API error', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
                 ]);
                 return null;
             }
 
-            $result = json_decode($response, true);
+            $audioUrl = $response->json()['data']['url'] ?? null;
 
-            if (empty($result['audio_content'])) {
-                Log::error('Empty audio content from TTS API');
+            if (!$audioUrl) {
+                Log::error('No audio URL returned from Zalo TTS');
                 return null;
             }
 
-            $audioContent = base64_decode($result['audio_content']);
+            // Tải về nội dung file âm thanh
+            $audioResponse = Http::timeout(30)->get($audioUrl);
+            
+            if (!$audioResponse->successful()) {
+                Log::error('Failed to download audio from URL', [
+                    'status' => $audioResponse->status()
+                ]);
+                return null;
+            }
+            
+            $audioContent = $audioResponse->body();
+
             if (empty($audioContent)) {
-                Log::error('Failed to decode base64 audio content');
+                Log::error('Empty audio content downloaded from Zalo TTS');
                 return null;
             }
 
@@ -214,82 +215,21 @@ class VoiceInteractionController extends Controller
             Storage::disk('public')->makeDirectory('tts_audio');
 
             if (Storage::disk('public')->put($audioPath, $audioContent)) {
-                // Thêm thông tin audio vào database để theo dõi và dọn dẹp sau này
+                // Ghi log hoặc lưu DB nếu cần
                 $this->logAudioFile($audioId);
                 return $audioId;
             } else {
                 Log::error('Failed to save audio file to storage');
                 return null;
             }
+
         } catch (\Exception $e) {
             Log::error('TTS generation failed', ['error' => $e->getMessage()]);
             return null;
         }
     }
 
-    // private function generateAndSaveAudio($text)
-    // {
-    //     try {
-    //         $text = mb_substr($text, 0, 2000); // Giới hạn độ dài
-
-    //         $apiKey = config('services.zaloai.api_key');
-    //         if (!$apiKey) {
-    //             Log::error('Missing ZaloAI API Key');
-    //             return null;
-    //         }
-
-    //         $endpoint = 'https://api.zalo.ai/v1/tts/synthesize';
-
-    //         $response = Http::withHeaders([
-    //             'apikey' => $apiKey,
-    //         ])->asForm()->post($endpoint, [
-    //             'input' => $text,
-    //             'speaker_id' => 'hn_female_xuanthu_news', // hoặc speaker khác
-    //         ]);
-
-    //         if (!$response->successful()) {
-    //             Log::error('TTS Zalo API error', [
-    //                 'status' => $response->status(),
-    //                 'body' => $response->body()
-    //             ]);
-    //             return null;
-    //         }
-
-    //         $audioUrl = $response->json()['data']['url'] ?? null;
-
-    //         if (!$audioUrl) {
-    //             Log::error('No audio URL returned from Zalo TTS');
-    //             return null;
-    //         }
-
-    //         // Tải về nội dung file âm thanh
-    //         $audioContent = Http::get($audioUrl)->body();
-
-    //         if (empty($audioContent)) {
-    //             Log::error('Empty audio content downloaded from Zalo TTS');
-    //             return null;
-    //         }
-
-    //         $audioId = Str::uuid()->toString();
-    //         $audioPath = "tts_audio/{$audioId}.mp3";
-
-    //         Storage::disk('public')->makeDirectory('tts_audio');
-
-    //         if (Storage::disk('public')->put($audioPath, $audioContent)) {
-    //             // Ghi log hoặc lưu DB nếu cần
-    //             $this->logAudioFile($audioId);
-    //             return $audioId;
-    //         } else {
-    //             Log::error('Failed to save audio file to storage');
-    //             return null;
-    //         }
-
-    //     } catch (\Exception $e) {
-    //         Log::error('TTS generation failed', ['error' => $e->getMessage()]);
-    //         return null;
-    //     }
-    // }
-
+    // Rest of the methods remain unchanged
     public function playAudio($audioId)
     {
         // Kiểm tra tính hợp lệ của $audioId
