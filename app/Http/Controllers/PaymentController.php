@@ -11,7 +11,7 @@ class PaymentController extends Controller{
         $data=$request->all();
         $code_cart = rand(1000,9999);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost/DailyDictation/public/home/topic_payment";
+        $vnp_Returnurl = "http://127.0.0.1:8000/home/topic_payment";
         $vnp_TmnCode = "IP4MN01N";//Mã website tại VNPAY 
         $vnp_HashSecret = "WD6GVH52Y7JTOFD1MDB797STBNDXA80M"; //Chuỗi bí mật
         

@@ -17,8 +17,9 @@
         <div class="list-group">
             @foreach ($topics as $topic)
                 <div class="list-group-item d-flex justify-content-between align-items-center border rounded mb-2 shadow-sm">
-                    <a href="{{ route('default.vocabulary', $topic->id) }}" class="text-decoration-none text-dark fw-bold text-truncate flex-grow-1 me-2" style="max-width: 70%;">{{ $topic->name }}</a>
-                    <div class="flex-shrink-0">
+                    <a href="{{ route('default.vocabulary', $topic->id) }}" class="text-decoration-none text-dark fw-bold text-truncate flex-grow-1 me-2" style="max-width: 50%;">{{ $topic->name }}</a>
+                    <div class="d-flex gap-2 flex-shrink-0">
+                        <a href="{{ route('default.vocabulary', $topic->id) }}" class="btn btn-success btn-sm">Học từ vựng</a>
                         <a href="{{ route('review.vocabulary', $topic->id) }}" class="btn btn-primary btn-sm">Ôn tập lại</a>
                     </div>
                 </div>

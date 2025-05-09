@@ -148,7 +148,7 @@ class VoiceInteractionController extends Controller
             return [
                 'success' => false,
                 'error' => [
-                    'message' => 'Exception: ' . $e->getMessage(),
+                    'message' => 'Exception: ' . $e->getMessage(),  
                     'trace' => $e->getTraceAsString()
                 ]
             ];
@@ -157,11 +157,10 @@ class VoiceInteractionController extends Controller
 
     private function generateAndSaveAudio($text)
     {
+        Log::info('TTS Input Text:', ['text' => $text]);
         try {
             $text = mb_substr($text, 0, 2000); // Giới hạn độ dài
-
-            $apiKey = config('services.zaloai.api_key'); // Keep this as zaloai for TTS
-            $apiKey = "PMjfNAwn95Zb3jHTwrmW1YSuMzvCgsl9";
+            $apiKey = config('services.zaloai.api_key');
             if (!$apiKey) {
                 Log::error('Missing ZaloAI API Key');
                 return null;
