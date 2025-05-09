@@ -106,6 +106,7 @@ Route::get('/show-answer/{id}', [App\Http\Controllers\ExercisesController::class
 
 Route::get('vocabulary', [App\Http\Controllers\VocabularyController::class, 'home'])->name('home.vocabulary');
 Route::get('vocabulary/topic', [App\Http\Controllers\VocabularyController::class, 'topic'])->name('topic.vocabulary');
+Route::get('/learnVocab/{type_id}', [App\Http\Controllers\VocabularyController::class, 'learnVocab'])->name('learnVocab');
 Route::get('vocabulary/default/{id}', [App\Http\Controllers\VocabularyController::class, 'default'])->name('default.vocabulary');
 Route::get('vocabulary/review/{id}', [App\Http\Controllers\VocabularyController::class, 'review'])->name('review.vocabulary');
 

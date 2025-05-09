@@ -13,6 +13,7 @@ class TopicVocabulary extends Model
 
     protected $fillable = [
         'user_id',
+        'type_id',
         'name',
     ];
 
@@ -26,4 +27,8 @@ class TopicVocabulary extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function typeTopic()
+    {
+        return $this->belongsTo(TypeTopic::class, 'type_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TopicVocabulary;
+use App\Models\TypeTopic;
 use App\Models\Vocabulary;
 use App\Models\TypeVocabulary;
 use App\Models\UserVocabularyBox;
@@ -20,7 +21,13 @@ class VocabularyController extends Controller
     function topic() {
         $isCustoms = false;
         $topics = TopicVocabulary::whereNull('user_id')->get();
-        return view('vocabulary.topic', compact('topics','isCustoms'));
+        $levels = TypeTopic::all();
+        return view('vocabulary.topic', compact('topics','isCustoms', 'levels'));
+    }
+
+    function learnVocab($type_id) {
+        $topics = TopicVocabulary::whereNull('user_id')->where('type_id', $type_id)->get();
+        return view('vocabulary.topicDetail', compact('topics'));
     }
 
     function topiccustom(){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Topic;
 use App\Models\Vocabulary;
 use App\Models\TopicVocabulary;
+use App\Models\TypeTopic;
 use App\Models\TypeVocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -20,12 +21,14 @@ class AdminVocabularyController extends Controller
     }
 
     function addtopic(){
-        return view('admin.vocabulary.addtopic');
+        $types = TypeTopic::all();
+        return view('admin.vocabulary.addtopic', compact('types'));
     }
 
     function storetopic(Request $request){
         TopicVocabulary::create([
             'name' => $request->input('nameTopic'),
+            'type_id' => $request->input('type_id'),
         ]);
 
         return redirect('admin/vocabulary/list')->with('status','Thêm topic thành công!');

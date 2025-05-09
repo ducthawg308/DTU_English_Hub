@@ -20,8 +20,7 @@
                         </div>
                         <h4 class="card-title fw-bold mb-3">Học Từ Vựng Của Hệ Thống</h4>
                         <p class="card-text text-muted mb-4">
-                            Khám phá các danh sách từ vựng được biên soạn bởi đội ngũ giảng viên DTU, phân loại theo chủ đề và mức độ khó.
-                            Sử dụng các danh sách này để cải thiện vốn từ vựng của bạn một cách hiệu quả.
+                            Khám phá bộ từ vựng được đội ngũ giảng viên Đại học Duy Tân biên soạn, phân loại theo cấp độ VSTEP và các chủ đề thường gặp. Luyện tập từ vựng một cách có hệ thống để nâng cao kỹ năng ngôn ngữ và sẵn sàng cho kỳ thi.
                         </p>
                         <a href="{{ route('topic.vocabulary') }}" class="btn btn-primary px-4 fw-semibold mt-auto">
                             Bắt đầu học <i class="bi bi-book ms-1"></i>

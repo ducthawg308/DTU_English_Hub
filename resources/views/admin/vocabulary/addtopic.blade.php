@@ -13,6 +13,15 @@
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="type_id" id="floatingSelectType">
+                            <option value="">Chọn cấp độ</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                            @endforeach
+                        </select>       
+                        <label for="floatingSelectType">Cấp độ</label>
+                    </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                         <button class="btn btn-primary" type="submit" value="Thêm mới" name="btn-add">Thêm topic</button>
                     </div>
