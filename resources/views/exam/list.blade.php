@@ -20,7 +20,7 @@
                                         <strong><a href="#">{{ $exam->title }}</a></strong>
                                     </h4>
                                     <hr>
-                                    <p>Mô tả: {{ $exam->desc }}p</p>
+                                    <p>Mô tả: {{ $exam->desc }}</p>
                                     <p>
                                         <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Cấp độ: {{ $exam->level}}</a>
                                         <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Làm bài ngay</a>

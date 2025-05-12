@@ -397,9 +397,6 @@
             });
         });
 
-        // Speaking recording
-        let mediaRecorder;
-        let audioChunks = [];
         document.querySelectorAll('.record-btn').forEach(btn => {
             const promptId = btn.getAttribute('data-prompt-id');
             const statusElement = document.getElementById('recordingStatus' + promptId);
@@ -409,7 +406,7 @@
             btn.addEventListener('click', async function() {
                 if (btn.textContent.includes('Bắt đầu')) {
                     try {
-                        const stream = await navigator.mediaDevices.getUserMicrophone({ audio: true });
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                         statusElement.textContent = 'Đang ghi âm...';
                         btn.textContent = '⏹️ Dừng ghi âm';
                         btn.classList.remove('btn-danger');
@@ -417,14 +414,18 @@
                         
                         audioChunks = [];
                         mediaRecorder = new MediaRecorder(stream);
+                        
                         mediaRecorder.ondataavailable = (e) => {
                             audioChunks.push(e.data);
                         };
+                        
                         mediaRecorder.onstop = () => {
                             const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
                             const audioUrl = URL.createObjectURL(audioBlob);
                             audioPreview.src = audioUrl;
                             audioPreview.classList.remove('d-none');
+                            
+                            // Convert to base64 for form submission
                             const reader = new FileReader();
                             reader.readAsDataURL(audioBlob);
                             reader.onloadend = () => {
@@ -433,6 +434,7 @@
                                 updateAnswerCount();
                             };
                         };
+                        
                         mediaRecorder.start();
                     } catch (error) {
                         console.error("Error accessing microphone:", error);
