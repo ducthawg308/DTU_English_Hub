@@ -26,8 +26,9 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>Level</th>
+                            <th>Tên bài thi</th>
+                            <th>Cấp độ</th>
+                            <th>Mô tả</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
@@ -35,8 +36,9 @@
                     <tfoot>
                         <tr>
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>Level</th>
+                            <th>Tên bài thi</th>
+                            <th>Cấp độ</th>
+                            <th>Mô tả</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
@@ -52,8 +54,9 @@
                             @endphp
                             <tr>
                                 <td>{{$t}}</td>
-                                <td>{{$exam->name}}</td>
-                                <td>{{$exam->level->name}}</td>
+                                <td>{{$exam->title}}</td>
+                                <td>{{$exam->level}}</td>
+                                <td>{{$exam->desc}}</td>
                                 <td><a href="{{route('edit.exam',$exam->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                 <td>
                                     <a href="{{route('delete_exam',$exam->id)}}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa bài thi này?')"><i class="fa-solid fa-trash"></i></a>

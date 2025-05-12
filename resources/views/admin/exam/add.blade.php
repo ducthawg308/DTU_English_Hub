@@ -7,39 +7,41 @@
                 <form method="POST" action="{{ url('admin/exam/store') }}" enctype="multipart/form-data">
                 @csrf
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="inputName" name="name" type="text" placeholder="Tên bài kiểm tra" />
-                        <label for="inputName">Tên bài kiểm tra</label>
-                        @error('name')
+                        <input class="form-control" id="inputTitle" name="title" type="text" placeholder="Tên bài kiểm tra" />
+                        <label for="inputTitle">Tên bài kiểm tra</label>
+                        @error('title')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="inputTime" name="time" type="number" placeholder="Thời gian làm bài" />
-                        <label for="inputEmail">Thời gian làm bài</label>
-                        @error('time')
-                            <small class="text-danger">{{$message}}</small>
-                        @enderror
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="inputTotal" name="total_question" type="number" placeholder="Tổng số câu hỏi" />
-                        <label for="inputTotal">Tổng số câu hỏi</label>
-                        @error('total_question')
+                        <textarea class="form-control" id="inputDesc" name="desc" placeholder="Mô tả bài kiểm tra" style="height: 100px"></textarea>
+                        <label for="inputDesc">Mô tả</label>
+                        @error('desc')
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" name="level" id="floatingSelect">
-                        <option value="">Chọn level</option>
-                        @foreach ($levels as $level)
-                            <option value="{{ $level->id }}">{{ $level->name }}</option>
-                        @endforeach
+                            <option value="">Chọn level</option>
+                            <option value="A1">A1</option>
+                            <option value="A2">A2</option>
+                            <option value="B1">B1</option>
+                            <option value="B2">B2</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
                         </select>
                         <label for="floatingSelect">Level</label>
+                        @error('level')
+                            <small class="text-danger">{{$message}}</small>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">File test exam</label>
+                        <label for="formFile" class="form-label">File test exam (Excel)</label>
                         <input class="form-control" type="file" name="file" id="formFile">
-                      </div>
+                        @error('file')
+                            <small class="text-danger">{{$message}}</small>
+                        @enderror
+                    </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                         <button class="btn btn-primary" type="submit" value="Thêm mới" name="btn-add">Thêm mới</button>
                     </div>

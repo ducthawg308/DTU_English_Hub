@@ -34,7 +34,7 @@ class VocabularyController extends Controller
         $isCustoms = true;
         $userId = Auth::id();
         $topics = TopicVocabulary::where('user_id', $userId)->get();
-        return view('vocabulary.topic',compact('topics','isCustoms'));
+        return view('vocabulary.list',compact('topics','isCustoms'));
     }
 
     function custom(){

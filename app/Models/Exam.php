@@ -1,34 +1,48 @@
 <?php
 
-
 namespace App\Models;
-
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 
 class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'time', 'total_questions', 'level_id'];
+    protected $table = 'exams';
+
+    protected $fillable = [
+        'title',
+        'level',
+        'desc',
+    ];
+
     public $timestamps = false;
 
-    //  Exam có nhiều ExamQuestion
-    public function examQuestions()
+    // Một đề thi có nhiều phần (listening, reading, ...)
+    public function sections()
     {
-        return $this->hasMany(ExamQuestion::class);
+        return $this->hasMany(ExamSection::class);
     }
 
-
-    //  Exam có nhiều Result Exam
-    public function resultExams(){
-        return $this->hasMany(ResultExam::class);
+    // Lấy các section theo kỹ năng cụ thể
+    public function listeningSection()
+    {
+        return $this->hasOne(ExamSection::class)->where('skill', 'listening');
     }
 
+    public function readingSection()
+    {
+        return $this->hasOne(ExamSection::class)->where('skill', 'reading');
+    }
 
-    public function level(){
-        return $this->belongsTo(Level::class);
+    public function writingSection()
+    {
+        return $this->hasOne(ExamSection::class)->where('skill', 'writing');
+    }
+
+    public function speakingSection()
+    {
+        return $this->hasOne(ExamSection::class)->where('skill', 'speaking');
     }
 }

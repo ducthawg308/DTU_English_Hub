@@ -77,9 +77,9 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/save-vocabulary', [App\Http\Controllers\VocabularyController::class, 'saveVocabulary'])->name('save.vocabulary');
 
     Route::get('exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
-    Route::get('exam/{id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
-    Route::post('exam/{id}/submit', [App\Http\Controllers\ExamController::class, 'submitTest'])->name('exam.submit');
-    Route::get('result/{id}', [App\Http\Controllers\ExamController::class, 'showResult'])->name('exam.result');
+    Route::get('exam/{exam_id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
+    Route::post('/exam/{exam_id}/submit', [App\Http\Controllers\ExamController::class, 'submitExam'])->name('exam.submit');
+    Route::get('/exam/{exam_id}/results', [App\Http\Controllers\ExamController::class, 'results'])->name('exam.results');
 
     Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
     Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
@@ -89,6 +89,9 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('community/storeTL', [App\Http\Controllers\CommunityController::class, 'storeTL'])->name('storeTL.community');
 
     Route::get('/reading', [App\Http\Controllers\ReadingController::class, 'index'])->name('index.reading');
+    Route::get('/reading/default/{level}', [App\Http\Controllers\ReadingController::class, 'default'])->name('default.reading');
+    Route::get('/reading/ai', [App\Http\Controllers\ReadingController::class, 'ai'])->name('ai.reading');
+    Route::get('/reading/detail/{id}', [App\Http\Controllers\ReadingController::class, 'detail'])->name('detail.reading');
     Route::post('/reading/generate', [App\Http\Controllers\ReadingController::class, 'generateReading'])->name('generate.reading');
     Route::post('/reading/save', [App\Http\Controllers\ReadingController::class, 'saveReading'])->name('save.reading');
     

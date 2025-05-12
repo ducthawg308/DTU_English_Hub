@@ -17,13 +17,12 @@
                                 </div>
                                 <div class="col-sm-7">
                                     <h4 class="title-store">
-                                        <strong><a href="#">{{ $exam->name }}</a></strong>
+                                        <strong><a href="#">{{ $exam->title }}</a></strong>
                                     </h4>
                                     <hr>
-                                    <p>Thời gian làm bài: {{ $exam->time }}p</p>
-                                    <p>Tổng số câu hỏi: {{ $exam->total_questions }}</p>
+                                    <p>Mô tả: {{ $exam->desc }}p</p>
                                     <p>
-                                        <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Cấp độ: {{ $exam->level->name}}</a>
+                                        <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Cấp độ: {{ $exam->level}}</a>
                                         <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Làm bài ngay</a>
                                     </p>
                                 </div>

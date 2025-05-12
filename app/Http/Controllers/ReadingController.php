@@ -2,12 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reading;
+use App\Models\ReadingQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReadingController extends Controller
 {
     public function index(){
         return view('reading.index');
+    }
+
+    public function default($level){
+        $readings = Reading::where('level', $level)->get();
+        return view('reading.default',compact('readings'));
+    }
+
+    public function ai(){
+        return view('reading.ai');
+    }
+
+    public function detail($id)
+    {
+        $reading = Reading::findOrFail($id); // Lấy một model đơn, không phải collection
+        $questions = ReadingQuestion::where('reading_id', $id)->get();
+
+        return view('reading.detail', compact('reading', 'questions'));
     }
 
     public function generateReading(Request $request){
@@ -115,6 +135,26 @@ class ReadingController extends Controller
 
         if (!isset($parsedData['reading']) || !isset($parsedData['questions'])) {
             return response()->json(["error" => "Không tìm thấy dữ liệu bài đọc hoặc câu hỏi"], 500);
+        }
+
+        // Lưu bài đọc vào bảng readings
+        $readingId = DB::table('readings')->insertGetId([
+            'title' => $parsedData['reading']['title'],
+            'content' => $parsedData['reading']['content'],
+            'level' => $level,
+        ]);
+
+        // Lưu các câu hỏi vào bảng reading_questions
+        foreach ($parsedData['questions'] as $q) {
+            DB::table('reading_questions')->insert([
+                'reading_id' => $readingId,
+                'question' => $q['question'],
+                'option_a' => $q['options'][0] ?? '',
+                'option_b' => $q['options'][1] ?? '',
+                'option_c' => $q['options'][2] ?? '',
+                'option_d' => $q['options'][3] ?? '',
+                'answer' => $q['answer'],
+            ]);
         }
 
         return response()->json($parsedData);

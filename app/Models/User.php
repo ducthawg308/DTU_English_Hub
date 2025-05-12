@@ -59,8 +59,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TopicVocabulary::class);
     }
 
-    public function resultExam(){
-        return $this->hasMany(ResultExam::class);
+    public function userExamSubmissions(){
+        return $this->hasMany(UserExamSubmission::class);
     }
 
     public function blogs()
