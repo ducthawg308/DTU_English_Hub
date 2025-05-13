@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 |">
                             <div class="step-container">
                                 <div class="step-content">
                                     <h5 class="text-primary">KIỂM TRA ÂM THANH</h5>
@@ -176,6 +176,7 @@
     </div>
 </div>
 @endsection
+
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -190,11 +191,18 @@
         const playRecordedBtn = document.getElementById('play-recorded-btn');
         const visualizer = document.getElementById('audio-visualizer');
 
+        // Check browser support for MediaRecorder and getUserMedia
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+            console.error('Browser does not support MediaRecorder or getUserMedia');
+            micStatus.innerHTML = '<span class="badge bg-danger">Trình duyệt không hỗ trợ thu âm</span>';
+            recordBtn.disabled = true;
+            recordBtn.innerHTML = '<i class="fas fa-microphone-slash me-1"></i> Micro không khả dụng';
+            return;
+        }
+
         // Update date for print function
         const today = new Date();
         document.getElementById('print-date').textContent = today.toLocaleDateString('vi-VN');
-
-       –
 
         // Print user name function
         window.printUserName = function() {
@@ -242,6 +250,7 @@
         // Test microphone access
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function(audioStream) {
+                console.log('Microphone connected successfully');
                 micStatus.innerHTML = '<span class="badge bg-success">Microphone đã kết nối</span>';
                 stream = audioStream;
 
@@ -267,18 +276,30 @@
                 ctx.fillText('Sẵn sàng thu âm', ctx.canvas.width / 2, ctx.canvas.height / 2);
             })
             .catch(function(err) {
-                console.error('Error accessing microphone:', err);
-                micStatus.innerHTML = '<span class="badge bg-danger">Không thể kết nối microphone</span>';
-                visualizer.innerHTML = '<div class="alert alert-danger py-2 text-center">Vui lòng cấp quyền truy cập microphone và tải lại trang</div>';
+                console.error('Microphone access error:', err.name, err.message);
+                let errorMessage = 'Không thể kết nối microphone';
+                if (err.name === 'NotAllowedError') {
+                    errorMessage = 'Vui lòng cấp quyền microphone trong cài đặt trình duyệt';
+                } else if (err.name === 'NotFoundError') {
+                    errorMessage = 'Không tìm thấy thiết bị microphone';
+                } else if (err.name === 'NotReadableError') {
+                    errorMessage = 'Microphone đang được sử dụng bởi ứng dụng khác';
+                }
+                micStatus.innerHTML = `<span class="badge bg-danger">${errorMessage}</span>`;
+                visualizer.innerHTML = '<div class="alert alert-danger py-2 text-center">Vui lòng kiểm tra microphone và tải lại trang</div>';
                 recordBtn.disabled = true;
                 recordBtn.innerHTML = '<i class="fas fa-microphone-slash me-1"></i> Micro không khả dụng';
             });
 
         // Audio recording functionality
         recordBtn.addEventListener('click', function() {
-            if (recordBtn.disabled) return;
+            if (recordBtn.disabled) {
+                console.log('Record button disabled');
+                return;
+            }
 
             if (mediaRecorder && mediaRecorder.state === 'recording') {
+                console.log('Stopping recording');
                 mediaRecorder.stop();
                 cleanupStream();
                 recordBtn.innerHTML = '<i class="fas fa-microphone me-1"></i> Thu âm';
@@ -288,21 +309,28 @@
                 return;
             }
 
+            console.log('Starting recording');
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(function(audioStream) {
                     stream = audioStream;
-
                     mediaRecorder = new MediaRecorder(stream);
                     audioChunks = [];
 
                     mediaRecorder.addEventListener('dataavailable', function(e) {
+                        console.log('Data available, size:', e.data.size);
                         audioChunks.push(e.data);
                     });
 
                     mediaRecorder.addEventListener('stop', function() {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                        recordedAudio = new Audio(URL.createObjectURL(audioBlob));
-                        playRecordedBtn.disabled = false;
+                        console.log('Recording stopped, chunks:', audioChunks.length);
+                        if (audioChunks.length > 0) {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                            recordedAudio = new Audio(URL.createObjectURL(audioBlob));
+                            playRecordedBtn.disabled = false;
+                            console.log('Audio blob created:', audioBlob);
+                        } else {
+                            micStatus.innerHTML = '<span class="badge bg-danger">Không ghi được âm thanh</span>';
+                        }
                     });
 
                     mediaRecorder.start();
@@ -314,13 +342,22 @@
                     cleanupVisualizer = visualizeAudio(audioStream);
                 })
                 .catch(function(err) {
-                    console.error('Error accessing microphone:', err);
-                    micStatus.innerHTML = '<span class="badge bg-danger">Không thể kết nối microphone</span>';
+                    console.error('Microphone access error:', err.name, err.message);
+                    let errorMessage = 'Không thể kết nối microphone';
+                    if (err.name === 'NotAllowedError') {
+                        errorMessage = 'Vui lòng cấp quyền microphone trong cài đặt trình duyệt';
+                    } else if (err.name === 'NotFoundError') {
+                        errorMessage = 'Không tìm thấy thiết bị microphone';
+                    } else if (err.name === 'NotReadableError') {
+                        errorMessage = 'Microphone đang được sử dụng bởi ứng dụng khác';
+                    }
+                    micStatus.innerHTML = `<span class="badge bg-danger">${errorMessage}</span>`;
                 });
         });
 
         playRecordedBtn.addEventListener('click', function() {
             if (recordedAudio) {
+                console.log('Playing recorded audio');
                 recordedAudio.play();
                 micStatus.innerHTML = '<span class="badge bg-info">Đang phát lại...</span>';
 
@@ -331,11 +368,15 @@
                 recordedAudio.onpause = function() {
                     micStatus.innerHTML = '<span class="badge bg-success">Sẵn sàng</span>';
                 };
+            } else {
+                console.log('No recorded audio available');
+                micStatus.innerHTML = '<span class="badge bg-danger">Chưa có bản thu âm</span>';
             }
         });
 
         // Audio visualization
         function visualizeAudio(stream) {
+            console.log('Visualizing audio for stream:', stream);
             const analyser = getAudioContext().createAnalyser();
             const source = getAudioContext().createMediaStreamSource(stream);
             source.connect(analyser);
@@ -383,7 +424,7 @@
                     }
                 } else {
                     ctx.fillStyle = '#f8f9fa';
-                    ctx.fillRect(0, buck ctx.canvas.width, ctx.canvas.height);
+                    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                     ctx.fillStyle = '#6c757d';
                     ctx.font = '14px Arial';
                     ctx.textAlign = 'center';

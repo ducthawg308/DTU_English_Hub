@@ -159,7 +159,7 @@
                                 
                                 @foreach($writingData['prompts'] as $prompt)
                                 <div class="mb-4">
-                                    <p>{{!! $prompt->prompt_text !!}}</p>
+                                    <p>{!! $prompt->prompt_text !!}</p>
                                     <textarea class="form-control answer-input writing-textarea" 
                                               rows="8" 
                                               name="answers[writing_{{ $prompt->id }}]" 
@@ -197,7 +197,10 @@
                                 
                                 @foreach($speakingData['prompts'] as $prompt)
                                 <div class="mb-4">
-                                    <p>{{!! $prompt->prompt_text !!}}</p>
+                                    <p>{!! $prompt->prompt_text !!}</p>
+                                    <div class="mb-3">
+                                        <canvas id="audioVisualizer{{ $prompt->id }}" class="bg-light rounded border" style="height: 60px; width: 100%;"></canvas>
+                                    </div>
                                     <div class="d-flex align-items-center gap-3">
                                         <button type="button" class="btn btn-danger record-btn" 
                                                 data-prompt-id="{{ $prompt->id }}">
@@ -306,6 +309,10 @@
         let totalSeconds = skillConfig[currentSkill].minutes * 60;
         let interval;
         let completedSkills = new Set();
+        let audioContext = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let cleanupVisualizer = null;
 
         // Timer function
         function startTimer(minutes) {
@@ -344,6 +351,110 @@
             questionProgress.textContent = `${count}/${total} câu đã trả lời`;
         }
 
+        // Audio context management
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+
+        // Stream cleanup
+        function cleanupStream() {
+            if (mediaRecorder && mediaRecorder.stream) {
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+            if (cleanupVisualizer) {
+                cleanupVisualizer();
+                cleanupVisualizer = null;
+            }
+        }
+
+        // Debounce utility
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Audio visualization
+        function visualizeAudio(stream, canvasId) {
+            console.log('Visualizing audio for canvas:', canvasId);
+            const analyser = getAudioContext().createAnalyser();
+            const source = getAudioContext().createMediaStreamSource(stream);
+            source.connect(analyser);
+
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
+            }
+
+            resizeCanvas();
+            const debouncedResize = debounce(resizeCanvas, 100);
+            window.addEventListener('resize', debouncedResize);
+
+            function draw() {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    requestAnimationFrame(draw);
+
+                    analyser.getByteFrequencyData(dataArray);
+
+                    ctx.fillStyle = '#f8f9fa';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    const barWidth = (canvas.width / bufferLength) * 2.5;
+                    let x = 0;
+
+                    for (let i = 0; i < bufferLength; i++) {
+                        const barHeight = dataArray[i] / 2;
+                        const intensity = dataArray[i] / 256;
+                        const r = Math.floor(220 * intensity);
+                        const g = Math.floor(53 * intensity);
+                        const b = Math.floor(69 * intensity);
+
+                        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                        x += barWidth + 1;
+                    }
+                } else {
+                    ctx.fillStyle = '#f8f9fa';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#6c757d';
+                    ctx.font = '14px Arial';
+                    ctx.textAlign = 'center';
+
+                    const statusElement = document.getElementById(`recordingStatus${canvasId.replace('audioVisualizer', '')}`);
+                    if (statusElement && statusElement.textContent.includes('Đã ghi âm')) {
+                        ctx.fillText('Sẵn sàng phát lại', canvas.width / 2, canvas.height / 2);
+                    } else {
+                        ctx.fillText('Sẵn sàng ghi âm', canvas.width / 2, canvas.height / 2);
+                    }
+                }
+            }
+
+            draw();
+
+            return () => window.removeEventListener('resize', debouncedResize);
+        }
+
         // Skill tab switching
         allBtns.forEach(btn => {
             if (btn) {
@@ -367,7 +478,7 @@
                     const targetEl = document.getElementById(config.content);
                     if (targetEl) {
                         targetEl.classList.remove('d-none');
-                        btn.classList.add('active'); // This applies the active class when switching skills
+                        btn.classList.add('active');
                         currentSkill = btn.id;
 
                         // Activate first part of new skill
@@ -397,34 +508,36 @@
             });
         });
 
+        // Speaking recording with visualizer
         document.querySelectorAll('.record-btn').forEach(btn => {
             const promptId = btn.getAttribute('data-prompt-id');
             const statusElement = document.getElementById('recordingStatus' + promptId);
             const audioPreview = document.getElementById('audioPreview' + promptId);
             const answerInput = document.getElementById('speakingAnswer' + promptId);
-            
+            const visualizerCanvas = document.getElementById('audioVisualizer' + promptId);
+
             btn.addEventListener('click', async function() {
-                if (btn.textContent.includes('Bắt đầu')) {
+                if (btn.textContent.includes('Bắt đầu') || btn.textContent.includes('Ghi âm lại')) {
                     try {
                         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                         statusElement.textContent = 'Đang ghi âm...';
                         btn.textContent = '⏹️ Dừng ghi âm';
-                        btn.classList.remove('btn-danger');
+                        btn.classList.remove('btn-danger', 'btn-success');
                         btn.classList.add('btn-warning');
-                        
+
                         audioChunks = [];
                         mediaRecorder = new MediaRecorder(stream);
-                        
+
                         mediaRecorder.ondataavailable = (e) => {
                             audioChunks.push(e.data);
                         };
-                        
+
                         mediaRecorder.onstop = () => {
                             const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
                             const audioUrl = URL.createObjectURL(audioBlob);
                             audioPreview.src = audioUrl;
                             audioPreview.classList.remove('d-none');
-                            
+
                             // Convert to base64 for form submission
                             const reader = new FileReader();
                             reader.readAsDataURL(audioBlob);
@@ -433,12 +546,24 @@
                                 answerInput.value = base64data;
                                 updateAnswerCount();
                             };
+
+                            cleanupStream();
                         };
-                        
+
                         mediaRecorder.start();
+                        cleanupVisualizer = visualizeAudio(stream, 'audioVisualizer' + promptId);
                     } catch (error) {
                         console.error("Error accessing microphone:", error);
-                        alert("Không thể truy cập microphone. Vui lòng kiểm tra quyền truy cập.");
+                        let errorMessage = 'Không thể truy cập microphone';
+                        if (error.name === 'NotAllowedError') {
+                            errorMessage = 'Vui lòng cấp quyền microphone trong cài đặt trình duyệt';
+                        } else if (error.name === 'NotFoundError') {
+                            errorMessage = 'Không tìm thấy thiết bị microphone';
+                        } else if (error.name === 'NotReadableError') {
+                            errorMessage = 'Microphone đang được sử dụng bởi ứng dụng khác';
+                        }
+                        alert(`${errorMessage}. Vui lòng kiểm tra và thử lại.`);
+                        statusElement.textContent = 'Lỗi ghi âm';
                     }
                 } else {
                     mediaRecorder.stop();
@@ -479,7 +604,7 @@
             const targetEl = document.getElementById(config.content);
             if (targetEl) {
                 targetEl.classList.remove('d-none');
-                document.getElementById(currentSkill).classList.add('active'); // This applies the active class
+                document.getElementById(currentSkill).classList.add('active');
                 switchPart(config.firstPart, { preventDefault: () => {} });
             }
         }
