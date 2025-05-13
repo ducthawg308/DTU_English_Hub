@@ -77,6 +77,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/save-vocabulary', [App\Http\Controllers\VocabularyController::class, 'saveVocabulary'])->name('save.vocabulary');
 
     Route::get('exam', [App\Http\Controllers\ExamController::class, 'list'])->name('home.exam');
+    Route::get('exam/room/{exam_id}', [App\Http\Controllers\ExamController::class, 'room'])->name('exam.room');
     Route::get('exam/{exam_id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
     Route::post('/exam/{exam_id}/submit', [App\Http\Controllers\ExamController::class, 'submitExam'])->name('exam.submit');
     Route::get('/exam/{exam_id}/results', [App\Http\Controllers\ExamController::class, 'results'])->name('exam.results');

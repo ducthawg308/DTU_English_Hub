@@ -18,8 +18,8 @@
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-success btn-sm me-2" id="btnSave">Lưu bài</button>
-                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">Nộp bài</button>
+                    <button type="button" class="btn btn-success btn-md me-2" id="btnSave">Lưu bài</button>
+                    <button type="submit" class="btn btn-primary btn-md" id="btnSubmit">Nộp bài</button>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                         @foreach($listening as $sectionId => $listeningData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="listeningPart{{ $loop->iteration }}">
-                                <h5>Listening - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-warning">Listening - Part {{ $loop->iteration }}</h5>
                                 
                                 @if(count($listeningData['audios']) > 0)
                                 <div class="mb-3">
@@ -54,9 +54,9 @@
                                 </div>
                                 @endif
                                 
-                                @foreach($listeningData['questions'] as $question)
+                                @foreach($listeningData['questions'] as $index => $question)
                                 <div class="mb-4">
-                                    <p><strong>Question {{ $question->id }}:</strong> {{ $question->question_text }}</p>
+                                    <p><strong>Question {{ $index + 1 }}:</strong> {{ $question->question_text }}</p>
                                     @foreach($question->choices as $choice)
                                     <div class="form-check">
                                         <input type="radio" 
@@ -155,7 +155,7 @@
                         @foreach($writing as $sectionId => $writingData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="writingPart{{ $loop->iteration }}">
-                                <h5>Writing - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-warning">Writing - Part {{ $loop->iteration }}</h5>
                                 
                                 @foreach($writingData['prompts'] as $prompt)
                                 <div class="mb-4">
@@ -193,7 +193,7 @@
                         @foreach($speaking as $sectionId => $speakingData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="speakingPart{{ $loop->iteration }}">
-                                <h5>Speaking - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-warning">Speaking - Part {{ $loop->iteration }}</h5>
                                 
                                 @foreach($speakingData['prompts'] as $prompt)
                                 <div class="mb-4">

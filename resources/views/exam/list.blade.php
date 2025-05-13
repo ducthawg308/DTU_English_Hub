@@ -23,7 +23,7 @@
                                     <p>Mô tả: {{ $exam->desc }}</p>
                                     <p>
                                         <a href="#" class="btn btn-default" disabled="" data-original-title="" title="">Cấp độ: {{ $exam->level}}</a>
-                                        <a href="{{ route('exam.detail', $exam->id) }}" class="btn btn-warning pull-right">Làm bài ngay</a>
+                                        <a href="{{ route('exam.room', $exam->id) }}" class="btn btn-warning pull-right">Làm bài ngay</a>
                                     </p>
                                 </div>
                             </div>

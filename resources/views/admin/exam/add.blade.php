@@ -42,6 +42,13 @@
                             <small class="text-danger">{{$message}}</small>
                         @enderror
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="file" name="audio" id="audio" accept="audio/*" class="form-control" required>
+                        <label for="audio" class="form-label">Audio:</label>
+                        @error('audio')
+                            <small class="text-danger">{{$message}}</small>
+                        @enderror
+                    </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                         <button class="btn btn-primary" type="submit" value="Thêm mới" name="btn-add">Thêm mới</button>
                     </div>

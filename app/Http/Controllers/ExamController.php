@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Exam;
 use App\Models\ExamSection;
 use App\Models\Question;
@@ -17,6 +18,12 @@ class ExamController extends Controller
     {
         $exams = Exam::all();
         return view('exam.list', compact('exams'));
+    }
+
+    public function room($exam_id)
+    {
+        $user = Auth::user();
+        return view('exam.room', compact('exam_id','user'));
     }
 
     public function detail($exam_id)
@@ -85,16 +92,12 @@ class ExamController extends Controller
     
     public function submitExam(Request $request, $exam_id)
     {
-        // Validate the request
+        dd($request);
+
         $request->validate([
             'answers' => 'required|array',
         ]);
-        
-        // Process exam submission
-        // Save user answers to database
-        // Calculate scores
-        
-        // Redirect to results page
+
         return redirect()->route('exam.results', ['exam_id' => $exam_id]);
     }
 
