@@ -48,7 +48,7 @@
                                 @if(count($listeningData['audios']) > 0)
                                 <div class="mb-3">
                                     <audio controls class="w-100 mb-3">
-                                        <source src="{{ $listeningData['audios'][0]->audio_url }}" type="audio/mpeg">
+                                        <source src="{{ asset('storage/audio/' . $listeningData['audios'][0]->audio_url) }}" type="audio/mpeg">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </div>
