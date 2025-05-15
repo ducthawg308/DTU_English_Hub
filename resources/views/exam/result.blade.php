@@ -122,10 +122,15 @@
             <div class="prompt-section">
                 <p class="prompt-text"><strong>Đề bài {{ $index + 1 }}:</strong> {!! $speaking['prompt_text'] !!}</p>
                 @if($speaking['user_answer'] === 'Audio submitted' && !empty($speaking['audio_data']))
-                <audio controls class="audio-player">
+                <audio controls class="audio-player" id="audio-player-{{ $index }}">
                     <source src="{{ $speaking['audio_data'] }}" type="audio/mpeg">
                     Trình duyệt của bạn không hỗ trợ phát âm thanh.
                 </audio>
+                <script>
+                    document.getElementById('audio-player-{{ $index }}').addEventListener('error', function() {
+                        this.insertAdjacentHTML('afterend', '<p class="text-warning mt-2">Không thể tải file âm thanh. Vui lòng tải lại trang hoặc liên hệ hỗ trợ.</p>');
+                    });
+                </script>
                 @else
                 <p class="text-light">Không có bản ghi âm.</p>
                 @endif

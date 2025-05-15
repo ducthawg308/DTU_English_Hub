@@ -10,7 +10,13 @@ use App\Models\ReadingPassage;
 use App\Models\ListeningAudio;
 use App\Models\WritingPrompt;
 use App\Models\SpeakingPrompt;
+use App\Models\UserExamSubmission;
+use App\Models\UserWrittenResponse;
+use App\Models\UserSpeakingResponse;
+use App\Models\UserAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ExamController extends Controller
 {
@@ -23,15 +29,12 @@ class ExamController extends Controller
     public function room($exam_id)
     {
         $user = Auth::user();
-        return view('exam.room', compact('exam_id','user'));
+        return view('exam.room', compact('exam_id', 'user'));
     }
 
     public function detail($exam_id)
     {
-        // Get the exam with its related information
         $exam = Exam::findOrFail($exam_id);
-        
-        // Get exam sections with their related data
         $examSections = ExamSection::where('exam_id', $exam_id)
             ->orderBy('id')
             ->get();
@@ -41,7 +44,6 @@ class ExamController extends Controller
             'examSections' => $examSections
         ];
         
-        // For each section, load the appropriate content based on skill type
         foreach ($examSections as $section) {
             switch ($section->skill) {
                 case 'listening':
@@ -92,7 +94,6 @@ class ExamController extends Controller
     
     public function submitExam(Request $request, $exam_id)
     {
-        // Validate the request
         $request->validate([
             'answers' => 'required|array',
         ]);
@@ -100,43 +101,72 @@ class ExamController extends Controller
         $exam = Exam::findOrFail($exam_id);
         $examSections = ExamSection::where('exam_id', $exam_id)->get();
         $answers = $request->input('answers', []);
+        $user = Auth::user();
+
+        // Create user exam submission
+        $submission = UserExamSubmission::create([
+            'user_id' => $user->id,
+            'exam_id' => $exam_id,
+            'submitted_at' => now(),
+            'listening_score' => 0,
+            'reading_score' => 0,
+            'writing_score' => 0,
+            'speaking_score' => 0,
+            'total_score' => 0,
+            'status' => 'pending',
+        ]);
 
         $results = [
             'listening' => ['score' => 0, 'total_score_possible' => 0, 'details' => []],
             'reading' => ['score' => 0, 'total_score_possible' => 0, 'details' => []],
             'writing' => [],
-            'speaking' => [], // Included for completeness, though not scored
+            'speaking' => [],
         ];
 
-        // Process each section
         foreach ($examSections as $section) {
             switch ($section->skill) {
                 case 'listening':
                     $questions = Question::where('exam_section_id', $section->id)
                         ->with('choices')
                         ->get();
+                    $listeningScore = 0;
+                    $totalScorePossible = 0;
                     foreach ($questions as $question) {
                         $userAnswer = $answers[$question->id] ?? null;
                         $correctLabel = $question->correct_choice_label;
                         $score = $question->score ?? 0;
-                        $results['listening']['total_score_possible'] += $score;
+                        $totalScorePossible += $score;
                         $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
                         if ($isCorrect) {
-                            $results['listening']['score'] += $score;
+                            $listeningScore += $score;
                         }
+                        // Save answer
+                        $userAnswerRecord = UserAnswer::create([
+                            'submission_id' => $submission->id,
+                            'question_id' => $question->id,
+                            'selected_choice_label' => $userAnswer,
+                            'is_correct' => $isCorrect,
+                            'score_awarded' => $isCorrect ? $score : 0,
+                        ]);
+                        // Populate details
                         $results['listening']['details'][] = [
                             'question_id' => $question->id,
                             'question_text' => $question->question_text,
                             'user_answer' => $userAnswer,
                             'correct_answer' => $correctLabel,
-                            'score_earned' => $isCorrect ? $score : 0,
+                            'score_earned' => $userAnswerRecord->score_awarded,
                             'is_correct' => $isCorrect,
                         ];
                     }
+                    $submission->update(['listening_score' => $listeningScore]);
+                    $results['listening']['score'] = $listeningScore;
+                    $results['listening']['total_score_possible'] = $totalScorePossible;
                     break;
 
                 case 'reading':
                     $passages = ReadingPassage::where('exam_section_id', $section->id)->get();
+                    $readingScore = 0;
+                    $totalScorePossible = 0;
                     foreach ($passages as $passage) {
                         $questions = Question::where('passage_id', $passage->id)
                             ->with('choices')
@@ -145,32 +175,51 @@ class ExamController extends Controller
                             $userAnswer = $answers[$question->id] ?? null;
                             $correctLabel = $question->correct_choice_label;
                             $score = $question->score ?? 0;
-                            $results['reading']['total_score_possible'] += $score;
+                            $totalScorePossible += $score;
                             $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
                             if ($isCorrect) {
-                                $results['reading']['score'] += $score;
+                                $readingScore += $score;
                             }
+                            // Save answer
+                            $userAnswerRecord = UserAnswer::create([
+                                'submission_id' => $submission->id,
+                                'question_id' => $question->id,
+                                'selected_choice_label' => $userAnswer,
+                                'is_correct' => $isCorrect,
+                                'score_awarded' => $isCorrect ? $score : 0,
+                            ]);
+                            // Populate details
                             $results['reading']['details'][] = [
                                 'question_id' => $question->id,
                                 'question_text' => $question->question_text,
                                 'user_answer' => $userAnswer,
                                 'correct_answer' => $correctLabel,
-                                'score_earned' => $isCorrect ? $score : 0,
+                                'score_earned' => $userAnswerRecord->score_awarded,
                                 'is_correct' => $isCorrect,
                                 'passage_title' => $passage->title,
                             ];
                         }
                     }
+                    $submission->update(['reading_score' => $readingScore]);
+                    $results['reading']['score'] = $readingScore;
+                    $results['reading']['total_score_possible'] = $totalScorePossible;
                     break;
 
                 case 'writing':
                     $prompts = WritingPrompt::where('exam_section_id', $section->id)->get();
                     foreach ($prompts as $prompt) {
                         $userAnswer = $answers['writing_' . $prompt->id] ?? '';
+                        $writtenResponse = UserWrittenResponse::create([
+                            'submission_id' => $submission->id,
+                            'writing_prompt_id' => $prompt->id,
+                            'response_text' => $userAnswer,
+                            'ai_score' => 0,
+                            'ai_feedback' => null,
+                        ]);
                         $results['writing'][] = [
                             'prompt_id' => $prompt->id,
                             'prompt_text' => $prompt->prompt_text,
-                            'user_answer' => $userAnswer,
+                            'user_answer' => $writtenResponse->response_text,
                         ];
                     }
                     break;
@@ -179,17 +228,52 @@ class ExamController extends Controller
                     $prompts = SpeakingPrompt::where('exam_section_id', $section->id)->get();
                     foreach ($prompts as $prompt) {
                         $userAnswer = $answers['speaking_' . $prompt->id] ?? '';
+                        $audioData = null;
+                        $fileName = null;
+                        
+                        // Check if we received base64 audio data
+                        if ($userAnswer && preg_match('/^data:audio\/\w+;base64,/', $userAnswer)) {
+                            // Save to storage for permanent records
+                            $audioBase64 = substr($userAnswer, strpos($userAnswer, ',') + 1);
+                            $decodedAudio = base64_decode($audioBase64);
+                            
+                            if ($decodedAudio !== false) {
+                                $fileName = 'speaking_' . $exam_id . '_' . $prompt->id . '_' . Str::random(10) . '.mp3';
+                                Storage::disk('public')->put('audio/speaking/' . $fileName, $decodedAudio);
+                                
+                                // Keep the original base64 data for direct playback in results
+                                $audioData = $userAnswer;
+                            }
+                        }
+                        
+                        // Create the speaking response record
+                        $speakingResponse = UserSpeakingResponse::create([
+                            'submission_id' => $submission->id,
+                            'speaking_prompt_id' => $prompt->id,
+                            'audio_url' => $fileName, // Store just the filename in the database
+                            'transcript' => null,
+                            'ai_score' => 0,
+                            'ai_feedback' => null,
+                        ]);
+                        
+                        // Pass the data to results
                         $results['speaking'][] = [
                             'prompt_id' => $prompt->id,
                             'prompt_text' => $prompt->prompt_text,
-                            'user_answer' => $userAnswer ? 'Audio submitted' : 'No audio submitted',
+                            'user_answer' => $audioData ? 'Audio submitted' : 'No audio submitted',
+                            'audio_data' => $audioData, // This contains the complete base64 data string
                         ];
                     }
                     break;
             }
         }
 
-        // Store results in session to pass to results view
+        // Update total score
+        $submission->update([
+            'total_score' => $submission->listening_score + $submission->reading_score,
+        ]);
+
+        // Store results in session
         $request->session()->put('exam_results', $results);
 
         return redirect()->route('exam.result', ['exam_id' => $exam_id]);
