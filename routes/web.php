@@ -80,7 +80,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('exam/room/{exam_id}', [App\Http\Controllers\ExamController::class, 'room'])->name('exam.room');
     Route::get('exam/{exam_id}', [App\Http\Controllers\ExamController::class, 'detail'])->name('exam.detail');
     Route::post('/exam/{exam_id}/submit', [App\Http\Controllers\ExamController::class, 'submitExam'])->name('exam.submit');
-    Route::get('/exam/{exam_id}/results', [App\Http\Controllers\ExamController::class, 'results'])->name('exam.results');
+    Route::get('/exam/{exam_id}/results', [App\Http\Controllers\ExamController::class, 'results'])->name('exam.result');
 
     Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
     Route::get('/home/topic_payment', [App\Http\Controllers\PaymentController::class, 'handleVNPayCallback']);
