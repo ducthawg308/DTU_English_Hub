@@ -254,9 +254,29 @@ class ExamController extends Controller
             }
         }
 
+        foreach ($examSections as $section) {
+            switch ($section->skill) {
+                case 'listening':
+                    $questions = Question::where('exam_section_id', $section->id)
+                        ->with('choices')
+                        ->get();
+                    // ... (Phần xử lý câu hỏi listening)
+                    break;
+
+                case 'reading':
+                    $passages = ReadingPassage::where('exam_section_id', $section->id)->get();
+                    // ... (Phần xử lý câu hỏi reading)
+                    break;
+
+                // ... (Giữ nguyên phần xử lý writing và speaking)
+            }
+        }
+
         // Update total score
         $submission->update([
-            'total_score' => $submission->listening_score + $submission->reading_score,
+            'listening_score' => $results['listening']['score'],
+            'reading_score' => $results['reading']['score'],
+            'total_score' => $results['listening']['score'] + $results['reading']['score'],
         ]);
 
         // Store results in session
