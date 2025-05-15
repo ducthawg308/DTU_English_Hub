@@ -264,6 +264,8 @@
         if (activeButton) {
             activeButton.classList.add('active');
         }
+        // Update the answer count when switching tabs
+        updateAnswerCount();
     }
 
     function countWords(text) {
@@ -336,18 +338,32 @@
             }, 1000);
         }
 
-        // Update answer count
+       // Update answer count based on the currently active part
         function updateAnswerCount() {
-            const answers = document.querySelectorAll('.answer-input');
+            const questionProgress = document.getElementById('questionProgress');
+            // Find the currently active part
+            const activePart = document.querySelector('.tab-pane.show.active');
+            if (!activePart) return;
+
+            // Count the total number of questions in the active part
+            const questions = activePart.querySelectorAll('p > strong');
+            let total = questions.length;
+
+            // Count the number of answered questions
             let count = 0;
-            let total = answers.length;
-            answers.forEach(el => {
-                if ((el.type === 'radio' && el.checked) || 
-                    (el.tagName === 'TEXTAREA' && el.value.trim() !== '') ||
-                    (el.type === 'hidden' && el.value.trim() !== '')) {
-                    count++;
+            const answerInputs = activePart.querySelectorAll('.answer-input');
+            answerInputs.forEach(el => {
+                const parentQuestion = el.closest('.mb-4'); // Each question is wrapped in a div with class mb-4
+                if (parentQuestion) {
+                    if ((el.type === 'radio' && el.checked) || 
+                        (el.tagName === 'TEXTAREA' && el.value.trim() !== '') ||
+                        (el.type === 'hidden' && el.value.trim() !== '')) {
+                        count++;
+                    }
                 }
             });
+
+            // Update the progress text
             questionProgress.textContent = `${count}/${total} câu đã trả lời`;
         }
 
@@ -493,9 +509,9 @@
 
         // Listen for answer changes
         document.querySelectorAll('.answer-input').forEach(el => {
-            el.addEventListener('input', updateAnswerCount);
-            el.addEventListener('change', updateAnswerCount);
-        });
+        el.addEventListener('input', updateAnswerCount);
+        el.addEventListener('change', updateAnswerCount);
+    });
 
         // Word counting for writing
         document.querySelectorAll('.writing-textarea').forEach(textarea => {
@@ -607,6 +623,8 @@
                 document.getElementById(currentSkill).classList.add('active');
                 switchPart(config.firstPart, { preventDefault: () => {} });
             }
+            // Update answer count after initializing the tab
+            updateAnswerCount();
         }
 
         // Initial setup

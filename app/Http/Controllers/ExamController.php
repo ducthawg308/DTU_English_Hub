@@ -126,47 +126,45 @@ class ExamController extends Controller
         foreach ($examSections as $section) {
             switch ($section->skill) {
                 case 'listening':
-                    $questions = Question::where('exam_section_id', $section->id)
-                        ->with('choices')
-                        ->get();
-                    $listeningScore = 0;
-                    $totalScorePossible = 0;
-                    foreach ($questions as $question) {
-                        $userAnswer = $answers[$question->id] ?? null;
-                        $correctLabel = $question->correct_choice_label;
-                        $score = $question->score ?? 0;
-                        $totalScorePossible += $score;
-                        $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
-                        if ($isCorrect) {
-                            $listeningScore += $score;
-                        }
-                        // Save answer
-                        $userAnswerRecord = UserAnswer::create([
-                            'submission_id' => $submission->id,
-                            'question_id' => $question->id,
-                            'selected_choice_label' => $userAnswer,
-                            'is_correct' => $isCorrect,
-                            'score_awarded' => $isCorrect ? $score : 0,
-                        ]);
-                        // Populate details
-                        $results['listening']['details'][] = [
-                            'question_id' => $question->id,
-                            'question_text' => $question->question_text,
-                            'user_answer' => $userAnswer,
-                            'correct_answer' => $correctLabel,
-                            'score_earned' => $userAnswerRecord->score_awarded,
-                            'is_correct' => $isCorrect,
-                        ];
+                $questions = Question::where('exam_section_id', $section->id)
+                    ->with('choices')
+                    ->get();
+                
+                foreach ($questions as $question) {
+                    $userAnswer = $answers[$question->id] ?? null;
+                    $correctLabel = $question->correct_choice_label;
+                    $score = $question->score ?? 0;
+                    $results['listening']['total_score_possible'] += $score;
+                    $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
+                    
+                    // Calculate score directly into results array
+                    if ($isCorrect) {
+                        $results['listening']['score'] += $score;
                     }
-                    $submission->update(['listening_score' => $listeningScore]);
-                    $results['listening']['score'] = $listeningScore;
-                    $results['listening']['total_score_possible'] = $totalScorePossible;
-                    break;
+                    
+                    // Save answer to database
+                    $userAnswerRecord = UserAnswer::create([
+                        'submission_id' => $submission->id,
+                        'question_id' => $question->id,
+                        'selected_choice_label' => $userAnswer,
+                        'is_correct' => $isCorrect,
+                        'score_awarded' => $isCorrect ? $score : 0,
+                    ]);
+                    
+                    // Populate details
+                    $results['listening']['details'][] = [
+                        'question_id' => $question->id,
+                        'question_text' => $question->question_text,
+                        'user_answer' => $userAnswer,
+                        'correct_answer' => $correctLabel,
+                        'score_earned' => $isCorrect ? $score : 0,
+                        'is_correct' => $isCorrect,
+                    ];
+                }
+                break;
 
                 case 'reading':
                     $passages = ReadingPassage::where('exam_section_id', $section->id)->get();
-                    $readingScore = 0;
-                    $totalScorePossible = 0;
                     foreach ($passages as $passage) {
                         $questions = Question::where('passage_id', $passage->id)
                             ->with('choices')
@@ -175,34 +173,22 @@ class ExamController extends Controller
                             $userAnswer = $answers[$question->id] ?? null;
                             $correctLabel = $question->correct_choice_label;
                             $score = $question->score ?? 0;
-                            $totalScorePossible += $score;
+                            $results['reading']['total_score_possible'] += $score;
                             $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
                             if ($isCorrect) {
-                                $readingScore += $score;
+                                $results['reading']['score'] += $score;
                             }
-                            // Save answer
-                            $userAnswerRecord = UserAnswer::create([
-                                'submission_id' => $submission->id,
-                                'question_id' => $question->id,
-                                'selected_choice_label' => $userAnswer,
-                                'is_correct' => $isCorrect,
-                                'score_awarded' => $isCorrect ? $score : 0,
-                            ]);
-                            // Populate details
                             $results['reading']['details'][] = [
                                 'question_id' => $question->id,
                                 'question_text' => $question->question_text,
                                 'user_answer' => $userAnswer,
                                 'correct_answer' => $correctLabel,
-                                'score_earned' => $userAnswerRecord->score_awarded,
+                                'score_earned' => $isCorrect ? $score : 0,
                                 'is_correct' => $isCorrect,
                                 'passage_title' => $passage->title,
                             ];
                         }
                     }
-                    $submission->update(['reading_score' => $readingScore]);
-                    $results['reading']['score'] = $readingScore;
-                    $results['reading']['total_score_possible'] = $totalScorePossible;
                     break;
 
                 case 'writing':
