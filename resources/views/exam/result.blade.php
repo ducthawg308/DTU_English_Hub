@@ -58,6 +58,108 @@
     .btn-back:hover {
         background-color: #0056b3;
     }
+    .btn-toggle-feedback {
+        background-color: #28a745;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        color: #ffffff;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+    }
+    .btn-toggle-feedback:hover {
+        background-color: #218838;
+    }
+    .feedback-details {
+        display: none;
+        margin-top: 1.5rem;
+    }
+    .feedback-details.show {
+        display: block;
+    }
+    .evaluation-details {
+        background-color: #1a2c54;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .evaluation-details h4 {
+        font-size: 1.3rem;
+        color: #f8c307;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    .score-list {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+    .score-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        background-color: #2a3b6a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
+    }
+    .score-list li:hover {
+        background-color: #3a4b8a;
+    }
+    .score-list li.total {
+        background-color: #007bff;
+        font-weight: bold;
+    }
+    .feedback-card {
+        border: none;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+    .feedback-card-header {
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    .feedback-card-body {
+        padding: 1.25rem;
+        background-color: #2a3b6a;
+        color: #d3d3d3;
+        font-size: 0.95rem;
+    }
+    .feedback-card ul {
+        padding-left: 1.25rem;
+        margin-bottom: 0;
+    }
+    .feedback-card ul li {
+        margin-bottom: 0.5rem;
+    }
+    .corrected-text {
+        background-color: #ffffff;
+        color: #333;
+        padding: 1.5rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+    }
+    .error-table th, .error-table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+    .error-table th {
+        background-color: #2a3b6a;
+        color: #f8c307;
+        font-weight: 600;
+    }
+    .error-table td {
+        background-color: #1a2c54;
+        color: #ffffff;
+    }
     @media (max-width: 576px) {
         .skill-title {
             font-size: 1.25rem;
@@ -71,6 +173,19 @@
         .skill-card {
             padding: 1rem;
             margin-bottom: 1rem;
+        }
+        .evaluation-details {
+            padding: 1rem;
+        }
+        .score-list li {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+        .feedback-card-header {
+            font-size: 0.9rem;
+        }
+        .feedback-card-body {
+            font-size: 0.85rem;
         }
     }
 </style>
@@ -103,13 +218,137 @@
         @if(!empty($results['writing']))
         <div class="skill-card">
             <h2 class="skill-title">Writing</h2>
+            @if(isset($results['writing']['score']))
+            <p class="score-text">
+                Tổng điểm: {{ number_format($results['writing']['score'], 2) }} / {{ number_format($results['writing']['total_score_possible'], 2) }}
+            </p>
+            @endif
+            
             @foreach($results['writing'] as $index => $writing)
-            <div class="prompt-section">
-                <p class="prompt-text"><strong>Đề bài {{ $index + 1 }}:</strong> {!! $writing['prompt_text'] !!}</p>
-                <div class="user-answer">
-                    {{ $writing['user_answer'] ?: 'Chưa nộp bài' }}
+                @if(is_array($writing) && isset($writing['prompt_text']))
+                <div class="prompt-section">
+                    <p class="prompt-text"><strong>Đề bài {{ $index + 1 }}:</strong> {!! $writing['prompt_text'] !!}</p>
+                    
+                    <div class="user-answer mb-3">
+                        {{ $writing['user_answer'] ?: 'Chưa nộp bài' }}
+                    </div>
+                    
+                    @if(isset($writing['ai_score']))
+                    <p class="score-text">
+                        Tổng điểm: {{ number_format($writing['ai_score']['total'], 1) }}/10
+                    </p>
+                    <button class="btn-toggle-feedback" onclick="toggleFeedback('feedback-{{ $index }}')">Nhận xét của AI</button>
+                    
+                    <div class="feedback-details" id="feedback-{{ $index }}">
+                        <div class="evaluation-details mt-3">
+                            <h4>Đánh giá chi tiết</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="score-list">
+                                        <li>
+                                            <span>Nội dung</span>
+                                            <span>{{ number_format($writing['ai_score']['content'], 1) }}/10</span>
+                                        </li>
+                                        <li>
+                                            <span>Ngữ pháp</span>
+                                            <span>{{ number_format($writing['ai_score']['grammar'], 1) }}/10</span>
+                                        </li>
+                                        <li>
+                                            <span>Từ vựng</span>
+                                            <span>{{ number_format($writing['ai_score']['vocabulary'], 1) }}/10</span>
+                                        </li>
+                                        <li>
+                                            <span>Cấu trúc</span>
+                                            <span>{{ number_format($writing['ai_score']['structure'], 1) }}/10</span>
+                                        </li>
+                                        <li class="total">
+                                            <span>Tổng điểm</span>
+                                            <span>{{ number_format($writing['ai_score']['total'], 1) }}/10</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    @if(isset($writing['ai_feedback']))
+                                    <div class="feedback-card" style="background-color: #2a3b6a;">
+                                        <div class="feedback-card-header" style="background-color: #3a4b8a;">Nhận xét chung</div>
+                                        <div class="feedback-card-body">
+                                            <p>{{ $writing['ai_feedback']['general'] }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="feedback-card" style="background-color: #28a745;">
+                                        <div class="feedback-card-header" style="background-color: #218838;">Điểm mạnh</div>
+                                        <div class="feedback-card-body">
+                                            <ul>
+                                                @foreach($writing['ai_feedback']['strengths'] as $strength)
+                                                    <li>{{ $strength }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="feedback-card" style="background-color: #dc3545;">
+                                        <div class="feedback-card-header" style="background-color: #c82333;">Điểm yếu</div>
+                                        <div class="feedback-card-body">
+                                            <ul>
+                                                @foreach($writing['ai_feedback']['weaknesses'] as $weakness)
+                                                    <li>{{ $weakness }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="feedback-card" style="background-color: #17a2b8;">
+                                        <div class="feedback-card-header" style="background-color: #138496;">Gợi ý cải thiện</div>
+                                        <div class="feedback-card-body">
+                                            <p>{{ $writing['ai_feedback']['suggestions'] }}</p>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            @if(isset($writing['corrections']) && isset($writing['corrections']['corrected_text']))
+                            <div class="mt-4">
+                                <h4 class="text-white mb-2">Bài viết đã được chỉnh sửa</h4>
+                                <div class="corrected-text">
+                                    {!! $writing['corrections']['corrected_text'] !!}
+                                </div>
+                                
+                                @if(isset($writing['corrections']['detailed_errors']) && count($writing['corrections']['detailed_errors']) > 0)
+                                <div class="mt-3">
+                                    <h5 class="text-white mb-2">Chi tiết lỗi</h5>
+                                    <div class="table-responsive">
+                                        <table class="table error-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Lỗi</th>
+                                                    <th>Sửa thành</th>
+                                                    <th>Giải thích</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($writing['corrections']['detailed_errors'] as $error)
+                                                <tr>
+                                                    <td>{{ $error['error'] }}</td>
+                                                    <td>{{ $error['correction'] }}</td>
+                                                    <td>{{ $error['explanation'] }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
                 </div>
-            </div>
+                <hr class="border-secondary my-4">
+                @endif
             @endforeach
         </div>
         @endif
@@ -144,4 +383,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleFeedback(feedbackId) {
+        const feedbackElement = document.getElementById(feedbackId);
+        feedbackElement.classList.toggle('show');
+    }
+</script>
 @endsection
