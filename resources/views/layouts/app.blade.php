@@ -95,6 +95,7 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.result') }}">Tổng quan kết quả học tập</a></li>
                             <li><a class="dropdown-item" href="#">Bài viết của tôi</a></li>
                             <li><a class="dropdown-item" href="{{ route('user.setting') }}">Cài đặt</a></li>
                             <li><hr class="dropdown-divider"></li>
