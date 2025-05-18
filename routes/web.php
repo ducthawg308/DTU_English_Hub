@@ -58,6 +58,7 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('setting', [App\Http\Controllers\UserController::class, 'index'])->name('user.setting');
     Route::get('result', [App\Http\Controllers\UserController::class, 'result'])->name('user.result');
+    Route::post('/account/set-target', [App\Http\Controllers\UserController::class, 'setTarget'])->name('account.set-target');
 
     Route::get('home/vocabulary/custom/addtopic', [App\Http\Controllers\VocabularyController::class, 'addtopic'])->name('addtopic.custom');
     Route::post('home/vocabulary/custom/addtopic/storetopic', [App\Http\Controllers\VocabularyController::class, 'storetopic']);

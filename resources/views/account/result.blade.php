@@ -13,8 +13,74 @@
             <h5 class="card-title fw-semibold text-success">
                 <i class="bi bi-bullseye me-2"></i>Mục tiêu của bạn
             </h5>
-            <p class="card-text mb-1 fs-5"><strong>VSTEP B1</strong></p>
-            <small class="text-muted">Hoàn thành trước: 01/09/2025</small>
+
+            @if(session('success'))
+                <div class="alert alert-success mt-3">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($user->target_level)
+                <p class="card-text mb-1 fs-5">
+                    <strong>VSTEP {{ $user->target_level }}</strong>
+                </p>
+                @if($user->target_deadline)
+                    <small class="text-muted">Hoàn thành trước: {{ $user->target_deadline }}</small>
+                @endif
+                <form action="{{ route('account.set-target') }}" method="POST" class="mt-3">
+                    @csrf
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <select name="target_level" class="form-select" required>
+                                <option value="">Chọn mức</option>
+                                @foreach(['3' => 'B1', '4' => 'B2', '5' => 'C1'] as $value => $label)
+                                    <option value="{{ $value }}" {{ $user->target_level == $value ? 'selected' : '' }}>
+                                        VSTEP {{ $value }} ({{ $label }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" name="target_deadline" class="form-control" value="{{ $user->target_deadline }}">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-outline-success w-100">
+                                Cập nhật mục tiêu
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            @else
+                <form action="{{ route('account.set-target') }}" method="POST" class="mt-3">
+                    @csrf
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <select name="target_level" class="form-select" required>
+                                <option value="">Chọn mức</option>
+                                @foreach(['3' => 'B1', '4' => 'B2', '5' => 'C1'] as $value => $label)
+                                    <option value="{{ $value }}">VSTEP {{ $value }} ({{ $label }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" name="target_deadline" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success w-100">
+                                Lưu mục tiêu
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            @endif
+
+            <hr class="my-3">
+
+            <p class="mb-0">
+                <i class="bi bi-bar-chart-fill text-primary me-1"></i>
+                <strong>Bạn đang ở:</strong>
+                <span class="fw-bold text-primary">{{ $currentLevel }}</span>
+            </p>
         </div>
     </div>
 
@@ -58,20 +124,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>01/05/2025</td>
-                            <td class="text-success fw-bold">6.5</td>
-                            <td class="text-warning fw-bold">5.0</td>
-                            <td class="text-danger fw-bold">4.0</td>
-                            <td class="text-warning fw-bold">5.5</td>
-                        </tr>
-                        <tr>
-                            <td>20/04/2025</td>
-                            <td class="text-success fw-bold">6.0</td>
-                            <td class="text-warning fw-bold">4.5</td>
-                            <td class="text-danger fw-bold">3.5</td>
-                            <td class="text-warning fw-bold">5.0</td>
-                        </tr>
+                        @foreach($history as $attempt)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($attempt->submitted_at)->format('d/m/Y') }}</td>
+                                <td class="fw-bold">{{ $attempt->listening_score }}</td>
+                                <td class="fw-bold">{{ $attempt->reading_score }}</td>
+                                <td class="fw-bold">{{ $attempt->writing_score }}</td>
+                                <td class="fw-bold">{{ $attempt->speaking_score }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -81,24 +142,19 @@
 @endsection
 
 @section('scripts')
-<!-- Tải Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Dữ liệu cứng cho biểu đồ
-        const listening = 6.5;
-        const reading = 5.0;
-        const writing = 4.0;
-        const speaking = 5.5;
+        const scores = @json($scores);
 
-        // Khởi tạo Chart.js
+        const listening = scores.listening;
+        const reading = scores.reading;
+        const writing = scores.writing;
+        const speaking = scores.speaking;
+
+        // Radar Chart
         const ctx = document.getElementById('skillChart').getContext('2d');
-        if (!ctx) {
-            console.error('Không tìm thấy canvas với id "skillChart"');
-            return;
-        }
-
-        const skillChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: ['Nghe', 'Đọc', 'Viết', 'Nói'],
@@ -118,16 +174,7 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${context.raw}`;
-                            }
-                        }
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     r: {
@@ -154,11 +201,27 @@
             }
         });
 
+        const practiceRoutes = {
+            'nghe': "{{ route('list.topic') }}",
+            'đọc': "{{ route('index.reading') }}",
+            'viết': "{{ route('index.writing') }}",
+            'nói': "{{ route('home.pronounce') }}"
+        };
+
+
         // Gợi ý kỹ năng yếu nhất
-        const scores = { 'Nghe': listening, 'Đọc': reading, 'Viết': writing, 'Nói': speaking };
-        const weakest = Object.entries(scores).sort((a, b) => a[1] - b[1])[0];
-        document.getElementById('weakSkill').textContent = weakest[0];
-        document.getElementById('suggestedLink').href = '/practice/' + weakest[0].toLowerCase();
+        const scoreMap = {
+            'Nghe': listening,
+            'Đọc': reading,
+            'Viết': writing,
+            'Nói': speaking
+        };
+        const weakest = Object.entries(scoreMap).sort((a, b) => a[1] - b[1])[0];
+        const weakSkill = weakest[0]; // eg: 'Nghe'
+        const weakSkillKey = weakSkill.toLowerCase(); // eg: 'nghe'
+
+        document.getElementById('weakSkill').textContent = weakSkill;
+        document.getElementById('suggestedLink').href = practiceRoutes[weakSkillKey];
     });
 </script>
 @endsection
