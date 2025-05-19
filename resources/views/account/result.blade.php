@@ -37,7 +37,7 @@
                                     <option value="{{ $value }}" {{ $user->target_level == $value ? 'selected' : '' }}>
                                         VSTEP {{ $value }} ({{ $label }})
                                     </option>
-                                @endforeach
+                                    @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -84,14 +84,33 @@
         </div>
     </div>
 
-    <!-- Skill Chart -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body p-4">
-            <h5 class="card-title fw-semibold text-primary">
-                <i class="bi bi-graph-up me-2"></i>Biểu đồ kỹ năng
-            </h5>
-            <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
-                <canvas id="skillChart"></canvas>
+    <!-- Skill Charts -->
+    <div class="row">
+        <!-- Radar Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold text-primary">
+                        <i class="bi bi-graph-up me-2"></i>Biểu đồ điểm trung bình
+                    </h5>
+                    <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="skillRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold text-primary">
+                        <i class="bi bi-bar-chart me-2"></i>Tiến trình điểm số
+                    </h5>
+                    <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="skillBarChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -146,21 +165,17 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const scores = @json($scores);
+        const history = @json($history);
 
-        const listening = scores.listening;
-        const reading = scores.reading;
-        const writing = scores.writing;
-        const speaking = scores.speaking;
-
-        // Radar Chart
-        const ctx = document.getElementById('skillChart').getContext('2d');
-        new Chart(ctx, {
+        // Radar Chart (Average Scores)
+        const radarCtx = document.getElementById('skillRadarChart').getContext('2d');
+        new Chart(radarCtx, {
             type: 'radar',
             data: {
                 labels: ['Nghe', 'Đọc', 'Viết', 'Nói'],
                 datasets: [{
-                    label: 'Điểm',
-                    data: [listening, reading, writing, speaking],
+                    label: 'Điểm trung bình',
+                    data: [scores.listening, scores.reading, scores.writing, scores.speaking],
                     backgroundColor: 'rgba(25, 135, 84, 0.2)',
                     borderColor: '#198754',
                     borderWidth: 2,
@@ -201,6 +216,80 @@
             }
         });
 
+        // Bar Chart (Score Progression)
+        const barCtx = document.getElementById('skillBarChart').getContext('2d');
+        const labels = history.map(item => new Date(item.submitted_at).toLocaleDateString('vi-VN'));
+        const datasets = [
+            {
+                label: 'Nghe',
+                data: history.map(item => item.listening_score),
+                backgroundColor: 'rgba(25, 135, 84, 0.6)',
+                borderColor: '#198754',
+                borderWidth: 1
+            },
+            {
+                label: 'Đọc',
+                data: history.map(item => item.reading_score),
+                backgroundColor: 'rgba(0, 123, 255, 0.6)',
+                borderColor: '#007bff',
+                borderWidth: 1
+            },
+            {
+                label: 'Viết',
+                data: history.map(item => item.writing_score),
+                backgroundColor: 'rgba(255, 193, 7, 0.6)',
+                borderColor: '#ffc107',
+                borderWidth: 1
+            },
+            {
+                label: 'Nói',
+                data: history.map(item => item.speaking_score),
+                backgroundColor: 'rgba(220, 53, 69, 0.6)',
+                borderColor: '#dc3545',
+                borderWidth: 1
+            }
+        ];
+
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Ngày thi'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: {
+                            display: true,
+                            text: 'Điểm'
+                        },
+                        ticks: {
+                            stepSize: 2
+                        }
+                    }
+                }
+            }
+        });
+
         const practiceRoutes = {
             'nghe': "{{ route('list.topic') }}",
             'đọc': "{{ route('index.reading') }}",
@@ -208,13 +297,12 @@
             'nói': "{{ route('home.pronounce') }}"
         };
 
-
         // Gợi ý kỹ năng yếu nhất
         const scoreMap = {
-            'Nghe': listening,
-            'Đọc': reading,
-            'Viết': writing,
-            'Nói': speaking
+            'Nghe': scores.listening,
+            'Đọc': scores.reading,
+            'Viết': scores.writing,
+            'Nói': scores.speaking
         };
         const weakest = Object.entries(scoreMap).sort((a, b) => a[1] - b[1])[0];
         const weakSkill = weakest[0]; // eg: 'Nghe'

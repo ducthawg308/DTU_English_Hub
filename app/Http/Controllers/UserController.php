@@ -47,7 +47,7 @@ class UserController extends Controller
         $history = UserExamSubmission::where('user_id', $user->id)
             ->where('status', '!=', 'draft')
             ->orderByDesc('submitted_at')
-            ->take(10)
+            ->take(5)
             ->get();
 
         return view('account.result', compact('user', 'scores', 'history', 'currentLevel'));
