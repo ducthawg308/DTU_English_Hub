@@ -15,7 +15,7 @@ Route::get('home', function () {
 })->name('home');
 
 
-Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
+Route::middleware(['auth','verified','CheckRole:admin'])->group(function(){
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show']);
     Route::get('admin/users/list', [App\Http\Controllers\AdminUsersController::class, 'list']);
     Route::get('admin/users/add', [App\Http\Controllers\AdminUsersController::class, 'add']);
@@ -53,6 +53,12 @@ Route::middleware(['auth','verified','CheckRole:user'])->group(function(){
     Route::get('admin/vocabulary/edit/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'edit'])->name('edit.vocab');
     Route::get('admin/vocabulary/delete/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'delete'])->name('delete_vocab');
     Route::post('admin/vocabulary/update/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'update'])->name('update.vocab');
+});
+
+Route::middleware(['auth','verified','CheckRole:teacher'])->group(function(){
+    Route::get('teacher', [App\Http\Controllers\TeacherController::class, 'show']);
+    Route::get('teacher/writing', [App\Http\Controllers\TeacherController::class, 'showWriting'])->name('teacher.writing');
+    Route::get('teacher/listening', [App\Http\Controllers\TeacherController::class, 'showSpeaking'])->name('teacher.speaking');
 });
 
 Route::middleware(['auth','verified'])->group(function(){

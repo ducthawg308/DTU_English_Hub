@@ -195,21 +195,37 @@
         <h1 class="text-center mb-5 text-white" style="font-size: 2.5rem;">Kết quả bài thi: {{ $exam->title }}</h1>
 
         <!-- Listening Results -->
-        @if(!empty($results['listening']['details']))
+        <!-- @if(!empty($results['listening']['details']))
         <div class="skill-card">
             <h2 class="skill-title">Listening</h2>
             <p class="score-text">
                 Tổng điểm: {{ number_format($results['listening']['score'], 2) }} / {{ number_format($results['listening']['total_score_possible'], 2) }}
             </p>
         </div>
+        @endif -->
+        @if(!empty($results['listening']['details']))
+        <div class="skill-card">
+            <h2 class="skill-title">Listening</h2>
+            <p class="score-text">
+                Tổng điểm: {{ number_format($results['listening']['score'], 2) }} / 10
+            </p>
+        </div>
         @endif
 
         <!-- Reading Results -->
-        @if(!empty($results['reading']['details']))
+        <!-- @if(!empty($results['reading']['details']))
         <div class="skill-card">
             <h2 class="skill-title">Reading</h2>
             <p class="score-text">
                 Tổng điểm: {{ number_format($results['reading']['score'], 2) }} / {{ number_format($results['reading']['total_score_possible'], 2) }}
+            </p>
+        </div>
+        @endif -->
+        @if(!empty($results['reading']['details']))
+        <div class="skill-card">
+            <h2 class="skill-title">Reading</h2>
+            <p class="score-text">
+                Tổng điểm: {{ number_format($results['reading']['score'], 2) }} / 10
             </p>
         </div>
         @endif

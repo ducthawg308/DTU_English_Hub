@@ -38,6 +38,7 @@
                         <select class="form-select" name="role" id="floatingSelect">
                             <option value="2" {{ $user->role_id == 2 ? 'selected' : '' }}>Người dùng</option>
                             <option value="1" {{ $user->role_id == 1 ? 'selected' : '' }}>Admin</option>
+                            <option value="3" {{ $user->role_id == 3 ? 'selected' : '' }}>Giáo viên</option>
                         </select>
                         <label for="floatingSelect">Nhóm quyền</label>
                     </div>

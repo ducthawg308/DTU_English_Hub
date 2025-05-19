@@ -38,6 +38,7 @@
                         <select class="form-select" name="role" id="floatingSelect">
                             <option value="2">Người dùng</option>
                             <option value="1">Admin</option>
+                            <option value="3">Giáo viên</option>
                         </select>
                         <label for="floatingSelect">Nhóm quyền</label>
                     </div>
