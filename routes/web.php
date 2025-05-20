@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 Route::get('', function () {
     return view('home');
@@ -62,6 +65,8 @@ Route::middleware(['auth','verified','CheckRole:teacher'])->group(function(){
     Route::get('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeWriting'])->name('teacher.writing.grade');
     Route::post('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitGrade'])->name('teacher.writing.submit-grade');
     Route::get('teacher/listening', [App\Http\Controllers\TeacherController::class, 'showSpeaking'])->name('teacher.speaking');
+    Route::get('/speaking/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeSpeaking'])->name('teacher.speaking.grade');
+    Route::post('/speaking/submit-grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitSpeakingGrade'])->name('teacher.speaking.submit-grade');
 });
 
 Route::middleware(['auth','verified'])->group(function(){

@@ -419,6 +419,8 @@ class ExamController extends Controller
                                 $audioData = $userAnswer;
                             }
                         }
+
+                        dd($audioData);
                         
                         // Create the speaking response record
                         $speakingResponse = UserSpeakingResponse::create([
