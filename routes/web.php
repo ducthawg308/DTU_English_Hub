@@ -55,9 +55,12 @@ Route::middleware(['auth','verified','CheckRole:admin'])->group(function(){
     Route::post('admin/vocabulary/update/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'update'])->name('update.vocab');
 });
 
+//Teacher
 Route::middleware(['auth','verified','CheckRole:teacher'])->group(function(){
     Route::get('teacher', [App\Http\Controllers\TeacherController::class, 'show']);
     Route::get('teacher/writing', [App\Http\Controllers\TeacherController::class, 'showWriting'])->name('teacher.writing');
+    Route::get('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeWriting'])->name('teacher.writing.grade');
+    Route::post('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitGrade'])->name('teacher.writing.submit-grade');
     Route::get('teacher/listening', [App\Http\Controllers\TeacherController::class, 'showSpeaking'])->name('teacher.speaking');
 });
 
