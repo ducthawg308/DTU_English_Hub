@@ -424,7 +424,7 @@ class ExamController extends Controller
                         $speakingResponse = UserSpeakingResponse::create([
                             'submission_id' => $submission->id,
                             'speaking_prompt_id' => $prompt->id,
-                            'audio_url' => $fileName, // Store just the filename in the database
+                            'audio_url' => $fileName,
                             'transcript' => null,
                             'ai_score' => 0,
                             'ai_feedback' => null,
@@ -435,7 +435,7 @@ class ExamController extends Controller
                             'prompt_id' => $prompt->id,
                             'prompt_text' => $prompt->prompt_text,
                             'user_answer' => $audioData ? 'Audio submitted' : 'No audio submitted',
-                            'audio_data' => $audioData, // This contains the complete base64 data string
+                            'audio_data' => $audioData,
                         ];
                     }
                     break;

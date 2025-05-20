@@ -18,19 +18,55 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $latestSubmission = UserExamSubmission::where('user_id', $user->id)
-            ->where('status', '!=', 'draft')
-            ->orderByDesc('submitted_at')
-            ->first();
+        $submissions = UserExamSubmission::where('user_id', $user->id)
+            ->where('status', '!=', 'pending')
+            ->get();
 
         $scores = [
-            'listening' => $latestSubmission->listening_score ?? 0,
-            'reading' => $latestSubmission->reading_score ?? 0,
-            'writing' => $latestSubmission->writing_score ?? 0,
-            'speaking' => $latestSubmission->speaking_score ?? 0,
+            'listening' => 0,
+            'reading' => 0,
+            'writing' => 0,
+            'speaking' => 0,
         ];
 
-        $avg = array_sum($scores) / (count(array_filter($scores)) ?: 1);
+        $skillCounts = [
+            'listening' => 0,
+            'reading' => 0,
+            'writing' => 0,
+            'speaking' => 0,
+        ];
+
+        foreach ($submissions as $submission) {
+            if ($submission->listening_score > 0) {
+                $scores['listening'] += $submission->listening_score;
+                $skillCounts['listening']++;
+            }
+            if ($submission->reading_score > 0) {
+                $scores['reading'] += $submission->reading_score;
+                $skillCounts['reading']++;
+            }
+            if ($submission->writing_score > 0) {
+                $scores['writing'] += $submission->writing_score;
+                $skillCounts['writing']++;
+            }
+            if ($submission->speaking_score > 0) {
+                $scores['speaking'] += $submission->speaking_score;
+                $skillCounts['speaking']++;
+            }
+        }
+
+        // Tính điểm trung bình cho từng kỹ năng
+        foreach ($scores as $skill => &$score) {
+            if ($skillCounts[$skill] > 0) {
+                $score = round($score / $skillCounts[$skill], 1); // Làm tròn 1 chữ số thập phân
+            }
+        }
+
+        // Tính điểm trung bình tổng của các kỹ năng
+        $validScores = array_filter($scores, function ($score) {
+            return $score > 0;
+        });
+        $avg = count($validScores) > 0 ? round(array_sum($validScores) / count($validScores), 1) : 0;
 
         if ($avg >= 8.5) {
             $currentLevel = 'VSTEP Bậc 5 (C1)';
@@ -64,7 +100,7 @@ class UserController extends Controller
 
         $user->target_level = $validated['target_level'];
         $user->target_deadline = $validated['target_deadline'];
-        $user->save();
+            $user->save();
 
         return redirect()->back()->with('success', 'Cập nhật mục tiêu thành công!');
     }
