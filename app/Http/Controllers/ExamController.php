@@ -240,7 +240,6 @@ class ExamController extends Controller
         $answers = $request->input('answers', []);
         $user = Auth::user();
 
-        // Create user exam submission
         $submission = UserExamSubmission::create([
             'user_id' => $user->id,
             'exam_id' => $exam_id,
@@ -260,52 +259,45 @@ class ExamController extends Controller
             'speaking' => [],
         ];
 
+        // Thu thập tất cả các điểm writing từ các section
+        $writingScores = [];
+        $writingMaxScore = 0;
+
         foreach ($examSections as $section) {
             switch ($section->skill) {
                 case 'listening':
-                $questions = Question::where('exam_section_id', $section->id)
-                    ->with('choices')
-                    ->get();
-                
-                foreach ($questions as $question) {
-                    $userAnswer = $answers[$question->id] ?? null;
-                    $correctLabel = $question->correct_choice_label;
-                    $score = $question->score ?? 0;
-                    $results['listening']['total_score_possible'] += $score;
-                    $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
-                    
-                    // Calculate score directly into results array
-                    if ($isCorrect) {
-                        $results['listening']['score'] += $score;
+                    $questions = Question::where('exam_section_id', $section->id)->with('choices')->get();
+                    foreach ($questions as $question) {
+                        $userAnswer = $answers[$question->id] ?? null;
+                        $correctLabel = $question->correct_choice_label;
+                        $score = $question->score ?? 0;
+                        $results['listening']['total_score_possible'] += $score;
+                        $isCorrect = $userAnswer && $correctLabel && $userAnswer === $correctLabel;
+                        if ($isCorrect) {
+                            $results['listening']['score'] += $score;
+                        }
+                        $userAnswerRecord = UserAnswer::create([
+                            'submission_id' => $submission->id,
+                            'question_id' => $question->id,
+                            'selected_choice_label' => $userAnswer,
+                            'is_correct' => $isCorrect,
+                            'score_awarded' => $isCorrect ? $score : 0,
+                        ]);
+                        $results['listening']['details'][] = [
+                            'question_id' => $question->id,
+                            'question_text' => $question->question_text,
+                            'user_answer' => $userAnswer,
+                            'correct_answer' => $correctLabel,
+                            'score_earned' => $isCorrect ? $score : 0,
+                            'is_correct' => $isCorrect,
+                        ];
                     }
-                    
-                    // Save answer to database
-                    $userAnswerRecord = UserAnswer::create([
-                        'submission_id' => $submission->id,
-                        'question_id' => $question->id,
-                        'selected_choice_label' => $userAnswer,
-                        'is_correct' => $isCorrect,
-                        'score_awarded' => $isCorrect ? $score : 0,
-                    ]);
-                    
-                    // Populate details
-                    $results['listening']['details'][] = [
-                        'question_id' => $question->id,
-                        'question_text' => $question->question_text,
-                        'user_answer' => $userAnswer,
-                        'correct_answer' => $correctLabel,
-                        'score_earned' => $isCorrect ? $score : 0,
-                        'is_correct' => $isCorrect,
-                    ];
-                }
-                break;
+                    break;
 
                 case 'reading':
                     $passages = ReadingPassage::where('exam_section_id', $section->id)->get();
                     foreach ($passages as $passage) {
-                        $questions = Question::where('passage_id', $passage->id)
-                            ->with('choices')
-                            ->get();
+                        $questions = Question::where('passage_id', $passage->id)->with('choices')->get();
                         foreach ($questions as $question) {
                             $userAnswer = $answers[$question->id] ?? null;
                             $correctLabel = $question->correct_choice_label;
@@ -330,13 +322,10 @@ class ExamController extends Controller
 
                 case 'writing':
                     $prompts = WritingPrompt::where('exam_section_id', $section->id)->get();
-                    $writingTotalScore = 0;
-                    $writingMaxScore = 0;
-                    
-                    foreach ($prompts as $prompt) {
+                    foreach ($prompts as $index => $prompt) {
                         $userAnswer = $answers['writing_' . $prompt->id] ?? '';
-                        
-                        // Skip empty answers
+                        Log::info("Processing prompt {$prompt->id}, index {$index}, user answer: " . ($userAnswer ?: 'empty'));
+
                         if (empty($userAnswer)) {
                             $results['writing'][] = [
                                 'prompt_id' => $prompt->id,
@@ -345,20 +334,19 @@ class ExamController extends Controller
                                 'ai_score' => null,
                                 'ai_feedback' => null
                             ];
+                            $writingScores[$index] = 0;
                             continue;
                         }
-                        
-                        // Get prompt metadata for AI evaluation
+
                         $promptData = [
                             'level' => $prompt->level ?? 'B1',
                             'task_type' => $prompt->task_type ?? 'email',
                             'topic' => $prompt->topic ?? '',
                             'instruction' => $prompt->prompt_text ?? ''
                         ];
-                        
-                        // Call the AI evaluation function
+
                         $aiEvaluation = $this->getWritingEvaluation($userAnswer, $promptData);
-                        
+
                         $writtenResponse = UserWrittenResponse::create([
                             'submission_id' => $submission->id,
                             'writing_prompt_id' => $prompt->id,
@@ -366,35 +354,18 @@ class ExamController extends Controller
                             'ai_score' => $aiEvaluation ? $aiEvaluation['scores']['total'] : 0,
                             'ai_feedback' => $aiEvaluation ? json_encode($aiEvaluation) : null,
                         ]);
-                        
-                        // Add to total writing score
-                        if ($aiEvaluation) {
-                            $writingTotalScore += $aiEvaluation['scores']['total'];
-                            $writingMaxScore += 10; // Assuming max score is 10 per prompt
-                            
-                            $results['writing'][] = [
-                                'prompt_id' => $prompt->id,
-                                'prompt_text' => $prompt->prompt_text,
-                                'user_answer' => $userAnswer,
-                                'ai_score' => $aiEvaluation['scores'],
-                                'ai_feedback' => $aiEvaluation['feedback'],
-                                'corrections' => $aiEvaluation['corrections']
-                            ];
-                        } else {
-                            $results['writing'][] = [
-                                'prompt_id' => $prompt->id,
-                                'prompt_text' => $prompt->prompt_text,
-                                'user_answer' => $userAnswer,
-                                'ai_score' => null,
-                                'ai_feedback' => null
-                            ];
-                        }
-                    }
-                    
-                    // Store the writing score in the results
-                    if ($writingMaxScore > 0) {
-                        $results['writing']['score'] = $writingTotalScore;
-                        $results['writing']['total_score_possible'] = $writingMaxScore;
+
+                        $writingScores[] = $aiEvaluation ? $aiEvaluation['scores']['total'] : 0; // Sử dụng mảng tuyến tính
+                        $writingMaxScore += 10;
+
+                        $results['writing'][] = [
+                            'prompt_id' => $prompt->id,
+                            'prompt_text' => $prompt->prompt_text,
+                            'user_answer' => $userAnswer,
+                            'ai_score' => $aiEvaluation ? $aiEvaluation['scores'] : null,
+                            'ai_feedback' => $aiEvaluation ? $aiEvaluation['feedback'] : null,
+                            'corrections' => $aiEvaluation ? $aiEvaluation['corrections'] : null
+                        ];
                     }
                     break;
 
@@ -404,25 +375,17 @@ class ExamController extends Controller
                         $userAnswer = $answers['speaking_' . $prompt->id] ?? '';
                         $audioData = null;
                         $fileName = null;
-                        
-                        // Check if we received base64 audio data
+
                         if ($userAnswer && preg_match('/^data:audio\/\w+;base64,/', $userAnswer)) {
-                            // Save to storage for permanent records
                             $audioBase64 = substr($userAnswer, strpos($userAnswer, ',') + 1);
                             $decodedAudio = base64_decode($audioBase64);
-                            
                             if ($decodedAudio !== false) {
                                 $fileName = 'speaking_' . $exam_id . '_' . $prompt->id . '_' . Str::random(10) . '.mp3';
                                 Storage::disk('public')->put('audio/speaking/' . $fileName, $decodedAudio);
-                                
-                                // Keep the original base64 data for direct playback in results
                                 $audioData = $userAnswer;
                             }
                         }
 
-                        dd($audioData);
-                        
-                        // Create the speaking response record
                         $speakingResponse = UserSpeakingResponse::create([
                             'submission_id' => $submission->id,
                             'speaking_prompt_id' => $prompt->id,
@@ -431,8 +394,7 @@ class ExamController extends Controller
                             'ai_score' => 0,
                             'ai_feedback' => null,
                         ]);
-                        
-                        // Pass the data to results
+
                         $results['speaking'][] = [
                             'prompt_id' => $prompt->id,
                             'prompt_text' => $prompt->prompt_text,
@@ -444,38 +406,36 @@ class ExamController extends Controller
             }
         }
 
-        foreach ($examSections as $section) {
-            switch ($section->skill) {
-                case 'listening':
-                    $questions = Question::where('exam_section_id', $section->id)
-                        ->with('choices')
-                        ->get();
-                    // ... (Phần xử lý câu hỏi listening)
-                    break;
-
-                case 'reading':
-                    $passages = ReadingPassage::where('exam_section_id', $section->id)->get();
-                    // ... (Phần xử lý câu hỏi reading)
-                    break;
-
-                // ... (Giữ nguyên phần xử lý writing và speaking)
-            }
+        // Tính điểm writing từ tất cả các section
+        Log::info("All writing scores before calculation:", $writingScores);
+        $writingTotalScore = 0;
+        if (count($writingScores) >= 2) {
+            // Lấy 2 bài viết đầu tiên để tính theo công thức
+            $writingTotalScore = ($writingScores[0] + (2 * $writingScores[1])) / 3;
+            Log::info("Calculated writing score: {$writingTotalScore}");
+        } elseif (count($writingScores) == 1) {
+            $writingTotalScore = $writingScores[0];
+            Log::info("Only 1 writing response, score: {$writingTotalScore}");
+        } else {
+            Log::warning("No writing responses submitted for exam {$exam_id}.");
+            $writingTotalScore = 0;
         }
 
-        // Update total score
-        $totalScore = $results['listening']['score'] + $results['reading']['score'];
-        $writingScore = $results['writing']['score'] ?? 0;
+        if ($writingMaxScore > 0) {
+            $results['writing']['score'] = round($writingTotalScore, 1);
+            $results['writing']['total_score_possible'] = $writingMaxScore;
+        }
 
+        // Cập nhật tổng điểm
+        $totalScore = $results['listening']['score'] + $results['reading']['score'] + $results['writing']['score'];
         $submission->update([
             'listening_score' => $results['listening']['score'],
             'reading_score' => $results['reading']['score'],
-            'writing_score' => $writingScore,
-            'total_score' => $totalScore + $writingScore,
+            'writing_score' => $results['writing']['score'],
+            'total_score' => $totalScore,
         ]);
 
-        // Store results in session
         $request->session()->put('exam_results', $results);
-
         return redirect()->route('exam.result', ['exam_id' => $exam_id]);
     }
 

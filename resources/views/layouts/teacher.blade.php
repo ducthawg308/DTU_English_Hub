@@ -59,13 +59,9 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Quản lý</div>
-                            <a class="nav-link" href="{{ route('teacher.writing') }}">
+                            <a class="nav-link" href="{{ route('teacher.dashboard') }}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-pen"></i></div>
-                                Quản lý bài Writing
-                            </a>
-                            <a class="nav-link" href="{{ route('teacher.speaking') }}">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-ear-listen"></i></div>
-                                Quản lý bài Listening
+                                Quản lý chấm điểm
                             </a>
                         </div>
                     </div>

@@ -58,15 +58,24 @@ Route::middleware(['auth','verified','CheckRole:admin'])->group(function(){
     Route::post('admin/vocabulary/update/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'update'])->name('update.vocab');
 });
 
-//Teacher
-Route::middleware(['auth','verified','CheckRole:teacher'])->group(function(){
-    Route::get('teacher', [App\Http\Controllers\TeacherController::class, 'show']);
+Route::middleware(['auth', 'verified', 'CheckRole:teacher'])->group(function () {
+    // Use showCombined for the teacher dashboard
+    Route::get('teacher', [App\Http\Controllers\TeacherController::class, 'showCombined'])->name('teacher.dashboard');
+
+    // Writing routes
     Route::get('teacher/writing', [App\Http\Controllers\TeacherController::class, 'showWriting'])->name('teacher.writing');
-    Route::get('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeWriting'])->name('teacher.writing.grade');
-    Route::post('/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitGrade'])->name('teacher.writing.submit-grade');
-    Route::get('teacher/listening', [App\Http\Controllers\TeacherController::class, 'showSpeaking'])->name('teacher.speaking');
-    Route::get('/speaking/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeSpeaking'])->name('teacher.speaking.grade');
-    Route::post('/speaking/submit-grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitSpeakingGrade'])->name('teacher.speaking.submit-grade');
+    Route::get('teacher/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeWriting'])->name('teacher.writing.grade');
+    Route::post('teacher/writing/grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitGrade'])->name('teacher.writing.submit-grade');
+
+    // Speaking routes
+    Route::get('teacher/speaking', [App\Http\Controllers\TeacherController::class, 'showSpeaking'])->name('teacher.speaking');
+    Route::get('teacher/speaking/grade/{id}', [App\Http\Controllers\TeacherController::class, 'gradeSpeaking'])->name('teacher.speaking.grade');
+    Route::post('teacher/speaking/submit-grade/{id}', [App\Http\Controllers\TeacherController::class, 'submitSpeakingGrade'])->name('teacher.speaking.submit-grade');
+
+    // Combined grading routes
+    Route::get('teacher/combined', [App\Http\Controllers\TeacherController::class, 'showCombined'])->name('teacher.combined');
+    Route::get('teacher/combined/grade/{userId}', [App\Http\Controllers\TeacherController::class, 'gradeCombined'])->name('teacher.combined.grade');
+    Route::post('teacher/combined/submit-grade/{userId}', [App\Http\Controllers\TeacherController::class, 'submitCombinedGrade'])->name('teacher.combined.submit-grade');
 });
 
 Route::middleware(['auth','verified'])->group(function(){

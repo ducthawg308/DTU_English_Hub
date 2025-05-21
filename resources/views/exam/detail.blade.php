@@ -1,34 +1,34 @@
-@extends('layouts.app')
+@extends('layouts.exam')
 
 @section('content')
-<div style="background-color: #102342;">
-    <div class="container py-4" style="color: white; min-height: 100vh; position: relative;">
+<div style="background-color: #f8f9fa;" class="min-vh-100">
+    <div class="container py-5" style="color: #2a3b4a; position: relative;">
         <form id="examForm" action="{{ route('exam.submit', $exam->id) }}" method="POST">
             @csrf
-            <!-- Thanh top: Thời gian + Lưu bài + Nộp bài + Số câu -->
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <!-- Top Bar: Timer, Save, Submit, Progress -->
+            <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
                 <div>
-                    <span id="questionProgress" class="badge bg-info text-dark fs-6">0/{{ $exam->question_count ?? 0 }} câu đã trả lời</span>
+                    <span id="questionProgress" class="badge bg-primary text-white fw-semibold px-3 py-2">0/{{ $exam->question_count ?? 0 }} câu đã trả lời</span>
                 </div>
 
                 <div class="text-center flex-grow-1">
-                    <div class="bg-primary px-3 py-1 rounded-pill shadow-sm" style="display: inline-block; min-width: 120px;">
-                        <span class="text-white fw-bold fs-5" id="timer">47:00</span>
+                    <div class="bg-gradient-primary px-4 py-2 rounded-pill shadow-lg" style="min-width: 140px;">
+                        <span class="text-white fw-bold fs-4" id="timer">47:00</span>
                     </div>
                 </div>
 
-                <div>
-                    <button type="button" class="btn btn-success btn-md me-2" id="btnSave">Lưu bài</button>
-                    <button type="submit" class="btn btn-primary btn-md" id="btnSubmit">Nộp bài</button>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-success btn-md px-4" id="btnSave">Lưu bài</button>
+                    <button type="submit" class="btn btn-primary btn-md px-4" id="btnSubmit">Nộp bài</button>
                 </div>
             </div>
 
-            <!-- Nội dung kỹ năng và part -->
-            <div id="skillContent">
+            <!-- Skill Content -->
+            <div id="skillContent" class="card shadow-sm p-4 rounded-3" style="background-color: #ffffff;">
                 <!-- LISTENING -->
                 @if(isset($listening))
                 <div id="listeningContent">
-                    <ul class="nav nav-tabs mb-3" id="listeningTabs">
+                    <ul class="nav nav-tabs mb-4" id="listeningTabs">
                         @foreach($listening as $sectionId => $listeningData)
                             <li class="nav-item">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}" 
@@ -43,11 +43,11 @@
                         @foreach($listening as $sectionId => $listeningData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="listeningPart{{ $loop->iteration }}">
-                                <h5 class="text-warning">Listening - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-primary mb-4">Listening - Part {{ $loop->iteration }}</h5>
                                 
                                 @if(count($listeningData['audios']) > 0)
-                                <div class="mb-3">
-                                    <audio controls class="w-100 mb-3">
+                                <div class="mb-4">
+                                    <audio controls class="w-100 rounded shadow-sm">
                                         <source src="{{ asset('storage/audio/' . $listeningData['audios'][0]->audio_url) }}" type="audio/mpeg">
                                         Your browser does not support the audio element.
                                     </audio>
@@ -55,10 +55,10 @@
                                 @endif
                                 
                                 @foreach($listeningData['questions'] as $index => $question)
-                                <div class="mb-4">
-                                    <p><strong>Question {{ $index + 1 }}:</strong> {{ $question->question_text }}</p>
+                                <div class="mb-4 p-3 bg-light rounded-3 shadow-sm border">
+                                    <p class="fw-semibold"><strong>Question {{ $index + 1 }}:</strong> {{ $question->question_text }}</p>
                                     @foreach($question->choices as $choice)
-                                    <div class="form-check">
+                                    <div class="form-check mb-2">
                                         <input type="radio" 
                                                id="q{{ $question->id }}_{{ $choice->label }}" 
                                                name="answers[{{ $question->id }}]" 
@@ -80,7 +80,7 @@
                 <!-- READING -->
                 @if(isset($reading))
                 <div id="readingContent" class="d-none">
-                    <ul class="nav nav-tabs mb-3" id="readingTabs">
+                    <ul class="nav nav-tabs mb-4" id="readingTabs">
                         @foreach($reading as $sectionId => $readingPassages)
                             <li class="nav-item">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}" 
@@ -96,27 +96,25 @@
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="readingPart{{ $loop->iteration }}">
                                 <div class="row">
-                                    <!-- Chỉ hiển thị bài đọc và câu hỏi cho passage đầu tiên trong part -->
                                     @php
-                                        $passageData = $readingPassages[0]; // Lấy passage đầu tiên
+                                        $passageData = $readingPassages[0];
                                     @endphp
-                                    <!-- Bài đọc bên trái -->
-                                    <div class="col-md-6 border-end pe-4" style="max-height: 80vh; overflow-y: auto;">
-                                        <h5 class="text-warning">Reading - Part {{ $loop->iteration }}</h5>
-                                        <div class="mb-3">
-                                            <h6>{{ $passageData['passage']->title }}</h6>
+                                    <!-- Passage -->
+                                    <div class="col-md-6 border-end pe-4" style="max-height: 70vh; overflow-y: auto;">
+                                        <h5 class="text-primary mb-4">Reading - Part {{ $loop->iteration }}</h5>
+                                        <div class="p-3 bg-light rounded-3 shadow-sm border">
+                                            <h6 class="fw-semibold">{{ $passageData['passage']->title }}</h6>
                                             <div>{!! $passageData['passage']->content !!}</div>
                                         </div>
                                     </div>
-
-                                    <!-- Câu hỏi bên phải -->
-                                    <div class="col-md-6 ps-4" style="max-height: 80vh; overflow-y: auto;">
-                                        <h5 class="text-warning">Questions</h5>
+                                    <!-- Questions -->
+                                    <div class="col-md-6 ps-4" style="max-height: 70vh; overflow-y: auto;">
+                                        <h5 class="text-primary mb-4">Questions</h5>
                                         @foreach($passageData['questions'] as $index => $question)
-                                            <div class="mb-4">
-                                                <p><strong>Question {{ $index + 1 }}:</strong> {{ $question->question_text }}</p>
+                                            <div class="mb-4 p-3 bg-light rounded-3 shadow-sm border">
+                                                <p class="fw-semibold"><strong>Question {{ $index + 1 }}:</strong> {{ $question->question_text }}</p>
                                                 @foreach($question->choices as $choice)
-                                                <div class="form-check">
+                                                <div class="form-check mb-2">
                                                     <input type="radio" 
                                                            id="q{{ $question->id }}_{{ $choice->label }}" 
                                                            name="answers[{{ $question->id }}]" 
@@ -140,7 +138,7 @@
                 <!-- WRITING -->
                 @if(isset($writing))
                 <div id="writingContent" class="d-none">
-                    <ul class="nav nav-tabs mb-3" id="writingTabs">
+                    <ul class="nav nav-tabs mb-4" id="writingTabs">
                         @foreach($writing as $sectionId => $writingData)
                             <li class="nav-item">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}" 
@@ -155,16 +153,16 @@
                         @foreach($writing as $sectionId => $writingData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="writingPart{{ $loop->iteration }}">
-                                <h5 class="text-warning">Writing - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-primary mb-4">Writing - Part {{ $loop->iteration }}</h5>
                                 
                                 @foreach($writingData['prompts'] as $prompt)
-                                <div class="mb-4">
-                                    <p>{!! $prompt->prompt_text !!}</p>
-                                    <textarea class="form-control answer-input writing-textarea" 
+                                <div class="mb-4 p-3 bg-light rounded-3 shadow-sm border">
+                                    <p class="mb-3">{!! $prompt->prompt_text !!}</p>
+                                    <textarea class="form-control answer-input writing-textarea rounded-3" 
                                               rows="8" 
                                               name="answers[writing_{{ $prompt->id }}]" 
                                               id="writingTextarea{{ $prompt->id }}"></textarea>
-                                    <div class="text-end mt-2 text-light">
+                                    <div class="text-end mt-2 text-dark">
                                         <small>Words: <span id="wordCount{{ $prompt->id }}">0</span></small>
                                     </div>
                                 </div>
@@ -174,11 +172,11 @@
                     </div>
                 </div>
                 @endif
-                
+
                 <!-- SPEAKING -->
                 @if(isset($speaking))
                 <div id="speakingContent" class="d-none">
-                    <ul class="nav nav-tabs mb-3" id="speakingTabs">
+                    <ul class="nav nav-tabs mb-4" id="speakingTabs">
                         @foreach($speaking as $sectionId => $speakingData)
                             <li class="nav-item">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}" 
@@ -193,23 +191,23 @@
                         @foreach($speaking as $sectionId => $speakingData)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
                                  id="speakingPart{{ $loop->iteration }}">
-                                <h5 class="text-warning">Speaking - Part {{ $loop->iteration }}</h5>
+                                <h5 class="text-primary mb-4">Speaking - Part {{ $loop->iteration }}</h5>
                                 
                                 @foreach($speakingData['prompts'] as $prompt)
-                                <div class="mb-4">
-                                    <p>{!! $prompt->prompt_text !!}</p>
+                                <div class="mb-4 p-3 bg-light rounded-3 shadow-sm border">
+                                    <p class="mb-3">{!! $prompt->prompt_text !!}</p>
                                     <div class="mb-3">
-                                        <canvas id="audioVisualizer{{ $prompt->id }}" class="bg-light rounded border" style="height: 60px; width: 100%;"></canvas>
+                                        <canvas id="audioVisualizer{{ $prompt->id }}" class="bg-white rounded border" style="height: 60px; width: 100%;"></canvas>
                                     </div>
                                     <div class="d-flex align-items-center gap-3">
-                                        <button type="button" class="btn btn-danger record-btn" 
+                                        <button type="button" class="btn btn-danger record-btn px-4" 
                                                 data-prompt-id="{{ $prompt->id }}">
                                             🎤 Bắt đầu ghi âm
                                         </button>
-                                        <span class="text-light recording-status" id="recordingStatus{{ $prompt->id }}">
+                                        <span class="text-dark recording-status" id="recordingStatus{{ $prompt->id }}">
                                             Chưa ghi âm
                                         </span>
-                                        <audio id="audioPreview{{ $prompt->id }}" controls class="d-none"></audio>
+                                        <audio id="audioPreview{{ $prompt->id }}" controls class="d-none w-50"></audio>
                                         <input type="hidden" name="answers[speaking_{{ $prompt->id }}]" 
                                                id="speakingAnswer{{ $prompt->id }}">
                                     </div>
@@ -222,29 +220,184 @@
                 @endif
             </div>
 
-            <!-- Tabs kỹ năng ở giữa dưới -->
-            <div class="position-fixed bottom-0 start-50 translate-middle-x mb-3">
-                <ul class="nav nav-pills">
+            <!-- Skill Tabs -->
+            <div class="position-fixed bottom-0 start-50 translate-middle-x mb-4 z-3">
+                <ul class="nav nav-pills shadow-lg rounded-pill bg-white p-2">
                     @if(isset($listening))
-                    <li class="nav-item"><button type="button" class="nav-link" id="btnListening">Listening</button></li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link skill-tab" id="btnListening">
+                            <i class="bi bi-earbuds me-1"></i> Listening
+                        </button>
+                    </li>
                     @endif
                     
                     @if(isset($reading))
-                    <li class="nav-item"><button type="button" class="nav-link" id="btnReading">Reading</button></li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link skill-tab" id="btnReading">
+                            <i class="bi bi-book me-1"></i> Reading
+                        </button>
+                    </li>
                     @endif
                     
                     @if(isset($writing))
-                    <li class="nav-item"><button type="button" class="nav-link" id="btnWriting">Writing</button></li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link skill-tab" id="btnWriting">
+                            <i class="bi bi-pencil me-1"></i> Writing
+                        </button>
+                    </li>
                     @endif
                     
                     @if(isset($speaking))
-                    <li class="nav-item"><button type="button" class="nav-link" id="btnSpeaking">Speaking</button></li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link skill-tab" id="btnSpeaking">
+                            <i class="bi bi-mic me-1"></i> Speaking
+                        </button>
+                    </li>
                     @endif
                 </ul>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Custom CSS -->
+<style>
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #ffffff, #f1f3f5);
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab Styling */
+.nav-tabs .nav-link {
+    color: #495057;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+    box-shadow: 0 -2px 8px rgba(13, 110, 253, 0.2);
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+/* Skill Tabs */
+.nav-pills .skill-tab {
+    color: #495057;
+    background-color: #f1f3f5;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+}
+
+.nav-pills .skill-tab.active {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.nav-pills .skill-tab:hover {
+    background-color: #e9ecef;
+    color: #212529;
+    transform: translateY(-2px);
+}
+
+/* Form Elements */
+.form-control, .form-check-input {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Audio Player */
+audio {
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0a58ca;
+}
+</style>
 
 <!-- SCRIPT -->
 <script>

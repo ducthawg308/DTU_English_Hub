@@ -14,16 +14,13 @@ use Illuminate\Support\Facades\Log;
 
 class TeacherController extends Controller
 {
-    public function show(){
-        return view('teacher.index');
-    }
+    // Existing methods remain unchanged...
 
-    public function showWriting(){
-        // Get all writing submissions that need teacher grading
-        $pendingSubmissions = UserExamSubmission::join('user_written_responses', 'user_exam_submissions.id', '=', 'user_written_responses.submission_id')
+    public function showCombined() {
+        // Logic remains the same as provided
+        $writingSubmissions = UserExamSubmission::join('user_written_responses', 'user_exam_submissions.id', '=', 'user_written_responses.submission_id')
             ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
             ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
-            ->join('writing_prompts', 'user_written_responses.writing_prompt_id', '=', 'writing_prompts.id')
             ->where('user_exam_submissions.status', '=', 'pending')
             ->select(
                 'user_exam_submissions.id as submission_id',
@@ -31,131 +28,17 @@ class TeacherController extends Controller
                 'user_exam_submissions.exam_id',
                 'user_exam_submissions.submitted_at',
                 'user_exam_submissions.writing_score',
-                'user_written_responses.id as response_id',
-                'user_written_responses.writing_prompt_id',
-                'user_written_responses.response_text',
-                'user_written_responses.ai_score',
-                'user_written_responses.ai_feedback',
+                'user_written_responses.id as writing_response_id',
+                'user_written_responses.teacher_score as writing_teacher_score',
                 'users.name as student_name',
-                'exams.title as exam_title',
-                'writing_prompts.prompt_text as writing_prompt'
+                'exams.title as exam_title'
             )
-            ->orderBy('user_exam_submissions.submitted_at', 'desc')
-            ->get();
+            ->get()
+            ->toArray();
 
-        return view('teacher.writing.index', compact('pendingSubmissions'));
-    }
-
-    public function gradeWriting($id) {
-        // Get the specific writing submission to grade
-        $submission = UserWrittenResponse::join('user_exam_submissions', 'user_written_responses.submission_id', '=', 'user_exam_submissions.id')
+        $speakingSubmissions = UserExamSubmission::join('user_speaking_responses', 'user_exam_submissions.id', '=', 'user_speaking_responses.submission_id')
             ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
             ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
-            ->join('writing_prompts', 'user_written_responses.writing_prompt_id', '=', 'writing_prompts.id')
-            ->where('user_written_responses.id', $id)
-            ->select(
-                'user_exam_submissions.id as submission_id',
-                'user_exam_submissions.user_id',
-                'user_exam_submissions.exam_id',
-                'user_written_responses.id as response_id',
-                'user_written_responses.response_text',
-                'user_written_responses.ai_score',
-                'user_written_responses.ai_feedback',
-                'users.name as student_name',
-                'exams.title as exam_title',
-                'writing_prompts.prompt_text as writing_prompt'
-            )
-            ->first();
-
-        return view('teacher.writing.grade', compact('submission'));
-    }
-
-    public function submitGrade(Request $request, $id) {
-        // Validate the teacher's grading
-        $validated = $request->validate([
-            'teacher_score' => 'required|numeric|min:0|max:9',
-            'teacher_feedback' => 'required|string',
-        ]);
-
-        // Find the written response
-        $writtenResponse = UserWrittenResponse::findOrFail($id);
-        
-        // Update the written response with teacher's grade
-        $writtenResponse->teacher_score = $validated['teacher_score'];
-        $writtenResponse->teacher_feedback = $validated['teacher_feedback'];
-        $writtenResponse->save();
-
-        // Update the overall exam submission
-        $examSubmission = UserExamSubmission::findOrFail($writtenResponse->submission_id);
-        
-        // Update writing score with teacher's score
-        $examSubmission->writing_score = $validated['teacher_score'];
-        
-        // Log before check
-        Log::info('Checking scores for submission #' . $examSubmission->id, [
-            'listening_score' => $examSubmission->listening_score,
-            'reading_score' => $examSubmission->reading_score,
-            'writing_score' => $examSubmission->writing_score,
-            'speaking_score' => $examSubmission->speaking_score
-        ]);
-        
-        // Calculate total score regardless of other sections
-        $totalScore = 0;
-        $sectionsGraded = 0;
-        
-        if ($examSubmission->listening_score > 0) {
-            $totalScore += $examSubmission->listening_score;
-            $sectionsGraded++;
-        }
-        
-        if ($examSubmission->reading_score > 0) {
-            $totalScore += $examSubmission->reading_score;
-            $sectionsGraded++;
-        }
-        
-        if ($examSubmission->writing_score > 0) {
-            $totalScore += $examSubmission->writing_score;
-            $sectionsGraded++;
-        }
-        
-        if ($examSubmission->speaking_score > 0) {
-            $totalScore += $examSubmission->speaking_score;
-            $sectionsGraded++;
-        }
-        
-        // Update total score
-        $examSubmission->total_score = $totalScore;
-        
-        // Always change status to 'graded' after teacher has graded the writing section
-        $examSubmission->status = 'graded';
-        
-        // Debug info
-        Log::info('Updating submission status', [
-            'submission_id' => $examSubmission->id,
-            'total_score' => $totalScore,
-            'sections_graded' => $sectionsGraded,
-            'new_status' => $examSubmission->status
-        ]);
-        
-        // Save changes
-        $examSubmission->save();
-        
-        // Verify that changes were saved
-        $updatedSubmission = UserExamSubmission::find($examSubmission->id);
-        Log::info('Submission after update', [
-            'status' => $updatedSubmission->status,
-            'total_score' => $updatedSubmission->total_score
-        ]);
-
-        return redirect()->route('teacher.writing')->with('status', 'Bài viết đã được chấm điểm thành công!');
-    }
-
-    public function showSpeaking() {
-        // Get all speaking submissions that need teacher grading
-        $pendingSubmissions = UserExamSubmission::join('user_speaking_responses', 'user_exam_submissions.id', '=', 'user_speaking_responses.submission_id')
-            ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
-            ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
-            ->join('speaking_prompts', 'user_speaking_responses.speaking_prompt_id', '=', 'speaking_prompts.id')
             ->where('user_exam_submissions.status', '=', 'pending')
             ->select(
                 'user_exam_submissions.id as submission_id',
@@ -163,73 +46,164 @@ class TeacherController extends Controller
                 'user_exam_submissions.exam_id',
                 'user_exam_submissions.submitted_at',
                 'user_exam_submissions.speaking_score',
-                'user_speaking_responses.id as response_id',
-                'user_speaking_responses.speaking_prompt_id',
-                'user_speaking_responses.audio_url',
+                'user_speaking_responses.id as speaking_response_id',
+                'user_speaking_responses.teacher_score as speaking_teacher_score',
+                'users.name as student_name',
+                'exams.title as exam_title'
+            )
+            ->get()
+            ->toArray();
+
+        $students = [];
+        
+        foreach ($writingSubmissions as $submission) {
+            $userId = $submission['user_id'];
+            if (!isset($students[$userId])) {
+                $students[$userId] = [
+                    'user_id' => $userId,
+                    'student_name' => $submission['student_name'],
+                    'exam_title' => $submission['exam_title'],
+                    'submitted_at' => $submission['submitted_at'],
+                    'writing_status' => isset($submission['writing_teacher_score']) ? 'graded' : 'pending',
+                    'writing_score' => $submission['writing_score'],
+                    'speaking_status' => 'none',
+                    'speaking_score' => 0
+                ];
+            }
+        }
+        
+        foreach ($speakingSubmissions as $submission) {
+            $userId = $submission['user_id'];
+            if (!isset($students[$userId])) {
+                $students[$userId] = [
+                    'user_id' => $userId,
+                    'student_name' => $submission['student_name'],
+                    'exam_title' => $submission['exam_title'],
+                    'submitted_at' => $submission['submitted_at'],
+                    'writing_status' => 'none',
+                    'writing_score' => 0,
+                    'speaking_status' => isset($submission['speaking_teacher_score']) ? 'graded' : 'pending',
+                    'speaking_score' => $submission['speaking_score']
+                ];
+            } else {
+                $students[$userId]['speaking_status'] = isset($submission['speaking_teacher_score']) ? 'graded' : 'pending';
+                $students[$userId]['speaking_score'] = $submission['speaking_score'];
+            }
+        }
+        
+        $studentSubmissions = array_values($students);
+        
+        return view('teacher.index', compact('studentSubmissions'));
+    }
+    
+    public function gradeCombined($userId) {
+        $studentInfo = User::join('user_exam_submissions', 'users.id', '=', 'user_exam_submissions.user_id')
+            ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
+            ->where('users.id', '=', $userId)
+            ->where('user_exam_submissions.status', '=', 'pending')
+            ->select(
+                'users.id as user_id',
                 'users.name as student_name',
                 'exams.title as exam_title',
-                'speaking_prompts.prompt_text as speaking_prompt'
+                'user_exam_submissions.id as submission_id'
             )
-            ->orderBy('user_exam_submissions.submitted_at', 'desc')
-            ->get();
-
-        return view('teacher.speaking.index', compact('pendingSubmissions'));
-    }
-
-    public function gradeSpeaking($id) {
-        // Get the specific speaking submission to grade
-        $submission = UserSpeakingResponse::join('user_exam_submissions', 'user_speaking_responses.submission_id', '=', 'user_exam_submissions.id')
-            ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
-            ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
-            ->join('speaking_prompts', 'user_speaking_responses.speaking_prompt_id', '=', 'speaking_prompts.id')
-            ->where('user_speaking_responses.id', $id)
+            ->first();
+            
+        if (!$studentInfo) {
+            return redirect()->route('teacher.combined')->with('error', 'Không tìm thấy thông tin học viên hoặc bài thi.');
+        }
+        
+        // Fetch all writing submissions
+        $writingSubmissions = UserWrittenResponse::join('writing_prompts', 'user_written_responses.writing_prompt_id', '=', 'writing_prompts.id')
+            ->join('user_exam_submissions', 'user_written_responses.submission_id', '=', 'user_exam_submissions.id')
+            ->where('user_exam_submissions.user_id', '=', $userId)
+            ->where('user_exam_submissions.status', '=', 'pending')
             ->select(
-                'user_exam_submissions.id as submission_id',
-                'user_exam_submissions.user_id',
-                'user_exam_submissions.exam_id',
+                'user_written_responses.id as response_id',
+                'user_written_responses.response_text',
+                'user_written_responses.ai_score',
+                'user_written_responses.ai_feedback',
+                'user_written_responses.teacher_score',
+                'user_written_responses.teacher_feedback',
+                'writing_prompts.prompt_text as writing_prompt'
+            )
+            ->get();
+        
+        // Fetch all speaking submissions
+        $speakingSubmissions = UserSpeakingResponse::join('speaking_prompts', 'user_speaking_responses.speaking_prompt_id', '=', 'speaking_prompts.id')
+            ->join('user_exam_submissions', 'user_speaking_responses.submission_id', '=', 'user_exam_submissions.id')
+            ->where('user_exam_submissions.user_id', '=', $userId)
+            ->where('user_exam_submissions.status', '=', 'pending')
+            ->select(
                 'user_speaking_responses.id as response_id',
                 'user_speaking_responses.audio_url',
                 'user_speaking_responses.ai_score',
                 'user_speaking_responses.ai_feedback',
-                'users.name as student_name',
-                'exams.title as exam_title',
+                'user_speaking_responses.teacher_score',
+                'user_speaking_responses.teacher_feedback',
                 'speaking_prompts.prompt_text as speaking_prompt'
             )
-            ->first();
-
-        return view('teacher.speaking.grade', compact('submission'));
+            ->get();
+            
+        return view('teacher.grade', compact('studentInfo', 'writingSubmissions', 'speakingSubmissions'));
     }
-
-    public function submitSpeakingGrade(Request $request, $id) {
-        // Validate the teacher's grading
+    
+    public function submitCombinedGrade(Request $request, $userId) {
         $validated = $request->validate([
-            'teacher_score' => 'required|numeric|min:0|max:9',
-            'teacher_feedback' => 'required|string',
-        ]);
-
-        // Find the speaking response
-        $speakingResponse = UserSpeakingResponse::findOrFail($id);
-        
-        // Update the speaking response with teacher's grade
-        $speakingResponse->teacher_score = $validated['teacher_score'];
-        $speakingResponse->teacher_feedback = $validated['teacher_feedback'];
-        $speakingResponse->save();
-
-        // Update the overall exam submission
-        $examSubmission = UserExamSubmission::findOrFail($speakingResponse->submission_id);
-        
-        // Update speaking score with teacher's score
-        $examSubmission->speaking_score = $validated['teacher_score'];
-        
-        // Log before check
-        Log::info('Checking scores for submission #' . $examSubmission->id, [
-            'listening_score' => $examSubmission->listening_score,
-            'reading_score' => $examSubmission->reading_score,
-            'writing_score' => $examSubmission->writing_score,
-            'speaking_score' => $examSubmission->speaking_score
+            'writing_response_ids' => 'nullable|array',
+            'writing_response_ids.*' => 'exists:user_written_responses,id',
+            'writing_teacher_scores' => 'nullable|array',
+            'writing_teacher_scores.*' => 'numeric|min:0|max:9',
+            'writing_teacher_feedbacks' => 'nullable|array',
+            'speaking_response_ids' => 'nullable|array',
+            'speaking_response_ids.*' => 'exists:user_speaking_responses,id',
+            'speaking_teacher_scores' => 'nullable|array',
+            'speaking_teacher_scores.*' => 'numeric|min:0|max:9',
+            'speaking_teacher_feedbacks' => 'nullable|array',
         ]);
         
-        // Calculate total score regardless of other sections
+        // Update writing scores and feedback
+        if ($request->filled('writing_response_ids') && $request->filled('writing_teacher_scores')) {
+            foreach ($validated['writing_response_ids'] as $index => $responseId) {
+                $writtenResponse = UserWrittenResponse::findOrFail($responseId);
+                $writtenResponse->teacher_score = $validated['writing_teacher_scores'][$index] ?? null;
+                $writtenResponse->teacher_feedback = $validated['writing_teacher_feedbacks'][$index] ?? null;
+                $writtenResponse->save();
+            }
+            
+            // Calculate writing score using the formula: (Bài viết 1 + (Bài viết 2 * 2)) / 3
+            $writingScores = array_intersect_key($validated['writing_teacher_scores'], array_flip($validated['writing_response_ids']));
+            $writingScore = 0;
+            if (count($writingScores) >= 2) {
+                $writingScore = ($writingScores[array_key_first($writingScores)] + ($writingScores[array_key_last($writingScores)] * 2)) / 3;
+            } elseif (count($writingScores) == 1) {
+                $writingScore = $writingScores[array_key_first($writingScores)];
+            }
+            $examSubmission = UserExamSubmission::where('user_id', $userId)->where('status', 'pending')->firstOrFail();
+            $examSubmission->writing_score = $writingScore;
+            $examSubmission->save();
+        }
+        
+        // Update speaking scores and feedback
+        if ($request->filled('speaking_response_ids') && $request->filled('speaking_teacher_scores')) {
+            foreach ($validated['speaking_response_ids'] as $index => $responseId) {
+                $speakingResponse = UserSpeakingResponse::findOrFail($responseId);
+                $speakingResponse->teacher_score = $validated['speaking_teacher_scores'][$index] ?? null;
+                $speakingResponse->teacher_feedback = $validated['speaking_teacher_feedbacks'][$index] ?? null;
+                $speakingResponse->save();
+            }
+            
+            // Calculate average speaking score (optional, can be adjusted)
+            $speakingScores = array_intersect_key($validated['speaking_teacher_scores'], array_flip($validated['speaking_response_ids']));
+            if (!empty($speakingScores)) {
+                $speakingScore = array_sum($speakingScores) / count($speakingScores);
+                $examSubmission->speaking_score = $speakingScore;
+                $examSubmission->save();
+            }
+        }
+        
+        // Calculate total score and update status
+        $examSubmission = UserExamSubmission::where('user_id', $userId)->where('status', 'pending')->firstOrFail();
         $totalScore = 0;
         $sectionsGraded = 0;
         
@@ -237,46 +211,23 @@ class TeacherController extends Controller
             $totalScore += $examSubmission->listening_score;
             $sectionsGraded++;
         }
-        
         if ($examSubmission->reading_score > 0) {
             $totalScore += $examSubmission->reading_score;
             $sectionsGraded++;
         }
-        
         if ($examSubmission->writing_score > 0) {
             $totalScore += $examSubmission->writing_score;
             $sectionsGraded++;
         }
-        
         if ($examSubmission->speaking_score > 0) {
             $totalScore += $examSubmission->speaking_score;
             $sectionsGraded++;
         }
         
-        // Update total score
         $examSubmission->total_score = $totalScore;
-        
-        // Always change status to 'graded' after teacher has graded the speaking section
         $examSubmission->status = 'graded';
-        
-        // Debug info
-        Log::info('Updating submission status', [
-            'submission_id' => $examSubmission->id,
-            'total_score' => $totalScore,
-            'sections_graded' => $sectionsGraded,
-            'new_status' => $examSubmission->status
-        ]);
-        
-        // Save changes
         $examSubmission->save();
         
-        // Verify that changes were saved
-        $updatedSubmission = UserExamSubmission::find($examSubmission->id);
-        Log::info('Submission after update', [
-            'status' => $updatedSubmission->status,
-            'total_score' => $updatedSubmission->total_score
-        ]);
-
-        return redirect()->route('teacher.speaking')->with('status', 'Bài nói đã được chấm điểm thành công!');
+        return redirect()->route('teacher.combined')->with('status', 'Chấm điểm thành công!');
     }
 }

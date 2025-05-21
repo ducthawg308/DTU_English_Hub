@@ -216,6 +216,8 @@
             }
         });
 
+        console.log(scores);
+
         // Bar Chart (Score Progression)
         const barCtx = document.getElementById('skillBarChart').getContext('2d');
         const labels = history.map(item => new Date(item.submitted_at).toLocaleDateString('vi-VN'));
