@@ -66,7 +66,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('teacher.combined.grade', $student['user_id']) }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('teacher.combined.grade', ['user_id' => $student['user_id'], 'submission_id' => $student['submission_id']]) }}" class="btn btn-primary btn-sm">
                                 <i class="fa-solid fa-pen"></i> Chấm điểm
                             </a>
                         </td>
