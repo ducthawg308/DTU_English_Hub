@@ -6,13 +6,14 @@
         <form id="examForm" action="{{ route('exam.submit', $exam->id) }}" method="POST">
             @csrf
             <!-- Top Bar: Timer, Save, Submit, Progress -->
-            <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
-                <div>
-                    <span id="questionProgress" class="badge bg-primary text-white fw-semibold px-3 py-2">0/{{ $exam->question_count ?? 0 }} câu đã trả lời</span>
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 bg-white py-3 px-3 shadow-sm rounded-3 position-sticky" style="top: 100px; z-index: 1030;">
 
-                <div class="text-center flex-grow-1">
-                    <div class="bg-gradient-primary px-4 py-2 rounded-pill shadow-lg" style="min-width: 140px;">
+                <span id="questionProgress" class="btn btn-outline-primary fw-semibold px-4 py-2">
+                    0/{{ $exam->question_count ?? 0 }} câu đã trả lời
+                </span>
+
+                <div class="text-center">
+                    <div class="bg-gradient-primary px-4 py-2 rounded-pill shadow-lg" style="min-width: 60px;">
                         <span class="text-white fw-bold fs-4" id="timer">47:00</span>
                     </div>
                 </div>
@@ -417,7 +418,6 @@ audio {
         if (activeButton) {
             activeButton.classList.add('active');
         }
-        // Update the answer count when switching tabs
         updateAnswerCount();
     }
 
@@ -469,6 +469,45 @@ audio {
         let audioChunks = [];
         let cleanupVisualizer = null;
 
+        // Helper function to get the next skill
+        function getNextSkill(currentSkill) {
+            const skillOrder = ['btnListening', 'btnReading', 'btnWriting', 'btnSpeaking'];
+            const currentIndex = skillOrder.indexOf(currentSkill);
+            for (let i = currentIndex + 1; i < skillOrder.length; i++) {
+                const nextSkill = skillOrder[i];
+                if (allBtns.some(btn => btn.id === nextSkill) && !completedSkills.has(nextSkill)) {
+                    return nextSkill;
+                }
+            }
+            return null; // No more skills available
+        }
+
+        // Helper function to switch to a specific skill
+        function switchToSkill(skillId) {
+            if (!skillId || completedSkills.has(skillId)) return;
+
+            completedSkills.add(currentSkill);
+            allContents.forEach(el => {
+                if (el) el.classList.add('d-none');
+            });
+            allBtns.forEach(b => {
+                if (b) b.classList.remove('active');
+            });
+
+            const config = skillConfig[skillId];
+            const targetEl = document.getElementById(config.content);
+            if (targetEl) {
+                targetEl.classList.remove('d-none');
+                const skillBtn = document.getElementById(skillId);
+                if (skillBtn) {
+                    skillBtn.classList.add('active');
+                }
+                currentSkill = skillId;
+                switchPart(config.firstPart, { preventDefault: () => {} });
+                startTimer(config.minutes);
+            }
+        }
+
         // Timer function
         function startTimer(minutes) {
             clearInterval(interval);
@@ -483,30 +522,40 @@ audio {
                     totalSeconds--;
                 } else {
                     clearInterval(interval);
-                    alert("Hết giờ! Bài làm của bạn sẽ được nộp.");
-                    if (submitBtn) {
-                        submitBtn.click();
+                    if (currentSkill === 'btnListening') {
+                        const nextSkill = getNextSkill(currentSkill);
+                        if (nextSkill) {
+                            alert("Hết thời gian cho phần Listening! Chuyển sang kỹ năng tiếp theo.");
+                            switchToSkill(nextSkill);
+                        } else {
+                            alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
+                            if (submitBtn) {
+                                submitBtn.click();
+                            }
+                        }
+                    } else {
+                        alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
+                        if (submitBtn) {
+                            submitBtn.click();
+                        }
                     }
                 }
             }, 1000);
         }
 
-       // Update answer count based on the currently active part
+        // Update answer count based on the currently active part
         function updateAnswerCount() {
             const questionProgress = document.getElementById('questionProgress');
-            // Find the currently active part
             const activePart = document.querySelector('.tab-pane.show.active');
             if (!activePart) return;
 
-            // Count the total number of questions in the active part
             const questions = activePart.querySelectorAll('p > strong');
             let total = questions.length;
 
-            // Count the number of answered questions
             let count = 0;
             const answerInputs = activePart.querySelectorAll('.answer-input');
             answerInputs.forEach(el => {
-                const parentQuestion = el.closest('.mb-4'); // Each question is wrapped in a div with class mb-4
+                const parentQuestion = el.closest('.mb-4');
                 if (parentQuestion) {
                     if ((el.type === 'radio' && el.checked) || 
                         (el.tagName === 'TEXTAREA' && el.value.trim() !== '') ||
@@ -516,7 +565,6 @@ audio {
                 }
             });
 
-            // Update the progress text
             questionProgress.textContent = `${count}/${total} câu đã trả lời`;
         }
 
@@ -631,40 +679,16 @@ audio {
                     if (completedSkills.has(btn.id) || btn.id === currentSkill) {
                         return; // Prevent switching to completed skills or same skill
                     }
-
-                    // Mark current skill as completed
-                    completedSkills.add(currentSkill);
-
-                    // Update UI
-                    allContents.forEach(el => {
-                        if (el) el.classList.add('d-none');
-                    });
-                    allBtns.forEach(b => {
-                        if (b) b.classList.remove('active');
-                    });
-
-                    const config = skillConfig[btn.id];
-                    const targetEl = document.getElementById(config.content);
-                    if (targetEl) {
-                        targetEl.classList.remove('d-none');
-                        btn.classList.add('active');
-                        currentSkill = btn.id;
-
-                        // Activate first part of new skill
-                        switchPart(config.firstPart, { preventDefault: () => {} });
-
-                        // Start new timer
-                        startTimer(config.minutes);
-                    }
+                    switchToSkill(btn.id);
                 });
             }
         });
 
         // Listen for answer changes
         document.querySelectorAll('.answer-input').forEach(el => {
-        el.addEventListener('input', updateAnswerCount);
-        el.addEventListener('change', updateAnswerCount);
-    });
+            el.addEventListener('input', updateAnswerCount);
+            el.addEventListener('change', updateAnswerCount);
+        });
 
         // Word counting for writing
         document.querySelectorAll('.writing-textarea').forEach(textarea => {
@@ -707,7 +731,6 @@ audio {
                             audioPreview.src = audioUrl;
                             audioPreview.classList.remove('d-none');
 
-                            // Convert to base64 for form submission
                             const reader = new FileReader();
                             reader.readAsDataURL(audioBlob);
                             reader.onloadend = () => {
@@ -760,7 +783,7 @@ audio {
             // Implement loading saved answers
         }
 
-        // Initial setup: Ensure correct skill tab is active
+        // Initial setup
         function initializeSkillTab() {
             allContents.forEach(el => {
                 if (el) el.classList.add('d-none');
@@ -776,14 +799,74 @@ audio {
                 document.getElementById(currentSkill).classList.add('active');
                 switchPart(config.firstPart, { preventDefault: () => {} });
             }
-            // Update answer count after initializing the tab
             updateAnswerCount();
         }
 
-        // Initial setup
         updateAnswerCount();
         startTimer(skillConfig[currentSkill].minutes);
         initializeSkillTab();
     });
+
+    function saveTimerState() {
+        localStorage.setItem('timerState', JSON.stringify({
+            currentSkill,
+            totalSeconds
+        }));
+    }
+
+    // Load timer state
+    function loadTimerState() {
+        const savedState = localStorage.getItem('timerState');
+        if (savedState) {
+            const { currentSkill: savedSkill, totalSeconds: savedSeconds } = JSON.parse(savedState);
+            if (skillConfig[savedSkill]) {
+                currentSkill = savedSkill;
+                totalSeconds = savedSeconds;
+                switchToSkill(currentSkill);
+            }
+        }
+    }
+
+    // Update timer state on each tick
+    function startTimer(minutes) {
+        clearInterval(interval);
+        totalSeconds = minutes * 60;
+        timerEl.textContent = `${String(minutes).padStart(2, '0')}:00`;
+        interval = setInterval(() => {
+            const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+            const seconds = String(totalSeconds % 60).padStart(2, '0');
+            if (timerEl) {
+                timerEl.textContent = `${minutes}:${seconds}`;
+            }
+            saveTimerState(); // Save state on each tick
+            if (totalSeconds > 0) {
+                totalSeconds--;
+            } else {
+                clearInterval(interval);
+                if (currentSkill === 'btnListening') {
+                    const nextSkill = getNextSkill(currentSkill);
+                    if (nextSkill) {
+                        alert("Hết thời gian cho phần Listening! Chuyển sang kỹ năng tiếp theo.");
+                        switchToSkill(nextSkill);
+                    } else {
+                        alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
+                        if (submitBtn) {
+                            submitBtn.click();
+                        }
+                    }
+                } else {
+                    alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
+                    if (submitBtn) {
+                        submitBtn.click();
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    // Call loadTimerState before initializeSkillTab
+    loadTimerState();
+    updateAnswerCount();
+    initializeSkillTab();
 </script>
 @endsection

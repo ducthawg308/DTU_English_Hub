@@ -17,9 +17,8 @@ class TeacherController extends Controller
     // Existing methods remain unchanged...
 
     public function showCombined() {
-        // Logic remains the same as provided
-        $writingSubmissions = UserExamSubmission::join('user_written_responses', 'user_exam_submissions.id', '=', 'user_written_responses.submission_id')
-            ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
+        // Lấy tất cả bài kiểm tra có trạng thái pending
+        $submissions = UserExamSubmission::join('users', 'user_exam_submissions.user_id', '=', 'users.id')
             ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
             ->where('user_exam_submissions.status', '=', 'pending')
             ->select(
@@ -28,71 +27,39 @@ class TeacherController extends Controller
                 'user_exam_submissions.exam_id',
                 'user_exam_submissions.submitted_at',
                 'user_exam_submissions.writing_score',
-                'user_written_responses.id as writing_response_id',
-                'user_written_responses.teacher_score as writing_teacher_score',
-                'users.name as student_name',
-                'exams.title as exam_title'
-            )
-            ->get()
-            ->toArray();
-
-        $speakingSubmissions = UserExamSubmission::join('user_speaking_responses', 'user_exam_submissions.id', '=', 'user_speaking_responses.submission_id')
-            ->join('users', 'user_exam_submissions.user_id', '=', 'users.id')
-            ->join('exams', 'user_exam_submissions.exam_id', '=', 'exams.id')
-            ->where('user_exam_submissions.status', '=', 'pending')
-            ->select(
-                'user_exam_submissions.id as submission_id',
-                'user_exam_submissions.user_id',
-                'user_exam_submissions.exam_id',
-                'user_exam_submissions.submitted_at',
                 'user_exam_submissions.speaking_score',
-                'user_speaking_responses.id as speaking_response_id',
-                'user_speaking_responses.teacher_score as speaking_teacher_score',
                 'users.name as student_name',
                 'exams.title as exam_title'
             )
             ->get()
             ->toArray();
 
-        $students = [];
-        
-        foreach ($writingSubmissions as $submission) {
-            $userId = $submission['user_id'];
-            if (!isset($students[$userId])) {
-                $students[$userId] = [
-                    'user_id' => $userId,
-                    'student_name' => $submission['student_name'],
-                    'exam_title' => $submission['exam_title'],
-                    'submitted_at' => $submission['submitted_at'],
-                    'writing_status' => isset($submission['writing_teacher_score']) ? 'graded' : 'pending',
-                    'writing_score' => $submission['writing_score'],
-                    'speaking_status' => 'none',
-                    'speaking_score' => 0
-                ];
-            }
+        // Tạo danh sách bài nộp với thông tin writing và speaking
+        $studentSubmissions = [];
+        foreach ($submissions as $submission) {
+            $writingResponses = UserWrittenResponse::where('submission_id', $submission['submission_id'])
+                ->select('id as writing_response_id', 'teacher_score as writing_teacher_score')
+                ->get()
+                ->toArray();
+
+            $speakingResponses = UserSpeakingResponse::where('submission_id', $submission['submission_id'])
+                ->select('id as speaking_response_id', 'teacher_score as speaking_teacher_score')
+                ->get()
+                ->toArray();
+
+            $studentSubmissions[] = [
+                'submission_id' => $submission['submission_id'],
+                'user_id' => $submission['user_id'],
+                'student_name' => $submission['student_name'],
+                'exam_title' => $submission['exam_title'],
+                'submitted_at' => $submission['submitted_at'],
+                'writing_status' => !empty($writingResponses) ? ($writingResponses[0]['writing_teacher_score'] !== null ? 'graded' : 'pending') : 'none',
+                'writing_score' => $submission['writing_score'] ?? 0,
+                'speaking_status' => !empty($speakingResponses) ? ($speakingResponses[0]['speaking_teacher_score'] !== null ? 'graded' : 'pending') : 'none',
+                'speaking_score' => $submission['speaking_score'] ?? 0,
+            ];
         }
-        
-        foreach ($speakingSubmissions as $submission) {
-            $userId = $submission['user_id'];
-            if (!isset($students[$userId])) {
-                $students[$userId] = [
-                    'user_id' => $userId,
-                    'student_name' => $submission['student_name'],
-                    'exam_title' => $submission['exam_title'],
-                    'submitted_at' => $submission['submitted_at'],
-                    'writing_status' => 'none',
-                    'writing_score' => 0,
-                    'speaking_status' => isset($submission['speaking_teacher_score']) ? 'graded' : 'pending',
-                    'speaking_score' => $submission['speaking_score']
-                ];
-            } else {
-                $students[$userId]['speaking_status'] = isset($submission['speaking_teacher_score']) ? 'graded' : 'pending';
-                $students[$userId]['speaking_score'] = $submission['speaking_score'];
-            }
-        }
-        
-        $studentSubmissions = array_values($students);
-        
+
         return view('teacher.index', compact('studentSubmissions'));
     }
     

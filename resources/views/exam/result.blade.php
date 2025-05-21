@@ -245,7 +245,7 @@
                     
                     @if(isset($writing['ai_score']))
                     <p class="score-text">
-                        Tổng điểm: {{ number_format($writing['ai_score']['total'], 1) }}/10
+                        Điểm: {{ number_format($writing['ai_score']['total'], 1) }}/10
                     </p>
                     <button class="btn-toggle-feedback" onclick="toggleFeedback('feedback-{{ $index }}')">Nhận xét của AI</button>
                     
