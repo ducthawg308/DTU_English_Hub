@@ -156,9 +156,11 @@ Route::get('/community/download/{id}', [App\Http\Controllers\CommunityController
 Route::get('/gemini', [App\Http\Controllers\GeminiController::class, 'callGemini']);
 
 //Pronounce
-Route::get('pronounce', function () {
-    return view('pronounce.index');
-})->name('home.pronounce');
+Route::get('pronounce', [App\Http\Controllers\PronounceController::class, 'index'])->name('home.pronounce');
+Route::get('pronounce/ai', [App\Http\Controllers\PronounceController::class, 'ai'])->name('pronounce.ai');
+Route::get('pronounce/ipa', [App\Http\Controllers\PronounceController::class, 'ipa'])->name('pronounce.ipa');
+Route::post('/pronounce/generate-prompt', [App\Http\Controllers\PronounceController::class, 'generatePrompt']);
+Route::post('/pronounce/evaluate', [App\Http\Controllers\PronounceController::class, 'evaluateSpeaking']);
 
 //Assistant
 // 1. Route hiển thị giao diện tương tác giọng nói

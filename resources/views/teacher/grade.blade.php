@@ -147,14 +147,14 @@
                         <h6>Bài làm của học viên:</h6>
                         <div class="border p-3 mb-4 bg-light">
                             <audio controls style="width: 100%;">
-                                <source src="{{ $speakingSubmission->audio_url }}" type="audio/mp3">
+                                <source src="{{ asset('storage/audio/speaking/' . $speakingSubmission->audio_url) }}" type="audio/mp3">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
                     </div>
                 </div>
                 
-                @if($speakingSubmission->ai_score)
+                {{-- @if($speakingSubmission->ai_score)
                 <div class="row mb-4">
                     <div class="col-12">
                         <h6>Đánh giá của AI:</h6>
@@ -164,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+                @endif --}}
                 
                 <div class="row">
                     <div class="col-12">

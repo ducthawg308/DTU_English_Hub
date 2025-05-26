@@ -1,126 +1,154 @@
 @extends('layouts.app')
-@section('content')
-    <main class="container-lg py-4">
-        <div class="message"></div>
-        
-        <div class="p-3 bg-opacity-10 rounded shadow">
-            <h1>Luyện phát âm (Tiếng Anh Mỹ)</h1>
-            <p>
-                Cùng với: 
-                <a class="font-weight-bold" href="https://www.youtube.com/user/theteachervanessa" target="_blank">
-                    Speak English With Vanessa
-                </a>
-            </p>
-            <hr>
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <iframe id="player" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        referrerpolicy="strict-origin-when-cross-origin" width="100%" height="480" 
-                        src="https://www.youtube.com/embed/tpN9CPwZ-oE?enablejsapi=1" 
-                        data-gtm-yt-inspected-8="true" data-gtm-yt-inspected-18="true">
-                    </iframe>
 
-                    <div class="mt-3" id="js-sound-buttons-container">
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="0">Intro</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="54">short a</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="64">short e</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="72">short i</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="90">short o</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="98">short u</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="108">long a</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="116">long e</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="124">long i</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="132">long o</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="142">long u</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="151">long oo</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="177">b</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="186">k</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="194">d</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="217">f</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="227">g</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="235">h</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="242">j</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="250">l</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="266">m</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="275">n</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="300">p</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="309">r</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="317">s</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="327">t</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="344">v</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="354">w</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="363">y</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="372">z</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="384">ch</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="391">sh</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="404">unvoiced /th</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="412">voiced /th</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="421">hw</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="448">ng</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="458">nk</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="471">ur</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="482">ar</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="491">or</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="503">oi</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="526">ow</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="534">oo</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="541">aw</button>
-                        <button class="btn btn-outline-success shadow-none me-3 mb-3 player-btn" data-time="550">zh</button>
+@section('content')
+<!-- Bootstrap CSS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+<div class="min-vh-100 bg-gradient-to-br from-blue-50 to-indigo-100 py-4 py-md-6">
+    <div class="container px-3 px-md-4">
+        <!-- Header Section -->
+        <div class="text-center mb-8 mb-md-10">
+            <h1 class="display-5 fw-bold text-gray-800 mb-3">
+                Luyện kỹ năng Speaking
+            </h1>
+            <p class="lead text-gray-600 max-w-xl mb-5">
+                Cải thiện kỹ năng Speaking của bạn với công nghệ AI tiên tiến
+            </p>
+        </div>
+
+        <!-- Main Features Grid -->
+        <div class="row row-cols-1 row-cols-md-2 g-4 g-md-6 max-w-5xl mx-auto">
+            <!-- VSTEP Speaking Practice Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden hover-shadow">
+                    <div class="card-header bg-gradient-to-r from-blue-600 to-blue-700 border-0 p-4 text-center">
+                        <div class="bg-white bg-opacity-20 p-3 rounded-circle d-inline-block mb-3">
+                            <img src="img/speaking.png" alt="Icon IPA" width="80" height="40" />
+                        </div>
+                        <h2 class="card-title h5 fw-bold text-black mb-2">
+                            Luyện Speaking VSTEP
+                        </h2>
+                        <p class="text-blue-100 small">
+                            Nâng cao kỹ năng nói với chuẩn VSTEP
+                        </p>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="text-blue-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Phỏng vấn thực tế</h4>
+                                    <p class="text-gray-600 small">Luyện tập với các câu hỏi VSTEP chuẩn</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="text-blue-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Phân tích AI</h4>
+                                    <p class="text-gray-600 small">Đánh giá phát âm, ngữ pháp, lưu loát</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start">
+                                <span class="text-blue-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Phản hồi tức thì</h4>
+                                    <p class="text-gray-600 small">Nhận đánh giá chi tiết ngay sau bài</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <a href="{{ route('pronounce.ai') }}" class="btn btn-primary w-100 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white fw-semibold py-2 rounded-lg shadow hover-scale" role="button" aria-label="Bắt đầu luyện Speaking VSTEP">
+                            Bắt đầu luyện Speaking
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IPA Pronunciation Practice Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden hover-shadow">
+                    <div class="card-header bg-gradient-to-r from-purple border-0 p-4 text-center" style="background: linear-gradient(to right, #f97316, #ef4444);">
+                        <div class="bg-white bg-opacity-20 p-3 rounded-circle d-inline-block mb-3">
+                            <img src="img/ipa.png" alt="Icon IPA" width="80" height="40" />
+                        </div>
+                        <h2 class="card-title h5 fw-bold text-white mb-2">
+                            Luyện phát âm IPA
+                        </h2>
+                        <p class="text-white small">
+                            Thành thạo bảng phiên âm quốc tế
+                        </p>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="text-orange-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Bảng IPA chuẩn</h4>
+                                    <p class="text-gray-600 small">Học 44 âm tiết tiếng Anh chuẩn</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="text-orange-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Phát âm chuẩn</h4>
+                                    <p class="text-gray-600 small">Nghe và luyện tập từng âm</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start">
+                                <span class="text-orange-600 me-2">✔</span>
+                                <div>
+                                    <h4 class="fw-semibold text-gray-800 small">Kiểm tra phát âm</h4>
+                                    <p class="text-gray-600 small">AI đánh giá độ chính xác</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <a href="{{ route('pronounce.ipa') }}" class="btn btn-primary w-100 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white fw-semibold py-2 rounded-lg shadow hover-scale" role="button" aria-label="Bắt đầu học bảng phiên âm IPA">
+                            Học bảng phiên âm IPA
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</div>
+<style>
+    .hover-shadow {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
-    <script>
-        let player;
+    /* Hover scale effect for buttons */
+    .hover-scale {
+        transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+        transform: scale(1.02);
+    }
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player("player", {
-                events: {
-                    onStateChange: onPlayerStateChange,
-                },
-            });
+    /* Responsive typography */
+    @media (max-width: 576px) {
+        .display-5 {
+            font-size: 1.75rem;
         }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                setInterval(updateButtonState, 500);
-            }
+        .lead {
+            font-size: 1rem;
         }
-
-        document.querySelectorAll(".player-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                let time = this.getAttribute("data-time");
-                if (player) {
-                    player.seekTo(time, true);
-                }
-            });
-        });
-
-        function updateButtonState() {
-            let currentTime = player.getCurrentTime();
-            let activeButton = null;
-
-            document.querySelectorAll(".player-btn").forEach((btn) => {
-                let time = btn.getAttribute("data-time");
-                if (currentTime >= time && currentTime < time + 5) {
-                    activeButton = btn;
-                }
-            });
-
-            document.querySelectorAll(".player-btn").forEach((btn) => {
-                btn.classList.remove("btn-warning");
-            });
-            
-            if (activeButton) {
-                activeButton.classList.add("btn-warning");
-            }
+        .card-title {
+            font-size: 1.1rem;
         }
+        .card-body {
+            padding: 1.25rem;
+        }
+    }
 
-        let tag = document.createElement("script");
-        tag.src ="https://www.youtube.com/iframe_api";
-        let firstScriptTag = document.getElementsByTagName("script")[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    </script>
+    /* Accessibility: High contrast colors */
+    .text-gray-800 {
+        color: #1f2937;
+    }
+    .text-gray-600 {
+        color: #4b5563;
+    }
+</style>
 @endsection

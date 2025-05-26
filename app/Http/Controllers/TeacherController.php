@@ -101,8 +101,8 @@ class TeacherController extends Controller
             ->select(
                 'user_speaking_responses.id as response_id',
                 'user_speaking_responses.audio_url',
-                'user_speaking_responses.ai_score',
-                'user_speaking_responses.ai_feedback',
+                // 'user_speaking_responses.ai_score',
+                // 'user_speaking_responses.ai_feedback',
                 'user_speaking_responses.teacher_score',
                 'user_speaking_responses.teacher_feedback',
                 'speaking_prompts.prompt_text as speaking_prompt'
