@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserExamSubmission;
+use App\Models\ExamSection;
+use App\Models\WritingPrompt;
+use App\Models\SpeakingPrompt;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,7 +90,72 @@ class UserController extends Controller
             ->take(5)
             ->get();
 
-        return view('account.result', compact('user', 'scores', 'history', 'currentLevel'));
+        // Xác định kỹ năng yếu nhất
+        $weakestSkill = null;
+        $weakTopics = [];
+
+        $filteredScores = array_filter($scores, function ($score) {
+            return $score > 0;
+        });
+        if (!empty($filteredScores)) {
+            $minScore = min($filteredScores);
+            $weakestSkill = array_search($minScore, $scores);
+        }
+
+        if ($weakestSkill) {
+            // Ngưỡng điểm thấp (dưới 5.0 cho kỹ năng yếu nhất)
+            $threshold = 5.0;
+
+            // Truy vấn các bài thi có điểm thấp trong kỹ năng yếu nhất
+            $weakSubmissions = UserExamSubmission::where('user_id', $user->id)
+                ->where('status', '!=', 'pending')
+                ->where($weakestSkill . '_score', '>', 0)
+                ->where($weakestSkill . '_score', '<', $threshold)
+                ->get();
+
+            // Lấy danh sách chủ đề từ các bài thi yếu
+            foreach ($weakSubmissions as $submission) {
+                $sections = ExamSection::where('exam_id', $submission->exam_id)
+                    ->where('skill', $weakestSkill)
+                    ->get();
+
+                foreach ($sections as $section) {
+                    if ($weakestSkill === 'writing') {
+                        $prompts = WritingPrompt::where('exam_section_id', $section->id)->get();
+                        foreach ($prompts as $prompt) {
+                            $weakTopics[] = [
+                                'title' => $prompt->title,
+                                'topic' => $prompt->topic ?? 'Chưa xác định',
+                                'score' => $submission->writing_score,
+                            ];
+                        }
+                    } elseif ($weakestSkill === 'speaking') {
+                        $prompts = SpeakingPrompt::where('exam_section_id', $section->id)->get();
+                        foreach ($prompts as $prompt) {
+                            $weakTopics[] = [
+                                'title' => $prompt->title,
+                                'topic' => $prompt->topic ?? 'Chưa xác định',
+                                'score' => $submission->speaking_score,
+                            ];
+                        }
+                    } elseif (in_array($weakestSkill, ['listening', 'reading'])) {
+                        $questions = Question::where('exam_section_id', $section->id)->get();
+                        foreach ($questions as $question) {
+                            $weakTopics[] = [
+                                'title' => $question->question_text,
+                                'topic' => $question->question_text ?? 'Chưa xác định', // Giả định topic từ question_text
+                                'score' => $submission->{$weakestSkill . '_score'},
+                            ];
+                        }
+                    }
+                }
+            }
+
+            // Loại bỏ trùng lặp và giới hạn số lượng chủ đề
+            $weakTopics = collect($weakTopics)->unique('title')->take(5)->toArray();
+        }
+
+        return view('account.result', compact('user', 'scores', 'history', 'currentLevel', 'weakestSkill', 'weakTopics'));
     }
 
     public function setTarget(Request $request)
@@ -100,7 +169,7 @@ class UserController extends Controller
 
         $user->target_level = $validated['target_level'];
         $user->target_deadline = $validated['target_deadline'];
-            $user->save();
+        $user->save();
 
         return redirect()->back()->with('success', 'Cập nhật mục tiêu thành công!');
     }

@@ -21,23 +21,23 @@ class Question extends Model
 
     public $timestamps = false;
 
-    public function section()
+    public function examSection()
     {
-        return $this->belongsTo(ExamSection::class);
+        return $this->belongsTo(ExamSection::class, 'exam_section_id');
     }
 
     public function passage()
     {
-        return $this->belongsTo(ReadingPassage::class);
+        return $this->belongsTo(ReadingPassage::class, 'passage_id');
     }
 
     public function audio()
     {
-        return $this->belongsTo(ListeningAudio::class);
+        return $this->belongsTo(ListeningAudio::class, 'audio_id');
     }
 
     public function choices()
     {
-        return $this->hasMany(QuestionChoice::class);
+        return $this->hasMany(QuestionChoice::class, 'question_id');
     }
 }

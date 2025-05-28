@@ -9,7 +9,7 @@ class WritingPrompt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['exam_section_id', 'prompt_text'];
+    protected $fillable = ['exam_section_id', 'title', 'prompt_text'];
 
     public $timestamps = false;
 

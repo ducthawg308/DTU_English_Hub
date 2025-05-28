@@ -37,7 +37,7 @@
                                     <option value="{{ $value }}" {{ $user->target_level == $value ? 'selected' : '' }}>
                                         VSTEP {{ $value }} ({{ $label }})
                                     </option>
-                                    @endforeach
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -119,10 +119,21 @@
     <div class="alert alert-warning d-flex align-items-center justify-content-between shadow-sm mb-4" role="alert">
         <div>
             <i class="bi bi-lightbulb-fill me-2 text-warning"></i>
-            <strong>Gợi ý:</strong> Bạn nên luyện thêm kỹ năng 
-            <span id="weakSkill" class="text-danger fw-bold">Viết</span>.
+            <strong>Gợi ý:</strong>
+            Bạn nên luyện thêm kỹ năng 
+            <span id="weakSkill" class="text-danger fw-bold">{{ ucfirst($weakestSkill ?? 'Chưa xác định') }}</span>.
+            @if(!empty($weakTopics))
+                <ul class="mt-2">
+                    <li>Các chủ đề cần cải thiện:</li>
+                    @foreach($weakTopics as $topic)
+                        <li>{{ $topic['title'] }} (Chủ đề: {{ $topic['topic'] }}, Điểm: {{ $topic['score'] }})</li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="mt-2">Chưa có dữ liệu chi tiết về chủ đề cần cải thiện.</p>
+            @endif
         </div>
-        <a href="/practice/writing" id="suggestedLink" class="btn btn-primary btn-sm">Luyện ngay</a>
+        <a href="#" id="suggestedLink" class="btn btn-primary btn-sm">Luyện ngay</a>
     </div>
 
     <!-- Test History -->
@@ -166,6 +177,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         const scores = @json($scores);
         const history = @json($history);
+        const weakestSkill = '{{ $weakestSkill ?? '' }}'.toLowerCase();
+        const weakTopics = @json($weakTopics);
 
         // Radar Chart (Average Scores)
         const radarCtx = document.getElementById('skillRadarChart').getContext('2d');
@@ -215,8 +228,6 @@
                 }
             }
         });
-
-        console.log(scores);
 
         // Bar Chart (Score Progression)
         const barCtx = document.getElementById('skillBarChart').getContext('2d');
@@ -292,6 +303,7 @@
             }
         });
 
+        // Gợi ý kỹ năng yếu nhất và liên kết luyện tập
         const practiceRoutes = {
             'nghe': "{{ route('list.topic') }}",
             'đọc': "{{ route('index.reading') }}",
@@ -299,19 +311,28 @@
             'nói': "{{ route('home.pronounce') }}"
         };
 
-        // Gợi ý kỹ năng yếu nhất
-        const scoreMap = {
-            'Nghe': scores.listening,
-            'Đọc': scores.reading,
-            'Viết': scores.writing,
-            'Nói': scores.speaking
-        };
-        const weakest = Object.entries(scoreMap).sort((a, b) => a[1] - b[1])[0];
-        const weakSkill = weakest[0]; // eg: 'Nghe'
-        const weakSkillKey = weakSkill.toLowerCase(); // eg: 'nghe'
+        if (weakestSkill) {
+            document.getElementById('weakSkill').textContent = weakestSkill.charAt(0).toUpperCase() + weakestSkill.slice(1);
+            document.getElementById('suggestedLink').href = practiceRoutes[weakestSkill] || '#';
+        }
 
-        document.getElementById('weakSkill').textContent = weakSkill;
-        document.getElementById('suggestedLink').href = practiceRoutes[weakSkillKey];
+        // Hiển thị danh sách chủ đề yếu
+        const weakTopicsList = document.createElement('ul');
+        weakTopicsList.className = 'mt-2';
+        if (weakTopics && weakTopics.length > 0) {
+            weakTopics.forEach(topic => {
+                const li = document.createElement('li');
+                li.textContent = `${topic.title} (Chủ đề: ${topic.topic}, Điểm: ${topic.score})`;
+                weakTopicsList.appendChild(li);
+            });
+            const suggestionDiv = document.querySelector('.alert-warning div');
+            suggestionDiv.appendChild(weakTopicsList);
+        } else {
+            const p = document.createElement('p');
+            p.className = 'mt-2';
+            p.textContent = 'Chưa có dữ liệu chi tiết về chủ đề cần cải thiện.';
+            document.querySelector('.alert-warning div').appendChild(p);
+        }
     });
 </script>
 @endsection

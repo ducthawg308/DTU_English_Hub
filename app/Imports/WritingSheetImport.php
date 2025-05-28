@@ -28,6 +28,7 @@ class WritingSheetImport implements ToCollection, WithHeadingRow
 
             WritingPrompt::firstOrCreate([
                 'exam_section_id' => $section->id,
+                'title' => $row['title'],
                 'prompt_text' => $row['prompt_text']
             ]);
         }
