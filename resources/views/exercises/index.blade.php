@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="speaking-hero">
+<div class="listening-hero">
     <div class="container-fluid px-4">
         <!-- Animated Header -->
         <div class="hero-content text-center mb-5">
@@ -11,110 +11,104 @@
                 <div class="sound-wave wave-3"></div>
             </div>
             <h1 class="hero-title">
-                <span class="gradient-text">Speaking</span> 
+                <span class="gradient-text">Listening</span> 
                 <span class="highlight-text">Mastery</span>
             </h1>
             <p class="hero-subtitle">
-                Cải thiện kỹ năng Speaking với công nghệ AI tiên tiến
+                Khám phá thế giới âm thanh với trải nghiệm học tập đột phá
             </p>
         </div>
 
         <!-- Modern Cards Layout -->
         <div class="cards-container">
-            <!-- VSTEP Speaking Card -->
-            <div class="modern-card vstep-card">
+            <!-- AI Listening Card -->
+            <div class="modern-card ai-card">
                 <div class="card-glow"></div>
                 <div class="card-content">
                     <div class="card-header-modern">
-                        <div class="icon-container vstep-icon">
-                            <div class="microphone">
-                                <div class="mic-body"></div>
-                                <div class="mic-head">
-                                    <div class="sound-indicator"></div>
-                                    <div class="sound-indicator"></div>
-                                    <div class="sound-indicator"></div>
+                        <div class="icon-container ai-icon">
+                            <div class="ai-brain">
+                                <div class="brain-core"></div>
+                                <div class="neural-network">
+                                    <span class="synapse s1"></span>
+                                    <span class="synapse s2"></span>
+                                    <span class="synapse s3"></span>
                                 </div>
-                                <div class="mic-stand"></div>
                             </div>
                         </div>
-                        <div class="card-badge">VSTEP STANDARD</div>
+                        <div class="card-badge">AI POWERED</div>
                     </div>
                     
                     <div class="card-body-modern">
-                        <h3 class="card-title-modern">VSTEP Speaking Lab</h3>
-                        <p class="card-description">Nâng cao kỹ năng nói với tiêu chuẩn VSTEP quốc tế</p>
+                        <h3 class="card-title-modern">Smart Listening Lab</h3>
+                        <p class="card-description">Trí tuệ nhân tạo phân tích và cải thiện khả năng nghe của bạn</p>
                         
                         <div class="features-grid">
                             <div class="feature-item">
-                                <div class="feature-icon">🎤</div>
-                                <span>Phỏng vấn thực tế</span>
+                                <div class="feature-icon">🎯</div>
+                                <span>Phân tích chính xác</span>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">🤖</div>
-                                <span>Phân tích AI</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">📊</div>
-                                <span>Đánh giá chi tiết</span>
+                                <div class="feature-icon">🚀</div>
+                                <span>Học thích ứng</span>
                             </div>
                             <div class="feature-item">
                                 <div class="feature-icon">⚡</div>
                                 <span>Phản hồi tức thì</span>
                             </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎧</div>
+                                <span>Đa giọng điệu</span>
+                            </div>
                         </div>
                         
-                        <a href="{{ route('pronounce.ai') }}" class="btn-modern btn-vstep">
-                            <span class="btn-text">Bắt đầu luyện Speaking</span>
+                        <a href="{{ route('listening.ai') }}" class="btn-modern btn-ai">
+                            <span class="btn-text">Khám phá AI Lab</span>
                             <div class="btn-effect"></div>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- IPA Pronunciation Card -->
-            <div class="modern-card ipa-card">
+            <!-- Dictation Card -->
+            <div class="modern-card dictation-card">
                 <div class="card-glow"></div>
                 <div class="card-content">
                     <div class="card-header-modern">
-                        <div class="icon-container ipa-icon">
-                            <div class="phonetic-symbol">
-                                <div class="ipa-chart">
-                                    <div class="symbol-row">
-                                        <span class="phonetic-char">ə</span>
-                                        <span class="phonetic-char">ɪ</span>
-                                    </div>
-                                    <div class="symbol-row">
-                                        <span class="phonetic-char">θ</span>
-                                        <span class="phonetic-char">ʃ</span>
-                                    </div>
+                        <div class="icon-container dictation-icon">
+                            <div class="typewriter">
+                                <div class="paper">
+                                    <div class="line"></div>
+                                    <div class="line"></div>
+                                    <div class="line"></div>
                                 </div>
-                                <div class="pronunciation-wave"></div>
+                                <div class="cursor"></div>
                             </div>
                         </div>
-                        <div class="card-badge ipa-badge">IPA STANDARD</div>
+                        <div class="card-badge dictation-badge">CLASSIC METHOD</div>
                     </div>
                     
                     <div class="card-body-modern">
-                        <h3 class="card-title-modern">IPA Pronunciation</h3>
-                        <p class="card-description">Thành thạo bảng phiên âm quốc tế với 44 âm tiết</p>
+                        <h3 class="card-title-modern">Dictation Studio</h3>
+                        <p class="card-description">Phương pháp cổ điển giúp hoàn thiện kỹ năng chép chính tả</p>
                         
                         <div class="progress-stats">
                             <div class="stat-item">
-                                <div class="stat-number">44</div>
-                                <div class="stat-label">Âm tiết</div>
+                                <div class="stat-number">95%</div>
+                                <div class="stat-label">Độ chính xác</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-number">100%</div>
-                                <div class="stat-label">Độ chuẩn</div>
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Cấp độ</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-number">AI</div>
-                                <div class="stat-label">Đánh giá</div>
+                                <div class="stat-number">∞</div>
+                                <div class="stat-label">Luyện tập</div>
                             </div>
                         </div>
                         
-                        <a href="{{ route('pronounce.ipa') }}" class="btn-modern btn-ipa">
-                            <span class="btn-text">Học bảng phiên âm IPA</span>
+                        <a href="{{ route('list.topic') }}" class="btn-modern btn-dictation">
+                            <span class="btn-text">Vào Studio</span>
                             <div class="btn-effect"></div>
                         </a>
                     </div>
@@ -126,16 +120,16 @@
 
 <style>
 /* Hero Section */
-.speaking-hero {
+.listening-hero {
     min-height: 100vh;
-    background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-.speaking-hero::before {
+.listening-hero::before {
     content: '';
     position: absolute;
     top: 0;
@@ -186,7 +180,7 @@
 }
 
 .gradient-text {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -244,16 +238,16 @@
     opacity: 1;
 }
 
-/* VSTEP Card Specific */
-.vstep-card .card-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+/* AI Card Specific */
+.ai-card .card-content {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: white;
     height: 100%;
 }
 
-/* IPA Card Specific */
-.ipa-card .card-content {
-    background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+/* Dictation Card Specific */
+.dictation-card .card-content {
+    background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
     color: white;
     height: 100%;
 }
@@ -284,116 +278,90 @@
     backdrop-filter: blur(10px);
 }
 
-/* Microphone Animation */
-.microphone {
+/* AI Brain Animation */
+.ai-brain {
     position: relative;
     width: 40px;
     height: 40px;
 }
 
-.mic-body {
-    width: 16px;
-    height: 24px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px 8px 0 0;
-    position: absolute;
-    left: 50%;
-    top: 8px;
-    transform: translateX(-50%);
-}
-
-.mic-head {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 12px;
-    height: 16px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.sound-indicator {
-    width: 2px;
-    height: 3px;
-    background: #ff6b6b;
-    margin: 1px 0;
-    border-radius: 1px;
-    animation: soundLevel 1.5s infinite;
-}
-
-.sound-indicator:nth-child(2) { animation-delay: 0.2s; }
-.sound-indicator:nth-child(3) { animation-delay: 0.4s; }
-
-.mic-stand {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 4px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 2px;
-}
-
-@keyframes soundLevel {
-    0%, 100% { opacity: 0.3; height: 3px; }
-    50% { opacity: 1; height: 6px; }
-}
-
-/* IPA Symbol Animation */
-.phonetic-symbol {
-    position: relative;
-    width: 40px;
-    height: 40px;
-}
-
-.ipa-chart {
+.brain-core {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    animation: glow 2s infinite alternate;
 }
 
-.symbol-row {
-    display: flex;
-    gap: 4px;
-    margin: 2px 0;
-}
-
-.phonetic-char {
-    font-size: 10px;
-    font-weight: bold;
-    color: rgba(255,255,255,0.9);
-    animation: symbolGlow 2s infinite alternate;
-}
-
-.phonetic-char:nth-child(2) { animation-delay: 0.5s; }
-
-.pronunciation-wave {
+.neural-network {
     position: absolute;
-    bottom: -2px;
+    top: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.synapse {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    animation: synapseFlash 1.5s infinite;
+}
+
+.s1 { top: 10px; left: 5px; animation-delay: 0s; }
+.s2 { top: 25px; right: 8px; animation-delay: 0.5s; }
+.s3 { bottom: 12px; left: 15px; animation-delay: 1s; }
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    to { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+}
+
+@keyframes synapseFlash {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Typewriter Animation */
+.typewriter {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.paper {
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.9);
+    border-radius: 4px;
+    padding: 8px 6px;
+}
+
+.line {
     height: 2px;
-    background: linear-gradient(90deg, transparent, #ff6b6b, transparent);
-    animation: waveMove 2s infinite;
+    background: rgba(0,0,0,0.3);
+    margin: 4px 0;
+    border-radius: 1px;
 }
 
-@keyframes symbolGlow {
-    from { opacity: 0.6; }
-    to { opacity: 1; }
+.line:nth-child(2) { width: 80%; }
+.line:nth-child(3) { width: 60%; }
+
+.cursor {
+    position: absolute;
+    width: 1px;
+    height: 12px;
+    background: #ff6b6b;
+    right: 12px;
+    bottom: 10px;
+    animation: blink 1s infinite;
 }
 
-@keyframes waveMove {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }
 
 /* Card Badges */
@@ -407,7 +375,7 @@
     backdrop-filter: blur(10px);
 }
 
-.ipa-badge {
+.dictation-badge {
     background: rgba(0,0,0,0.2);
 }
 
@@ -497,12 +465,12 @@
     margin-top: auto;
 }
 
-.btn-vstep {
+.btn-ai {
     background: linear-gradient(45deg, #ff6b6b, #feca57);
     color: white;
 }
 
-.btn-ipa {
+.btn-dictation {
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
 }

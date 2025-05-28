@@ -126,7 +126,10 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/writing/evaluate', [App\Http\Controllers\WritingController::class, 'evaluateWriting'])->name('writing.evaluate');
 });
 
-Route::get('topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
+Route::get('listening', [App\Http\Controllers\ExercisesController::class, 'index'])->name('home.listening');
+Route::get('listening/ai', [App\Http\Controllers\ExercisesController::class, 'ai'])->name('listening.ai');
+Route::post('/listening/generate-test', [App\Http\Controllers\ExercisesController::class, 'generateTest']);
+Route::get('listening/topic', [App\Http\Controllers\ExercisesController::class, 'list'])->name('list.topic');
 Route::get('topic/{id}', [App\Http\Controllers\ExercisesController::class, 'show'])->name('topic.show');
 Route::get('topic/{topicId}/{id}', [App\Http\Controllers\ExercisesController::class, 'listening'])->name('topic.listening');
 Route::post('topic/{id}/check', [App\Http\Controllers\ExercisesController::class, 'check'])->name('check.answer');

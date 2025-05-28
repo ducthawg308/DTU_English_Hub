@@ -54,7 +54,7 @@
                     </a>
                   
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('list.topic') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện bài nghe</a></li>
+                        <li><a href="{{ route('home.listening') }}" class="{{ request()->is('topic*') ? 'active' : '' }}">Luyện bài nghe</a></li>
                         <li><a href="{{ route('index.reading') }}" class="{{ request()->is('reading*') ? 'active' : '' }}">Luyện bài đọc</a></li>
                         <li><a href="{{ route('index.writing') }}" class="{{ request()->is('writing*') ? 'active' : '' }}">Luyện viết</a></li>
                         <li><a href="{{ route('home.pronounce') }}" class="{{ request()->is('pronounce*') ? 'active' : '' }}">Luyện phát âm</a></li>

@@ -116,24 +116,31 @@
     </div>
 
     <!-- Suggestion Alert -->
-    <div class="alert alert-warning d-flex align-items-center justify-content-between shadow-sm mb-4" role="alert">
-        <div>
-            <i class="bi bi-lightbulb-fill me-2 text-warning"></i>
-            <strong>Gợi ý:</strong>
-            Bạn nên luyện thêm kỹ năng 
-            <span id="weakSkill" class="text-danger fw-bold">{{ ucfirst($weakestSkill ?? 'Chưa xác định') }}</span>.
-            @if(!empty($weakTopics))
-                <ul class="mt-2">
-                    <li>Các chủ đề cần cải thiện:</li>
-                    @foreach($weakTopics as $topic)
-                        <li>{{ $topic }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p class="mt-2">Chưa có dữ liệu chi tiết về chủ đề cần cải thiện.</p>
-            @endif
+    <div class="alert alert-warning shadow-sm mb-4" role="alert">
+        <div class="d-flex">
+            <i class="bi bi-lightbulb-fill text-warning me-3 fs-4"></i>
+            <div class="flex-grow-1 w-100">
+                <strong>Gợi ý:</strong>
+                Bạn nên luyện thêm kỹ năng 
+                <span id="weakSkill" class="text-danger fw-bold">{{ ucfirst($weakestSkill ?? 'Chưa xác định') }}</span>.
+
+                @if (!empty($weakTopics))
+                    <div class="mt-3">
+                        <p class="mb-2">Các chủ đề cần cải thiện:</p>
+                        <ul class="list-unstyled">
+                            @foreach($weakTopics as $topic)
+                                <li class="d-flex align-items-center border-bottom py-2">
+                                    <span class="flex-grow-1">{{ $topic }}</span>
+                                    <a href="#" class="btn btn-sm btn-primary ms-auto">Luyện ngay</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @else
+                    <p class="mt-2 mb-0">Chưa có dữ liệu chi tiết về chủ đề cần cải thiện.</p>
+                @endif
+            </div>
         </div>
-        <a href="#" id="suggestedLink" class="btn btn-primary btn-sm">Luyện ngay</a>
     </div>
 
     <!-- Test History -->
