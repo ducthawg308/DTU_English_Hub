@@ -56,6 +56,8 @@ Route::middleware(['auth','verified','CheckRole:admin'])->group(function(){
     Route::get('admin/vocabulary/edit/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'edit'])->name('edit.vocab');
     Route::get('admin/vocabulary/delete/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'delete'])->name('delete_vocab');
     Route::post('admin/vocabulary/update/{id}', [App\Http\Controllers\AdminVocabularyController::class, 'update'])->name('update.vocab');
+
+    Route::get('admin/transaction/list', [App\Http\Controllers\AdminTransactionController::class, 'index'])->name('admin.transaction');
 });
 
 Route::middleware(['auth', 'verified', 'CheckRole:teacher'])->group(function () {

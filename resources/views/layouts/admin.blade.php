@@ -111,6 +111,10 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                                 Quản lý người dùng
                             </a>
+                            <a class="nav-link" href="{{ route('admin.transaction') }}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                                Quản lý giao dịch
+                            </a>
                             <a class="nav-link" href="{{url('admin/exercise/list')}}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-headphones-simple"></i></div>
                                 Quản lý bài nghe
