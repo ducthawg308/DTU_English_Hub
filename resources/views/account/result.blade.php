@@ -126,7 +126,7 @@
                 <ul class="mt-2">
                     <li>Các chủ đề cần cải thiện:</li>
                     @foreach($weakTopics as $topic)
-                        <li>{{ $topic['title'] }} (Chủ đề: {{ $topic['topic'] }}, Điểm: {{ $topic['score'] }})</li>
+                        <li>{{ $topic }}</li>
                     @endforeach
                 </ul>
             @else

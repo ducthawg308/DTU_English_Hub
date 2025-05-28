@@ -11,7 +11,6 @@ class ListeningAudio extends Model
 
     protected $table = 'listening_audios';
     protected $fillable = ['exam_section_id', 'title', 'audio_url'];
-
     public $timestamps = false;
 
     public function section()
