@@ -12,28 +12,32 @@
                     <h5 class="mb-0">Độ khó</h5>
                 </div>
                 <div class="card-body">
+                    @php
+                        $levelValue = old('level', $level ?? 'A1');
+                    @endphp
+
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelA1" value="A1" checked>
+                        <input class="form-check-input" type="radio" name="level" id="levelA1" value="A1" {{ $levelValue == 'A1' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelA1">A1 - Cơ bản tối thiểu</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelA2" value="A2">
+                        <input class="form-check-input" type="radio" name="level" id="levelA2" value="A2" {{ $levelValue == 'A2' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelA2">A2 - Sơ cấp</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelB1" value="B1">
+                        <input class="form-check-input" type="radio" name="level" id="levelB1" value="B1" {{ $levelValue == 'B1' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelB1">B1 - Trung cấp</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelB2" value="B2">
+                        <input class="form-check-input" type="radio" name="level" id="levelB2" value="B2" {{ $levelValue == 'B2' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelB2">B2 - Trên trung cấp</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="level" id="levelC1" value="C1">
+                        <input class="form-check-input" type="radio" name="level" id="levelC1" value="C1" {{ $levelValue == 'C1' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelC1">C1 - Cao cấp</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="level" id="levelC2" value="C2">
+                        <input class="form-check-input" type="radio" name="level" id="levelC2" value="C2" {{ $levelValue == 'C2' ? 'checked' : '' }}>
                         <label class="form-check-label" for="levelC2">C2 - Thành thạo</label>
                     </div>
                 </div>
@@ -71,7 +75,7 @@
         </div>
         <div class="card-body">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="topic" placeholder="Nhập chủ đề">
+                <input type="text" class="form-control" value="{{ old('topic', $topic ?? '') }}" id="topic" placeholder="Nhập chủ đề">
                 <label for="topic">Nhập chủ đề bạn muốn viết (để trống nếu muốn chọn ngẫu nhiên)</label>
             </div>
             <button id="generate-prompt-btn" class="btn btn-primary">

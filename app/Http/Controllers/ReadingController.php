@@ -18,8 +18,10 @@ class ReadingController extends Controller
         return view('reading.default',compact('readings'));
     }
 
-    public function ai(){
-        return view('reading.ai');
+    public function ai(Request $request){
+        $topic = $request->query('topic');
+        $level = $request->query('level');
+        return view('reading.ai',compact('topic', 'level'));
     }
 
     public function detail($id)

@@ -23,33 +23,40 @@
         <div class="card-body p-4">
             <form id="ai-form" class="row g-3">
                 @csrf
+                @php
+                    $availableTopics = ['Environment', 'Technology', 'Sports', 'Education', 'Health', 'Culture', 'Travel'];
+                    $isCustomTopic = isset($topic) && !in_array($topic, $availableTopics);
+                @endphp
+
                 <div class="col-md-12">
                     <label for="topic" class="form-label fw-bold">Chủ đề bài đọc</label>
+
+                    <!-- Select chế độ -->
                     <div class="input-group mb-2">
                         <span class="input-group-text bg-light"><i class="fas fa-tag"></i></span>
                         <select class="form-select" id="topic-mode" name="topic-mode">
-                            <option value="select">Chọn từ danh sách</option>
-                            <option value="input">Tự nhập chủ đề</option>
+                            <option value="select" @selected(!$isCustomTopic)>Chọn từ danh sách</option>
+                            <option value="input" @selected($isCustomTopic)>Tự nhập chủ đề</option>
                         </select>
                     </div>
-                    <div id="topic-select-container" class="input-group">
+
+                    <!-- Chọn từ danh sách -->
+                    <div id="topic-select-container" class="input-group {{ $isCustomTopic ? 'd-none' : '' }}">
                         <span class="input-group-text bg-light"><i class="fas fa-list"></i></span>
                         <select class="form-select" id="topic-select" name="topic">
                             <option value="">-- Chọn chủ đề --</option>
-                            <option value="Environment">Environment</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Education">Education</option>
-                            <option value="Health">Health</option>
-                            <option value="Culture">Culture</option>
-                            <option value="Travel">Travel</option>
+                            @foreach ($availableTopics as $t)
+                                <option value="{{ $t }}" @selected(isset($topic) && $topic === $t)>{{ $t }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div id="topic-input-container" class="input-group d-none">
+
+                    <!-- Tự nhập chủ đề -->
+                    <div id="topic-input-container" class="input-group {{ $isCustomTopic ? '' : 'd-none' }}">
                         <span class="input-group-text bg-light"><i class="fas fa-tag"></i></span>
-                        <input type="text" class="form-control" id="topic-input" name="topic" 
-                            placeholder="Nhập chủ đề bạn muốn đọc (VD: Environment, Technology, Sports...)" 
-                            autofocus>
+                        <input type="text" class="form-control" id="topic-input" name="topic"
+                            value="{{ $isCustomTopic ? $topic : '' }}"
+                            placeholder="Nhập chủ đề bạn muốn đọc (VD: Environment, Technology, Sports...)">
                     </div>
                 </div>
 
@@ -70,12 +77,13 @@
                         <span class="input-group-text bg-light"><i class="fas fa-graduation-cap"></i></span>
                         <select class="form-select" id="level" name="level" required>
                             <option value="">-- Chọn cấp độ --</option>
-                            <option value="A1">A1 - Beginner (Sơ cấp)</option>
-                            <option value="A2">A2 - Elementary (Tiền cơ bản)</option>
-                            <option value="B1">B1 - Intermediate (Trung cấp)</option>
-                            <option value="B2">B2 - Upper Intermediate (Cao trung cấp)</option>
-                            <option value="C1">C1 - Advanced (Nâng cao)</option>
-                            <option value="C2">C2 - Proficiency (Thành thạo)</option>
+                            <option value="A1" @selected($level == 'A1')>A1 - Beginner (Sơ cấp)</option>
+                            <option value="A2" @selected($level == 'A2')>A2 - Elementary (Tiền cơ bản)</option>
+                            <option value="B1" @selected($level == 'B1')>B1 - Intermediate (Trung cấp)</option>
+                            <option value="B2" @selected($level == 'B2')>B2 - Upper Intermediate (Cao trung cấp)</option>
+                            <option value="C1" @selected($level == 'C1')>C1 - Advanced (Nâng cao)</option>
+                            <option value="C2" @selected($level == 'C2')>C2 - Proficiency (Thành thạo)</option>
+
                         </select>
                     </div>
                     <div class="form-text">Chọn cấp độ phù hợp với trình độ của bạn</div>

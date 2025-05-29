@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 class WritingController extends Controller
 {
-    public function index(){
-        return view("writing.index");
+    public function index(Request $request){
+        $topic = $request->query('topic');
+        $level = $request->query('level');
+        return view('writing.index',compact('topic', 'level'));
     }
 
     public function generatePrompt(Request $request){

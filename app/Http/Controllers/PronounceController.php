@@ -6,23 +6,21 @@ use Illuminate\Http\Request;
 
 class PronounceController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         return view('pronounce.index');
     }
 
-    public function ai()
-    {
-        return view('pronounce.ai');
+    public function ai(Request $request){
+        $topic = $request->query('topic');
+        $level = $request->query('level');
+        return view('pronounce.ai',compact('topic', 'level'));
     }
 
-    public function ipa()
-    {
+    public function ipa(){
         return view('pronounce.ipa');
     }
 
-    public function generatePrompt(Request $request)
-    {
+    public function generatePrompt(Request $request){
         $apiKey = config('services.gemini.api_key');
         if (!$apiKey) {
             return response()->json(['error' => 'Missing API Key'], 500);

@@ -432,19 +432,21 @@
                             <i class="fas fa-lightbulb"></i> Chủ đề (tùy chọn)
                         </label>
                         <input type="text" id="topic" name="topic" class="form-control" 
-                               placeholder="Nhập chủ đề (ví dụ: Education, Technology)">
+                            placeholder="Nhập chủ đề (ví dụ: Education, Technology)"
+                            value="{{ old('topic', $topic ?? '') }}">
                     </div>
                     <div class="form-group">
                         <label for="level" class="form-label">
                             <i class="fas fa-chart-line"></i> Trình độ
                         </label>
                         <select id="level" name="level" class="form-control">
-                            <option value="A1">A1 - Sơ cấp</option>
-                            <option value="A2">A2 - Cơ bản</option>
-                            <option value="B1" selected>B1 - Trung cấp</option>
-                            <option value="B2">B2 - Trung cấp cao</option>
-                            <option value="C1">C1 - Cao cấp</option>
-                            <option value="C2">C2 - Thành thạo</option>
+                            <option value="">-- Chọn cấp độ --</option>
+                            <option value="A1" @selected($level == 'A1')>A1 - Sơ cấp</option>
+                            <option value="A2"@selected($level == 'A2')>A2 - Cơ bản</option>
+                            <option value="B1" @selected($level == 'B1')>B1 - Trung cấp</option>
+                            <option value="B2" @selected($level == 'B2')>B2 - Trung cấp cao</option>
+                            <option value="C1" @selected($level == 'C1')>C1 - Cao cấp</option>
+                            <option value="C2" @selected($level == 'C2')>C2 - Thành thạo</option>
                         </select>
                     </div>
                     <div class="form-group">

@@ -123,7 +123,7 @@
                 <strong>Gợi ý:</strong>
                 Bạn nên luyện thêm kỹ năng 
                 <span id="weakSkill" class="text-danger fw-bold">{{ ucfirst($weakestSkill ?? 'Chưa xác định') }}</span>.
-
+                
                 @if (!empty($weakTopics))
                     <div class="mt-3">
                         <p class="mb-2">Các chủ đề cần cải thiện:</p>
@@ -131,7 +131,27 @@
                             @foreach($weakTopics as $topic)
                                 <li class="d-flex align-items-center border-bottom py-2">
                                     <span class="flex-grow-1">{{ $topic }}</span>
-                                    <a href="#" class="btn btn-sm btn-primary ms-auto">Luyện ngay</a>
+                                    @php
+                                        // Determine route based on weakest skill
+                                        $practiceRoute = '#';
+                                        $skillParam = strtolower($weakestSkill ?? '');
+                                        
+                                        switch($skillParam) {
+                                            case 'listening':
+                                                $practiceRoute = route('listening.ai', ['topic' => $topic, 'level' => $user->target_level ?? 3]);
+                                                break;
+                                            case 'reading':
+                                                $practiceRoute = route('ai.reading', ['topic' => $topic, 'level' => $user->target_level ?? 3]);
+                                                break;
+                                            case 'writing':
+                                                $practiceRoute = route('index.writing', ['topic' => $topic, 'level' => $user->target_level ?? 3]);
+                                                break;
+                                            case 'speaking':
+                                                $practiceRoute = route('pronounce.ai', ['topic' => $topic, 'level' => $user->target_level ?? 3]);
+                                                break;
+                                        }
+                                    @endphp
+                                    <a href="{{ $practiceRoute }}" class="btn btn-sm btn-primary ms-auto">Luyện ngay</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -309,37 +329,6 @@
                 }
             }
         });
-
-        // Gợi ý kỹ năng yếu nhất và liên kết luyện tập
-        const practiceRoutes = {
-            'nghe': "{{ route('list.topic') }}",
-            'đọc': "{{ route('index.reading') }}",
-            'viết': "{{ route('index.writing') }}",
-            'nói': "{{ route('home.pronounce') }}"
-        };
-
-        if (weakestSkill) {
-            document.getElementById('weakSkill').textContent = weakestSkill.charAt(0).toUpperCase() + weakestSkill.slice(1);
-            document.getElementById('suggestedLink').href = practiceRoutes[weakestSkill] || '#';
-        }
-
-        // Hiển thị danh sách chủ đề yếu
-        const weakTopicsList = document.createElement('ul');
-        weakTopicsList.className = 'mt-2';
-        if (weakTopics && weakTopics.length > 0) {
-            weakTopics.forEach(topic => {
-                const li = document.createElement('li');
-                li.textContent = `${topic.title} (Chủ đề: ${topic.topic}, Điểm: ${topic.score})`;
-                weakTopicsList.appendChild(li);
-            });
-            const suggestionDiv = document.querySelector('.alert-warning div');
-            suggestionDiv.appendChild(weakTopicsList);
-        } else {
-            const p = document.createElement('p');
-            p.className = 'mt-2';
-            p.textContent = 'Chưa có dữ liệu chi tiết về chủ đề cần cải thiện.';
-            document.querySelector('.alert-warning div').appendChild(p);
-        }
     });
 </script>
 @endsection

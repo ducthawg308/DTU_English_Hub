@@ -16,8 +16,10 @@ class ExercisesController extends Controller
         return view('exercises.index');
     }
 
-    public function ai(){
-        return view('exercises.ai');
+    public function ai(Request $request){
+        $topic = $request->query('topic');
+        $level = $request->query('level');
+        return view('exercises.ai',compact('topic', 'level'));
     }
 
     public function list(){
