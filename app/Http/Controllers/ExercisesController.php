@@ -165,6 +165,8 @@ class ExercisesController extends Controller
             - Giọng đọc: $accentName
             - Các phần: " . implode(', ', $testParts) . "
             
+            **QUAN TRỌNG: Tạo đề thi VSTEP thực tế với câu hỏi trắc nghiệm 4 lựa chọn A, B, C, D**
+            
             Trả về JSON với cấu trúc sau:
 
             ```json
@@ -180,29 +182,86 @@ class ExercisesController extends Controller
                 },
                 \"listening_exercises\": [
                     {
-                        \"title\": \"Part 1 - Short Conversation\",
-                        \"audio_text\": \"[Audio Script] A: Hello, how can I help you today? B: I'd like to book a table for two people...\",
-                        \"audios\": [
+                        \"part\": \"Part 1\",
+                        \"title\": \"Short Conversations\",
+                        \"instruction\": \"You will hear some conversations between two people. You will be asked to answer three questions about what you hear. Choose the best answer for each question.\",
+                        \"conversations\": [
                             {
-                                \"question\": \"What does the customer want to do?\",
-                                \"answer_correct\": \"book a table\",
-                                \"hint\": \"The customer wants to _____ a _____\"
-                            },
-                            {
-                                \"question\": \"How many people will be dining?\",
-                                \"answer_correct\": \"two people\",
-                                \"hint\": \"_____ people\"
+                                \"audio_text\": \"A: Excuse me, could you tell me where the nearest bank is? B: Sure, there's one just around the corner on Main Street. It's next to the pharmacy. A: Is it open now? B: Yes, it should be. They're open until 5 PM on weekdays.\",
+                                \"questions\": [
+                                    {
+                                        \"question_number\": 1,
+                                        \"question_text\": \"What is the man looking for?\",
+                                        \"options\": {
+                                            \"A\": \"A pharmacy\",
+                                            \"B\": \"A bank\",
+                                            \"C\": \"Main Street\",
+                                            \"D\": \"A corner shop\"
+                                        },
+                                        \"correct_answer\": \"B\",
+                                        \"explanation\": \"The man asks 'could you tell me where the nearest bank is?'\"
+                                    },
+                                    {
+                                        \"question_number\": 2,
+                                        \"question_text\": \"Where is the bank located?\",
+                                        \"options\": {
+                                            \"A\": \"Opposite the pharmacy\",
+                                            \"B\": \"Far from Main Street\",
+                                            \"C\": \"Next to the pharmacy\",
+                                            \"D\": \"Behind the corner\"
+                                        },
+                                        \"correct_answer\": \"C\",
+                                        \"explanation\": \"The woman says 'It's next to the pharmacy'\"
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
-                        \"title\": \"Part 2 - Long Monologue\",
-                        \"audio_text\": \"[Audio Script] Welcome to our university orientation program...\",
-                        \"audios\": [
+                        \"part\": \"Part 2\",
+                        \"title\": \"Long Conversations\",
+                        \"instruction\": \"You will hear some longer conversations between two people. You will be asked to answer three questions about what you hear. Choose the best answer for each question.\",
+                        \"conversations\": [
                             {
-                                \"question\": \"What is the main purpose of this talk?\",
-                                \"answer_correct\": \"orientation program\",
-                                \"hint\": \"university _____ _____\"
+                                \"audio_text\": \"A: Good morning, I'd like to register for the computer course. B: Certainly. Which level are you interested in? We have beginner, intermediate, and advanced levels. A: I think intermediate would be suitable for me. I have some basic knowledge. B: Great. The intermediate course starts next Monday and runs for 6 weeks, twice a week. A: What time are the classes? B: They're from 7 to 9 PM on Mondays and Wednesdays. A: Perfect. How much does it cost? B: It's 200 dollars for the entire course, including materials.\",
+                                \"questions\": [
+                                    {
+                                        \"question_number\": 3,
+                                        \"question_text\": \"What does the man want to do?\",
+                                        \"options\": {
+                                            \"A\": \"Buy a computer\",
+                                            \"B\": \"Register for a course\",
+                                            \"C\": \"Get course materials\",
+                                            \"D\": \"Meet on Monday\"
+                                        },
+                                        \"correct_answer\": \"B\",
+                                        \"explanation\": \"The man says 'I'd like to register for the computer course'\"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        \"part\": \"Part 3\",
+                        \"title\": \"Academic Lectures\",
+                        \"instruction\": \"You will hear part of a lecture. You will be asked to answer four questions about what you hear. Choose the best answer for each question.\",
+                        \"conversations\": [
+                            {
+                                \"audio_text\": \"Today we're going to discuss renewable energy sources, particularly solar and wind power. Solar energy has become increasingly popular due to technological advances that have made solar panels more efficient and affordable. The cost of solar panels has decreased by over 80% in the past decade. Wind power is another important renewable energy source. Modern wind turbines can generate electricity even in low wind conditions. Both solar and wind power are environmentally friendly alternatives to fossil fuels and play a crucial role in reducing carbon emissions.\",
+                                \"questions\": [
+                                    {
+                                        \"question_number\": 4,
+                                        \"question_text\": \"What is the main topic of the lecture?\",
+                                        \"options\": {
+                                            \"A\": \"Fossil fuels\",
+                                            \"B\": \"Carbon emissions\",
+                                            \"C\": \"Renewable energy\",
+                                            \"D\": \"Technology advances\"
+                                        },
+                                        \"correct_answer\": \"C\",
+                                        \"explanation\": \"The lecture discusses renewable energy sources, particularly solar and wind power\"
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -211,17 +270,21 @@ class ExercisesController extends Controller
             ```
 
             ⚠ **Yêu cầu quan trọng:**  
-            - Không giải thích, chỉ trả về JSON.
-            - Tạo đủ $questionCount câu hỏi fill-in-the-blank phân bố đều qua các phần.
-            - Mỗi audio_text phải là script đầy đủ có thể đọc thành audio.
-            - Câu trả lời answer_correct phải ngắn gọn, chính xác.
-            - Hint phải hữu ích nhưng không tiết lộ hoàn toàn đáp án.
+            - Không giải thích, chỉ trả về JSON hoàn chỉnh.
+            - Tạo đủ $questionCount câu hỏi trắc nghiệm phân bố đều qua các phần.
+            - Mỗi câu hỏi phải có 4 lựa chọn A, B, C, D.
+            - Chỉ có 1 đáp án đúng cho mỗi câu hỏi.
+            - Audio script phải thực tế, có thể đọc thành audio.
+            - Câu hỏi phải logic và kiểm tra kỹ năng nghe hiểu.
             - Nội dung phù hợp với trình độ $level:
-               - A2: Từ vựng cơ bản, câu đơn giản
-               - B1: Từ vựng thông dụng, câu phức tạp vừa phải
-               - B2: Từ vựng phong phú, câu phức tạp
-               - C1: Từ vựng học thuật, câu phức tạp cao
-            - Đảm bảo chủ đề $topicName được thể hiện rõ trong nội dung.
+               - A2: Từ vựng cơ bản, tình huống đơn giản
+               - B1: Từ vựng thông dụng, tình huống hàng ngày
+               - B2: Từ vựng phong phú, tình huống phức tạp
+               - C1: Từ vựng học thuật, nội dung chuyên sâu
+            - Đảm bảo chủ đề $topicName được thể hiện rõ.
+            - Part 1: Hội thoại ngắn (2-3 câu hỏi/đoạn)
+            - Part 2: Hội thoại dài (3-4 câu hỏi/đoạn)  
+            - Part 3: Bài giảng học thuật (4-5 câu hỏi/đoạn)
             ";
 
             $data = [
@@ -295,8 +358,12 @@ class ExercisesController extends Controller
                 'accent' => $parsedData['test_info']['accent'],
                 'parts' => $parsedData['test_info']['parts'],
                 'duration' => $parsedData['test_info']['duration'],
-                'content' => $this->formatTestContent($parsedData['listening_exercises'])
+                'content' => $this->formatTestContent($parsedData['listening_exercises']),
+                'raw_data' => $parsedData // For answer checking
             ];
+
+            // Store test data in session for answer checking
+            session(['current_test_data' => $parsedData]);
 
             return response()->json($responseData);
 
@@ -314,31 +381,114 @@ class ExercisesController extends Controller
 
     private function formatTestContent($exercises) {
         $html = '';
-        foreach ($exercises as $index => $exercise) {
+        $questionNumber = 1;
+        
+        foreach ($exercises as $partIndex => $part) {
             $html .= "<div class='exercise-section'>";
-            $html .= "<h3>{$exercise['title']}</h3>";
-            $html .= "<div class='audio-script'>";
-            $html .= "<strong>Audio Script:</strong><br>";
-            $html .= "<p>" . nl2br(htmlspecialchars($exercise['audio_text'])) . "</p>";
+            $html .= "<h3>{$part['part']}: {$part['title']}</h3>";
+            $html .= "<div class='instruction'>";
+            $html .= "<p><strong>Instructions:</strong> {$part['instruction']}</p>";
             $html .= "</div>";
             
-            if (isset($exercise['audios']) && is_array($exercise['audios'])) {
-                $html .= "<div class='questions'>";
-                foreach ($exercise['audios'] as $qIndex => $audio) {
-                    $questionNum = $qIndex + 1;
-                    $html .= "<div class='question-item'>";
-                    $html .= "<p><strong>Question {$questionNum}:</strong> {$audio['question']}</p>";
-                    $html .= "<p><strong>Answer:</strong> {$audio['answer_correct']}</p>";
-                    if (isset($audio['hint'])) {
-                        $html .= "<p><strong>Hint:</strong> {$audio['hint']}</p>";
-                    }
+            if (isset($part['conversations']) && is_array($part['conversations'])) {
+                foreach ($part['conversations'] as $convIndex => $conversation) {
+                    $html .= "<div class='conversation-section'>";
+                    
+                    // Audio script (hidden by default, can be shown for practice)
+                    $html .= "<div class='audio-script'>";
+                    $html .= "<p>" . nl2br(htmlspecialchars($conversation['audio_text'])) . "</p>";
                     $html .= "</div>";
+                    
+                    // Questions
+                    if (isset($conversation['questions']) && is_array($conversation['questions'])) {
+                        $html .= "<div class='questions'>";
+                        foreach ($conversation['questions'] as $question) {
+                            $html .= "<div class='question-item' data-question='{$questionNumber}' data-correct='{$question['correct_answer']}'>";
+                            $html .= "<p><strong>Question {$questionNumber}:</strong> {$question['question_text']}</p>";
+                            
+                            // Multiple choice options
+                            foreach ($question['options'] as $optionKey => $optionValue) {
+                                $html .= "<div class='radio-item'>";
+                                $html .= "<input type='radio' id='q{$questionNumber}_{$optionKey}' name='question_{$questionNumber}' value='{$optionKey}'>";
+                                $html .= "<label for='q{$questionNumber}_{$optionKey}'>{$optionKey}. {$optionValue}</label>";
+                                $html .= "</div>";
+                            }
+                            
+                            $html .= "</div>";
+                            $questionNumber++;
+                        }
+                        $html .= "</div>";
+                    }
+                    
+                    $html .= "</div><br>";
                 }
-                $html .= "</div>";
             }
-            $html .= "</div><br>";
+            $html .= "</div>";
         }
         return $html;
+    }
+
+    // New method to check multiple choice answers
+    public function checkTest(Request $request) {
+        try {
+            $answers = $request->input('answers', []);
+            $testData = session('current_test_data');
+            
+            if (!$testData) {
+                return response()->json(['error' => 'Không tìm thấy dữ liệu bài test'], 404);
+            }
+            
+            $results = [];
+            $totalQuestions = 0;
+            $correctAnswers = 0;
+            $questionNumber = 1;
+            
+            // Extract correct answers from test data
+            foreach ($testData['listening_exercises'] as $part) {
+                if (isset($part['conversations'])) {
+                    foreach ($part['conversations'] as $conversation) {
+                        if (isset($conversation['questions'])) {
+                            foreach ($conversation['questions'] as $question) {
+                                $totalQuestions++;
+                                $userAnswer = $answers["question_{$questionNumber}"] ?? null;
+                                $correctAnswer = $question['correct_answer'];
+                                $isCorrect = ($userAnswer === $correctAnswer);
+                                
+                                if ($isCorrect) {
+                                    $correctAnswers++;
+                                }
+                                
+                                $results[] = [
+                                    'question_number' => $questionNumber,
+                                    'user_answer' => $userAnswer,
+                                    'correct_answer' => $correctAnswer,
+                                    'is_correct' => $isCorrect,
+                                    'question_text' => $question['question_text'],
+                                    'explanation' => $question['explanation'] ?? '',
+                                    'options' => $question['options']
+                                ];
+                                
+                                $questionNumber++;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            $score = $totalQuestions > 0 ? round(($correctAnswers / $totalQuestions) * 100, 2) : 0;
+            
+            return response()->json([
+                'total_questions' => $totalQuestions,
+                'correct_answers' => $correctAnswers,
+                'score' => $score,
+                'results' => $results
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Có lỗi xảy ra khi chấm bài: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     private function getLevelId($level) {

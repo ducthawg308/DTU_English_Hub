@@ -263,6 +263,24 @@
 
 <!-- Custom CSS -->
 <style>
+.nav-pills .skill-tab:disabled,
+.nav-pills .skill-tab.disabled {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+    border-color: #6c757d !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    opacity: 0.5;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.nav-pills .skill-tab:disabled:hover,
+.nav-pills .skill-tab.disabled:hover {
+    transform: none !important;
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+}
 /* Global Styles */
 body {
     font-family: 'Inter', sans-serif;
@@ -486,7 +504,12 @@ audio {
         function switchToSkill(skillId) {
             if (!skillId || completedSkills.has(skillId)) return;
 
-            completedSkills.add(currentSkill);
+            // Disable nút kỹ năng hiện tại trước khi chuyển
+            if (currentSkill !== skillId) {  // Chỉ disable nếu thực sự chuyển skill khác
+                disableCompletedSkill(currentSkill);
+                completedSkills.add(currentSkill);
+            }
+            
             allContents.forEach(el => {
                 if (el) el.classList.add('d-none');
             });
@@ -504,6 +527,7 @@ audio {
                 }
                 currentSkill = skillId;
                 switchPart(config.firstPart, { preventDefault: () => {} });
+                // QUAN TRỌNG: Reset timer cho skill mới
                 startTimer(config.minutes);
             }
         }
@@ -522,17 +546,22 @@ audio {
                     totalSeconds--;
                 } else {
                     clearInterval(interval);
-                    if (currentSkill === 'btnListening') {
-                        const nextSkill = getNextSkill(currentSkill);
-                        if (nextSkill) {
-                            alert("Hết thời gian cho phần Listening! Chuyển sang kỹ năng tiếp theo.");
-                            switchToSkill(nextSkill);
-                        } else {
-                            alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
-                            if (submitBtn) {
-                                submitBtn.click();
-                            }
-                        }
+                    
+                    // Disable nút kỹ năng hiện tại khi hết thời gian
+                    disableCompletedSkill(currentSkill);
+                    completedSkills.add(currentSkill);
+                    
+                    // TÌM SKILL TIẾP THEO (không chỉ riêng Listening)
+                    const nextSkill = getNextSkill(currentSkill);
+                    if (nextSkill) {
+                        const skillNames = {
+                            'btnListening': 'Listening',
+                            'btnReading': 'Reading', 
+                            'btnWriting': 'Writing',
+                            'btnSpeaking': 'Speaking'
+                        };
+                        alert(`Hết thời gian cho phần ${skillNames[currentSkill]}! Chuyển sang kỹ năng tiếp theo.`);
+                        switchToSkill(nextSkill);
                     } else {
                         alert("Hết thời gian! Bài làm của bạn sẽ được nộp.");
                         if (submitBtn) {
@@ -676,13 +705,25 @@ audio {
         allBtns.forEach(btn => {
             if (btn) {
                 btn.addEventListener('click', () => {
-                    if (completedSkills.has(btn.id) || btn.id === currentSkill) {
-                        return; // Prevent switching to completed skills or same skill
+                    // Kiểm tra nếu nút bị disabled thì không cho phép click
+                    if (btn.disabled || completedSkills.has(btn.id)) {
+                        return;
                     }
+                    // Cho phép click lại skill hiện tại (không cần check btn.id === currentSkill)
                     switchToSkill(btn.id);
                 });
             }
         });
+
+        function getCurrentSkillName() {
+            const skillNames = {
+                'btnListening': 'NGHE (47 phút)',
+                'btnReading': 'ĐỌC (60 phút)', 
+                'btnWriting': 'VIẾT (60 phút)',
+                'btnSpeaking': 'NÓI (12 phút)'
+            };
+            return skillNames[currentSkill] || '';
+        }
 
         // Listen for answer changes
         document.querySelectorAll('.answer-input').forEach(el => {
@@ -831,18 +872,21 @@ audio {
     function startTimer(minutes) {
         clearInterval(interval);
         totalSeconds = minutes * 60;
-        timerEl.textContent = `${String(minutes).padStart(2, '0')}:00`;
         interval = setInterval(() => {
             const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
             const seconds = String(totalSeconds % 60).padStart(2, '0');
             if (timerEl) {
                 timerEl.textContent = `${minutes}:${seconds}`;
             }
-            saveTimerState(); // Save state on each tick
             if (totalSeconds > 0) {
                 totalSeconds--;
             } else {
                 clearInterval(interval);
+                
+                // Disable nút kỹ năng hiện tại khi hết thời gian
+                disableCompletedSkill(currentSkill);
+                completedSkills.add(currentSkill);
+                
                 if (currentSkill === 'btnListening') {
                     const nextSkill = getNextSkill(currentSkill);
                     if (nextSkill) {
@@ -864,9 +908,30 @@ audio {
         }, 1000);
     }
 
+    function disableCompletedSkill(skillId) {
+        const skillBtn = document.getElementById(skillId);
+        if (skillBtn) {
+            skillBtn.disabled = true;
+            skillBtn.classList.add('disabled', 'opacity-50');
+            skillBtn.style.pointerEvents = 'none';
+            skillBtn.style.cursor = 'not-allowed';
+        }
+    }
+
+    function initializeExam() {
+        // Xóa timer state cũ nếu có
+        localStorage.removeItem('timerState');
+        
+        // Khởi tạo skill đầu tiên
+        currentSkill = 'btnListening'; // hoặc skill đầu tiên có sẵn
+        completedSkills.clear();
+        
+        // Khởi tạo giao diện
+        initializeSkillTab();
+        updateAnswerCount();
+    }
+
     // Call loadTimerState before initializeSkillTab
-    loadTimerState();
-    updateAnswerCount();
-    initializeSkillTab();
+    initializeExam();
 </script>
 @endsection
