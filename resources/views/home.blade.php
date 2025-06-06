@@ -8,7 +8,7 @@
 
         <div class="container d-flex flex-column align-items-center">
         <h2 class="animate__backInDown wow" data-aos="fade-up" data-aos-delay="100">DTU English Hub</h2>
-        <p class="wow animate__flipInX" data-aos="fade-up" data-aos-delay="200">Chúng tôi giúp bạn nâng cao kỹ năng nghe, mở rộng vốn từ vựng và làm bài kiểm tra để chinh phục tiếng Anh.</p>
+        <p class="wow animate__flipInX" data-aos="fade-up" data-aos-delay="200">Chúng tôi giúp bạn chinh phục tiếng Anh với AI, cá nhân hóa luyện tập nghe, nói, đọc, viết và đánh giá chuẩn VSTEP.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
             <a href="#about" class="btn-get-started">Bắt đầu ngay</a>
             <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Xem hướng dẫn</span></a>
